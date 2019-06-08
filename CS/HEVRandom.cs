@@ -58,6 +58,31 @@ namespace HevLib {
 			return FixedSeedRandom.NextDouble();
 		}
 
+		/// <returns>Returns a pseudo-random integer variable.</returns>
+		public static int RandomInt( int _Max ) {
+			return FixedSeedRandom.Next( _Max );
+		}
+
+		/// <returns>Returns a pseudo-random normalized float variable.</returns>
+		public static float RandomFloat( float _Max ) {
+			return (float)FixedSeedRandom.NextDouble() * _Max;
+		}
+
+		/// <returns>Returns a pseudo-random normalized double variable.</returns>
+		public static double RandomDouble( float _Max) {
+			return FixedSeedRandom.NextDouble() * _Max;
+		}
+
+		public static string RandomChar( string _Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ) {
+			return new string( Enumerable.Repeat( _Chars, 1 )
+			  .Select( s => s[RandomInt( s.Length )] ).ToArray() );
+		}
+
+		public static string RandomString( int _Length = 10, string _Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ) {
+			return new string( Enumerable.Repeat( _Chars, _Length )
+			  .Select( s => s[RandomInt( s.Length )] ).ToArray() );
+		}
+
 		/// <returns>Returns a pseudo-random integer variable within the given min/max range.</returns>
 		public static int RandomInt( int _Min, int _Max ) {
 			return FixedSeedRandom.Next( _Min, _Max );

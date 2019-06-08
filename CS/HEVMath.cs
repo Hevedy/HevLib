@@ -162,6 +162,14 @@ namespace HevLib {
 			return _Value * -1.0;
 		}
 
+		public static int Reverse( int _Value ) {
+			int value = 0;
+			for ( int i = _Value; i != 0; i /= 10 ) {
+				value = value * 10 + i % 10;
+			}
+			return value;
+		}
+
 		public static float Reverse( float _Value ) {
 			int a = TruncateToInt( _Value );
 			int b = FracToInt( _Value );
