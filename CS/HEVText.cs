@@ -27,9 +27,11 @@ HEVText.cs
 */
 
 using System;
+using System.Text;
 #if UNITY_EDITOR || UNITY_STANDALONE
 using UnityEngine;
 #else
+using System.Security.Cryptography;
 #endif
 
 namespace HevLib {
@@ -55,6 +57,17 @@ namespace HevLib {
 		public static string StringArrayToString( string[] _Array, string _Separator = "\r\n" ) {
 			string result = string.Join( _Separator, _Array );
 			return result;
+		}
+
+		public static (T, bool) EnumParse<T>( string _Value, T _DefaultValue, string _Suffix = "", string _Prefix = "e" ) where T : struct, IConvertible {
+			string value = _Prefix + _Value + _Suffix;
+			if ( !typeof( T ).IsEnum ) throw new ArgumentException( "Error - " + value + " T must be an enumerated type." );
+			if ( HEVText.StringValidate( value ) ) return (_DefaultValue, false);
+
+			foreach ( T item in Enum.GetValues( typeof( T ) ) ) {
+				if ( item.ToString().ToLower().Equals( value.Trim().ToLower() ) ) return (item, true);
+			}
+			return (_DefaultValue, false);
 		}
 	}
 }

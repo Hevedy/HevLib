@@ -28,6 +28,8 @@ HEVIO.cs
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using IniParser;
 using IniParser.Model;
 using Newtonsoft.Json;
@@ -35,22 +37,12 @@ using Newtonsoft.Json;
 using UnityEngine;
 #else
 using System.Linq;
+using System.Security.Cryptography;
 #endif
 
 namespace HevLib {
 
 	public static class HEVIO {
-
-		public static (T, bool) EnumParse<T>( string _Value, T _DefaultValue, string _Suffix = "", string _Prefix = "e" ) where T : struct, IConvertible {
-			string value = _Prefix + _Value + _Suffix;
-			if ( !typeof( T ).IsEnum ) throw new ArgumentException( "Error - " + value + " T must be an enumerated type." );
-			if ( HEVText.StringValidate( value ) ) return (_DefaultValue, false);
-
-			foreach ( T item in Enum.GetValues( typeof( T ) ) ) {
-				if ( item.ToString().ToLower().Equals( value.Trim().ToLower() ) ) return (item, true);
-			}
-			return (_DefaultValue, false);
-		}
 
 		public static bool FileValidate( string _URL ) {
 			if ( !System.IO.File.Exists( _URL ) ) {
@@ -242,5 +234,46 @@ namespace HevLib {
 			return true;
 		}
 
+		public static string CalculateMD5Hash( string input ) {
+			MD5 md5 = System.Security.Cryptography.MD5.Create();
+			byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes( input );
+			byte[] hash = md5.ComputeHash( inputBytes );
+
+			StringBuilder sb = new StringBuilder();
+			for ( int i = 0; i < hash.Length; i++ ) {
+				sb.Append( hash[i].ToString( "X2" ) );
+			}
+			return sb.ToString();
+		}
+
+		public static string GetExecutingFileHash() {
+			return MD5( GetSelfBytes() );
+		}
+
+		private static string MD5( byte[] input ) {
+			return MD5( ASCIIEncoding.ASCII.GetString( input ) );
+		}
+
+		private static string MD5( string input ) {
+			MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+
+			byte[] originalBytes = ASCIIEncoding.Default.GetBytes( input );
+			byte[] encodedBytes = md5.ComputeHash( originalBytes );
+
+			return BitConverter.ToString( encodedBytes ).Replace( "-", "" );
+		}
+
+		private static byte[] GetSelfBytes() {
+			string path = HEVHelper.AppDirFile;
+
+			FileStream running = File.OpenRead( path );
+
+			byte[] exeBytes = new byte[running.Length];
+			running.Read( exeBytes, 0, exeBytes.Length );
+
+			running.Close();
+
+			return exeBytes;
+		}
 	}
 }
