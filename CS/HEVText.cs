@@ -27,11 +27,13 @@ HEVText.cs
 */
 
 using System;
-using System.Text;
+using System.Collections.Generic;
 #if UNITY_EDITOR || UNITY_STANDALONE
 using UnityEngine;
 #else
+using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 #endif
 
 namespace HevLib {
@@ -59,6 +61,16 @@ namespace HevLib {
 			return result;
 		}
 
+		public static string[] StringToStringArray( string _String, string _Separator = "," ) {
+			string[] result = _String.Split( _Separator );
+			return result;
+		}
+
+		public static List<string> StringToStringList( string _String, string _Separator = "," ) {
+			string[] result = _String.Split( _Separator );
+			return result.ToList();
+		}
+
 		public static (T, bool) EnumParse<T>( string _Value, T _DefaultValue, string _Suffix = "", string _Prefix = "e" ) where T : struct, IConvertible {
 			string value = _Prefix + _Value + _Suffix;
 			if ( !typeof( T ).IsEnum ) throw new ArgumentException( "Error - " + value + " T must be an enumerated type." );
@@ -68,6 +80,48 @@ namespace HevLib {
 				if ( item.ToString().ToLower().Equals( value.Trim().ToLower() ) ) return (item, true);
 			}
 			return (_DefaultValue, false);
+		}
+
+		public static string HashMD5( string _Input, bool _LowerCase = false ) {
+			using ( MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider() ) {
+				byte[] inputBytes = System.Text.Encoding.UTF8.GetBytes( _Input );
+				byte[] hash = md5.ComputeHash( inputBytes );
+
+				StringBuilder sb = new StringBuilder();
+				for ( int i = 0; i < hash.Length; i++ ) {
+					// "x2" lower case, "X2" upper case
+					sb.Append( hash[i].ToString( ( _LowerCase ? "x2" : "X2" ) ) );
+				}
+				return sb.ToString();
+			}
+		}
+
+		public static string HashSHA1( string _Input, bool _LowerCase = false ) {
+			using ( SHA1Managed sha1 = new SHA1Managed() ) {
+				byte[] inputBytes = System.Text.Encoding.UTF8.GetBytes( _Input );
+				byte[] hash = sha1.ComputeHash( inputBytes );
+
+				StringBuilder sb = new StringBuilder( hash.Length * 2 );
+				foreach ( byte b in hash ) {
+					// "x2" lower case, "X2" upper case
+					sb.Append( b.ToString( ( _LowerCase ? "x2" : "X2" ) ) );
+				}
+				return sb.ToString();
+			}
+		}
+
+		public static string HashSHA256( string _Input, bool _LowerCase = false ) {
+			using ( SHA256Managed sha256 = new SHA256Managed() ) {
+				byte[] inputBytes = System.Text.Encoding.UTF8.GetBytes( _Input );
+				byte[] hash = sha256.ComputeHash( inputBytes );
+
+				StringBuilder sb = new StringBuilder( hash.Length * 2 );
+				foreach ( byte b in hash ) {
+					// "x2" lower case, "X2" upper case
+					sb.Append( b.ToString( ( _LowerCase ? "x2" : "X2" ) ) );
+				}
+				return sb.ToString();
+			}
 		}
 	}
 }

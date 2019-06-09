@@ -32,6 +32,7 @@ using System.IO;
 using System.Text;
 using IniParser;
 using IniParser.Model;
+using IniParser.Model.Configuration;
 using Newtonsoft.Json;
 #if UNITY_EDITOR || UNITY_STANDALONE
 using UnityEngine;
@@ -206,6 +207,15 @@ namespace HevLib {
 			bool status = FileValidate( _URL );
 			if ( !status ) { HEVConsole.Print( "FileINIRead() Missing File.", EPrintType.eError ); return (null, false); }
 
+			/*
+			IniParserConfiguration iniParserConfig = new IniParserConfiguration()
+			{
+				CommentString = "#",
+				SkipInvalidLines = true
+			};
+			var iniDataParser = new IniParser.Parser.IniDataParser( iniParserConfig );
+			parser.Parser.Configuration.CommentString = "#";
+			*/
 			FileIniDataParser parser = new FileIniDataParser();
 			IniData data = null;
 			try {
@@ -234,36 +244,7 @@ namespace HevLib {
 			return true;
 		}
 
-		public static string CalculateMD5Hash( string input ) {
-			MD5 md5 = System.Security.Cryptography.MD5.Create();
-			byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes( input );
-			byte[] hash = md5.ComputeHash( inputBytes );
-
-			StringBuilder sb = new StringBuilder();
-			for ( int i = 0; i < hash.Length; i++ ) {
-				sb.Append( hash[i].ToString( "X2" ) );
-			}
-			return sb.ToString();
-		}
-
-		public static string GetExecutingFileHash() {
-			return MD5( GetSelfBytes() );
-		}
-
-		private static string MD5( byte[] input ) {
-			return MD5( ASCIIEncoding.ASCII.GetString( input ) );
-		}
-
-		private static string MD5( string input ) {
-			MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-
-			byte[] originalBytes = ASCIIEncoding.Default.GetBytes( input );
-			byte[] encodedBytes = md5.ComputeHash( originalBytes );
-
-			return BitConverter.ToString( encodedBytes ).Replace( "-", "" );
-		}
-
-		private static byte[] GetSelfBytes() {
+		public static byte[] GetSelfBytes() {
 			string path = HEVHelper.AppDirFile;
 
 			FileStream running = File.OpenRead( path );
@@ -274,6 +255,22 @@ namespace HevLib {
 			running.Close();
 
 			return exeBytes;
+		}
+
+		public static string GetSelfString() {
+			return Encoding.UTF8.GetString( GetSelfBytes() );
+		}
+
+		public static string GetAppFileHashMD5() {
+			return HEVText.HashMD5( GetSelfString() );
+		}
+
+		public static string GetAppFileHashSHA1() {
+			return HEVText.HashMD5( GetSelfString() );
+		}
+
+		public static string GetAppFileHashSHA256() {
+			return HEVText.HashMD5( GetSelfString() );
 		}
 	}
 }

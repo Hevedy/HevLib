@@ -27,8 +27,6 @@ HEVHelper.cs
 */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 #if UNITY_EDITOR || UNITY_STANDALONE
 using UnityEngine;
 #else

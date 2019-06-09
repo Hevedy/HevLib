@@ -26,7 +26,6 @@ HEVMathHelpers.cs
 ================================================
 */
 
-using System;
 #if UNITY_EDITOR || UNITY_STANDALONE
 using UnityEngine;
 #else
