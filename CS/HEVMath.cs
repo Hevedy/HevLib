@@ -35,8 +35,29 @@ using UnityEngine;
 namespace HevLib {
 	public static class HEVMath {
 
+		public static bool Validate( sbyte _Min, sbyte _Max, params sbyte[] _SByteList ) {
+			foreach ( sbyte num in _SByteList ) {
+				if ( num >= _Min && num <= _Max ) { } else { return false; }
+			}
+			return true;
+		}
+
+		public static bool Validate( short _Min, short _Max, params short[] _ShortList ) {
+			foreach ( short num in _ShortList ) {
+				if ( num >= _Min && num <= _Max ) { } else { return false; }
+			}
+			return true;
+		}
+
 		public static bool Validate( int _Min, int _Max, params int[] _IntList ) {
 			foreach ( int num in _IntList ) {
+				if ( num >= _Min && num <= _Max ) { } else { return false; }
+			}
+			return true;
+		}
+
+		public static bool Validate( long _Min, long _Max, params long[] _LongList ) {
+			foreach ( long num in _LongList ) {
 				if ( num >= _Min && num <= _Max ) { } else { return false; }
 			}
 			return true;
@@ -50,7 +71,14 @@ namespace HevLib {
 		}
 
 		public static bool Validate( double _Min, double _Max, params double[] _DoubleList ) {
-			foreach ( float num in _DoubleList ) {
+			foreach ( double num in _DoubleList ) {
+				if ( num >= _Min && num <= _Max ) { } else { return false; }
+			}
+			return true;
+		}
+
+		public static bool Validate( decimal _Min, decimal _Max, params decimal[] _DecimalList ) {
+			foreach ( decimal num in _DecimalList ) {
 				if ( num >= _Min && num <= _Max ) { } else { return false; }
 			}
 			return true;
@@ -64,11 +92,19 @@ namespace HevLib {
 			return (int)Math.Floor( _Value );
 		}
 
+		public static int FloorToInt( decimal _Value ) {
+			return (int)Math.Floor( _Value );
+		}
+
 		public static int TruncateToInt( float _Value ) {
 			return (int)Math.Truncate( _Value );
 		}
 
 		public static int TruncateToInt( double _Value ) {
+			return (int)Math.Truncate( _Value );
+		}
+
+		public static int TruncateToInt( decimal _Value ) {
 			return (int)Math.Truncate( _Value );
 		}
 
@@ -83,11 +119,20 @@ namespace HevLib {
 			return ( _Value - (double)Math.Truncate( _Value ) );
 		}
 
+		// Returns signed fractional part of a double.
+		public static decimal Fractional( decimal _Value ) {
+			return ( _Value - (decimal)Math.Truncate( _Value ) );
+		}
+
 		public static int FractionalToInt( float _Value ) {
 			return (int)Fractional( _Value );
 		}
 
 		public static int FractionalToInt( double _Value ) {
+			return (int)Fractional( _Value );
+		}
+
+		public static int FractionalToInt( decimal _Value ) {
 			return (int)Fractional( _Value );
 		}
 
@@ -101,6 +146,11 @@ namespace HevLib {
 			return ( _Value - (double)Math.Floor( _Value ) );
 		}
 
+		// Returns the fractional part of a decimal.
+		public static decimal Frac( decimal _Value ) {
+			return ( _Value - (decimal)Math.Floor( _Value ) );
+		}
+
 		public static int FracToInt( float _Value ) {
 			return (int)Frac( _Value );
 		}
@@ -109,7 +159,23 @@ namespace HevLib {
 			return (int)Frac( _Value );
 		}
 
+		public static int FracToInt( decimal _Value ) {
+			return (int)Frac( _Value );
+		}
+
+		public static int Count( sbyte _Value ) {
+			return _Value == 0 ? 1 : FloorToInt( Math.Log10( Math.Abs( _Value ) ) ) + 1;
+		}
+
+		public static int Count( short _Value ) {
+			return _Value == 0 ? 1 : FloorToInt( Math.Log10( Math.Abs( _Value ) ) ) + 1;
+		}
+
 		public static int Count( int _Value ) {
+			return _Value == 0 ? 1 : FloorToInt( Math.Log10( Math.Abs( _Value ) ) ) + 1;
+		}
+
+		public static int Count( long _Value ) {
 			return _Value == 0 ? 1 : FloorToInt( Math.Log10( Math.Abs( _Value ) ) ) + 1;
 		}
 
@@ -121,11 +187,19 @@ namespace HevLib {
 			return _Value == 0 ? 1 : FloorToInt( Math.Log10( Math.Abs( _Value ) ) );
 		}
 
+		public static int Count( decimal _Value ) {
+			return _Value == 0 ? 1 : FloorToInt( Math.Log10( Math.Abs( (double)_Value ) ) ); // Data lost
+		}
+
 		public static int IntegralCount( float _Value ) {
 			return FloorToInt( _Value );
 		}
 
 		public static int IntegralCount( double _Value ) {
+			return FloorToInt( _Value );
+		}
+
+		public static int IntegralCount( decimal _Value ) {
 			return FloorToInt( _Value );
 		}
 
@@ -137,8 +211,26 @@ namespace HevLib {
 			return Count( FracToInt( _Value ) );
 		}
 
+		public static int FractionalCount( decimal _Value ) {
+			return Count( FracToInt( _Value ) );
+		}
+
 		public static float IntegersToFloat( int _A, int _B ) {
 			float value = _A;
+			int m = 1;
+			for ( int i = 0; i <= Count( _B ); ++i ) { m *= 10; }
+			return value + ( _B / m );
+		}
+
+		public static double IntegersToDouble( int _A, int _B ) {
+			double value = _A;
+			int m = 1;
+			for ( int i = 0; i <= Count( _B ); ++i ) { m *= 10; }
+			return value + ( _B / m );
+		}
+
+		public static decimal IntegersToDecimal( int _A, int _B ) {
+			decimal value = _A;
 			int m = 1;
 			for ( int i = 0; i <= Count( _B ); ++i ) { m *= 10; }
 			return value + ( _B / m );
@@ -150,7 +242,31 @@ namespace HevLib {
 			return (a, b);
 		}
 
+		public static (int, int) DoubleToIntegers( double _Value ) {
+			int a = TruncateToInt( _Value );
+			int b = FracToInt( _Value );
+			return (a, b);
+		}
+
+		public static (int, int) DecimalToIntegers( decimal _Value ) {
+			int a = TruncateToInt( _Value );
+			int b = FracToInt( _Value );
+			return (a, b);
+		}
+
+		public static sbyte Invert( sbyte _Value ) {
+			return (sbyte)(_Value * -1);
+		}
+
+		public static short Invert( short _Value ) {
+			return (short)(_Value * -1);
+		}
+
 		public static int Invert( int _Value ) {
+			return _Value * -1;
+		}
+
+		public static long Invert( long _Value ) {
 			return _Value * -1;
 		}
 
@@ -162,9 +278,37 @@ namespace HevLib {
 			return _Value * -1.0;
 		}
 
+		public static decimal Invert( decimal _Value ) {
+			return _Value * -1.0m;
+		}
+
+		public static sbyte Reverse( sbyte _Value ) {
+			sbyte value = 0;
+			for ( sbyte i = _Value; i != 0; i /= 10 ) {
+				value = (sbyte)( value * 10 + i % 10 );
+			}
+			return value;
+		}
+
+		public static short Reverse( short _Value ) {
+			short value = 0;
+			for ( short i = _Value; i != 0; i /= 10 ) {
+				value = (short)( value * 10 + i % 10 );
+			}
+			return value;
+		}
+
 		public static int Reverse( int _Value ) {
 			int value = 0;
 			for ( int i = _Value; i != 0; i /= 10 ) {
+				value = value * 10 + i % 10;
+			}
+			return value;
+		}
+
+		public static long Reverse( long _Value ) {
+			long value = 0;
+			for ( long i = _Value; i != 0; i /= 10 ) {
 				value = value * 10 + i % 10;
 			}
 			return value;
@@ -185,5 +329,71 @@ namespace HevLib {
 			for ( int i = 0; i <= Count( _Value ); ++i ) { m *= 10; }
 			return b + ( a / m );
 		}
+
+		public static decimal Reverse( decimal _Value ) {
+			int a = TruncateToInt( _Value );
+			int b = FracToInt( _Value );
+			int m = 1;
+			for ( int i = 0; i <= Count( _Value ); ++i ) { m *= 10; }
+			return b + ( a / m );
+		}
+
+		public static sbyte Closer( sbyte _Value, sbyte _A, sbyte _B ) {
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+		}
+
+		public static short Closer( short _Value, short _A, short _B ) {
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+		}
+
+		public static int Closer( int _Value, int _A, int _B ) {
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+		}
+
+		public static long Closer( long _Value, long _A, long _B ) {
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+		}
+
+		public static float Closer( float _Value, float _A, float _B ) {
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+		}
+
+		public static double Closer( double _Value, double _A, double _B ) {
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+		}
+
+		public static decimal Closer( decimal _Value, decimal _A, decimal _B ) {
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+		}
+
+		public static sbyte Further( sbyte _Value, sbyte _A, sbyte _B ) {
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+		}
+
+		public static short Further( short _Value, short _A, short _B ) {
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+		}
+
+		public static int Further( int _Value, int _A, int _B ) {
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+		}
+
+		public static long Further( long _Value, long _A, long _B ) {
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+		}
+
+		public static float Further( float _Value, float _A, float _B ) {
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+		}
+
+		public static double Further( double _Value, double _A, double _B ) {
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+		}
+
+		public static decimal Further( decimal _Value, decimal _A, decimal _B ) {
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+		}
 	}
+
+
 }
