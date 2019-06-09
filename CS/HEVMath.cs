@@ -30,7 +30,6 @@ using System;
 #if UNITY_EDITOR || UNITY_STANDALONE
 using UnityEngine;
 #else
-using System.Runtime.CompilerServices;
 #endif
 
 namespace HevLib {
@@ -186,66 +185,5 @@ namespace HevLib {
 			for ( int i = 0; i <= Count( _Value ); ++i ) { m *= 10; }
 			return b + ( a / m );
 		}
-#if UNITY_EDITOR || UNITY_STANDALONE
-		private static int NonGeneric( bool x ) => 100;
-		private static int NonGeneric( sbyte x ) => 101;
-		private static int NonGeneric( byte x ) => 102;
-		private static int NonGeneric( ushort x ) => 103;
-		private static int NonGeneric( short x ) => 104;
-		private static int NonGeneric( uint x ) => 105;
-		private static int NonGeneric( int x ) => 106;
-		private static int NonGeneric( ulong x ) => 107;
-		private static int NonGeneric( long x ) => 108;
-		private static int NonGeneric( float x ) => 109;
-		private static int NonGeneric( double x ) => 110;
-		private static int NonGeneric( decimal x ) => 111;
-#else
-		[MethodImpl( MethodImplOptions.AggressiveInlining )]
-		private static int Generic<T>( T x ) {
-			if ( typeof( T ) == typeof( bool ) ) return 100;
-			else if ( typeof( T ) == typeof( byte ) ) return 101;
-			else if ( typeof( T ) == typeof( sbyte ) ) return 102;
-			else if ( typeof( T ) == typeof( ushort ) ) return 103;
-			else if ( typeof( T ) == typeof( short ) ) return 104;
-			else if ( typeof( T ) == typeof( int ) ) return 105;
-			else if ( typeof( T ) == typeof( uint ) ) return 106;
-			else if ( typeof( T ) == typeof( ulong ) ) return 107;
-			else if ( typeof( T ) == typeof( long ) ) return 108;
-			else if ( typeof( T ) == typeof( float ) ) return 109;
-			else if ( typeof( T ) == typeof( double ) ) return 110;
-			else if ( typeof( T ) == typeof( decimal ) ) return 111;
-			else return -1;
-		}
-#endif
-
-		//var result = Add<int, long, float>(1, 2);
-		public static T3 Add<T1, T2, T3>( T1 left, T2 right ) {
-			dynamic d1 = left;
-			dynamic d2 = right;
-			return (T3)( d1 + d2 );
-		}
-
-		public static T Add<T>( T a, T b ) where T : struct {
-			int id = Generic( a );
-			switch ( id ) {
-				case 100:
-					return default( T );
-				case 101:
-					return (T)(object)( (byte)(object)a + (byte)(object)b );
-				case 102:
-					return (T)(object)( (sbyte)(object)a + (sbyte)(object)b );
-				case 103:
-					return (T)(object)( (ushort)(object)a + (ushort)(object)b );
-				case 104:
-					return (T)(object)( (short)(object)a + (short)(object)b );
-				case 105:
-					return (T)(object)( (int)(object)a + (int)(object)b );
-				case 110:
-					return (T)(object)( (double)(object)a + (double)(object)b );
-				default:
-					return default( T );
-			}
-		}
-
 	}
 }

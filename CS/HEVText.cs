@@ -52,8 +52,8 @@ namespace HevLib {
 			return true;
 		}
 
-		public static string StringArrayToString( string[] _Array ) {
-			string result = string.Join( "\r\n", _Array );
+		public static string StringArrayToString( string[] _Array, string _Separator = "\r\n" ) {
+			string result = string.Join( _Separator, _Array );
 			return result;
 		}
 	}
