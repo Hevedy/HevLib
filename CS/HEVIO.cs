@@ -123,7 +123,6 @@ namespace HevLib {
 					} else {
 						linesFinal = linesPre.Concat( _Text ).Concat( linesPost ).ToArray();
 					}
-					linesFinal = linesPre.Concat( _Text ).ToArray();
 					System.IO.File.WriteAllLines( _URL, linesFinal, System.Text.Encoding.Unicode );
 					status = true;
 				}  else {

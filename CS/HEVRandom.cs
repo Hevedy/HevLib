@@ -32,70 +32,73 @@ using System.Collections.Generic;
 using UnityEngine;
 #else
 using System.Linq;
+using System.Security.Cryptography;
 #endif
 
 namespace HevLib {
 	public static class HEVRandom {
 
-		public static System.Random FixedSeedRandom;
+		private static readonly System.Random RandomSeedFixed = new System.Random();
+		private static System.Random RandomSeed = RandomSeedFixed;
+		private static readonly RNGCryptoServiceProvider CryptoGenerator = new RNGCryptoServiceProvider();
 
-		public static void Initialize( int _Seed ) {
-			FixedSeedRandom = new System.Random( _Seed );
+		public static void SetSeed( int _Seed ) {
+			RandomSeed = new System.Random( _Seed );
 		}
 
 		/// <returns>Returns a pseudo-random integer variable.</returns>
-		public static int RandomInt() {
-			return FixedSeedRandom.Next();
+		public static int Integer() {
+			return RandomSeed.Next();
 		}
 
 		/// <returns>Returns a pseudo-random normalized float variable.</returns>
-		public static float RandomFloat() {
-			return (float)FixedSeedRandom.NextDouble();
+		public static float Float() {
+			return (float)RandomSeed.NextDouble();
 		}
 
 		/// <returns>Returns a pseudo-random normalized double variable.</returns>
-		public static double RandomDouble() {
-			return FixedSeedRandom.NextDouble();
+		public static double Double() {
+			return RandomSeed.NextDouble();
 		}
 
 		/// <returns>Returns a pseudo-random integer variable.</returns>
-		public static int RandomInt( int _Max ) {
-			return FixedSeedRandom.Next( _Max );
+		public static int Integer( int _Max ) {
+			return RandomSeed.Next( _Max );
 		}
 
 		/// <returns>Returns a pseudo-random normalized float variable.</returns>
-		public static float RandomFloat( float _Max ) {
-			return (float)FixedSeedRandom.NextDouble() * _Max;
+		public static float Float( float _Max ) {
+			return (float)RandomSeed.NextDouble() * _Max;
 		}
 
 		/// <returns>Returns a pseudo-random normalized double variable.</returns>
-		public static double RandomDouble( float _Max) {
-			return FixedSeedRandom.NextDouble() * _Max;
+		public static double Double( float _Max) {
+			return RandomSeed.NextDouble() * _Max;
 		}
 
-		public static string RandomChar( string _Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ) {
+		public static string Char( string _Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ) {
 			return new string( Enumerable.Repeat( _Chars, 1 )
-			  .Select( s => s[RandomInt( s.Length )] ).ToArray() );
+			  .Select( s => s[Integer( s.Length )] ).ToArray() );
 		}
 
-		public static string RandomString( int _Length = 10, string _Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ) {
+		public static string String( int _Length = 10, string _Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ) {
 			return new string( Enumerable.Repeat( _Chars, _Length )
-			  .Select( s => s[RandomInt( s.Length )] ).ToArray() );
+			  .Select( s => s[Integer( s.Length )] ).ToArray() );
 		}
 
 		/// <returns>Returns a pseudo-random integer variable within the given min/max range.</returns>
-		public static int RandomInt( int _Min, int _Max ) {
-			return FixedSeedRandom.Next( _Min, _Max );
+		public static int Int( int _Min, int _Max ) {
+			return RandomSeed.Next( _Min, _Max );
 		}
 
 		/// <returns>Returns a pseudo-random float variable within the given min/max range.</returns>
-		public static float RandomFloat( float _Min, float _Max ) {
-			return RandomFloat() * ( ( _Max - _Min ) + _Min );
+		public static float Float( float _Min, float _Max ) {
+			return Float() * ( ( _Max - _Min ) + _Min );
 		}
 
 		/// <returns>Returns a pseudo-random double variable within the given min/max range.</returns>
-		public static double RandomDouble( double _Min, double _Max ) {
-			return RandomDouble() * ( ( _Max - _Min ) + _Min );
+		public static double Double( double _Min, double _Max ) {
+			return Double() * ( ( _Max - _Min ) + _Min );
 		}
 
 		/// <returns>Returns a pseudo-random integer index based on weights.</returns>
@@ -108,13 +111,30 @@ namespace HevLib {
 			float[] weights = _Weights.ToArray();
 
 			for ( int i = 0; i < weights.Length; i++ ) {
-				weights[i] = weights[i] * RandomFloat( 0.0f, 1.0f );
+				weights[i] = weights[i] * Float( 0.0f, 1.0f );
 			}
 
 			float maxValue = weights.Max();
 			index = weights.ToList().IndexOf( maxValue );
 
 			return index;
+		}
+
+		public static int CryptoRandomInt( int _Min, int _Max ) {
+			byte[] randomNumber = new byte[1];
+			CryptoGenerator.GetBytes( randomNumber );
+
+			double asciiValueOfRandomCharacter = Convert.ToDouble( randomNumber[0] );
+			double multiplier = Math.Max( 0, ( asciiValueOfRandomCharacter / 255d ) - 0.00000000001d );
+			int range = _Max - _Min + 1;
+			double randomValueInRange = Math.Floor( multiplier * range );
+
+			return (int)( _Min + randomValueInRange );
+		}
+
+		public static int CryptoRandomInt( uint _Length = 1 ) {
+			int length = (int)Math.Max( 1, _Length );
+			return CryptoRandomInt( 0, ( 10 ^ length ) - 1 );
 		}
 	}
 }
