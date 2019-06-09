@@ -34,6 +34,7 @@ using IniParser;
 using IniParser.Model;
 using IniParser.Model.Configuration;
 using Newtonsoft.Json;
+using System.Runtime.InteropServices;
 #if UNITY_EDITOR || UNITY_STANDALONE
 using UnityEngine;
 #else
@@ -244,33 +245,22 @@ namespace HevLib {
 			return true;
 		}
 
+		public static string GetCurrentAssemblyGuid() {
+			System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+			Object[] attributes = assembly.GetCustomAttributes( typeof( GuidAttribute ), false );
+			if ( attributes.Any() ) { return ( (GuidAttribute)attributes.First() ).Value; }
+			return "HEVLib";
+		}
+
 		public static byte[] GetSelfBytes() {
 			string path = HEVHelper.AppDirFile;
-
 			FileStream running = File.OpenRead( path );
 
 			byte[] exeBytes = new byte[running.Length];
 			running.Read( exeBytes, 0, exeBytes.Length );
-
 			running.Close();
 
 			return exeBytes;
-		}
-
-		public static string GetSelfString() {
-			return Encoding.UTF8.GetString( GetSelfBytes() );
-		}
-
-		public static string GetAppFileHashMD5() {
-			return HEVText.HashMD5( GetSelfString() );
-		}
-
-		public static string GetAppFileHashSHA1() {
-			return HEVText.HashMD5( GetSelfString() );
-		}
-
-		public static string GetAppFileHashSHA256() {
-			return HEVText.HashMD5( GetSelfString() );
 		}
 	}
 }

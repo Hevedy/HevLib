@@ -62,13 +62,17 @@ namespace HevLib {
 		}
 
 		public static string[] StringToStringArray( string _String, string _Separator = "," ) {
-			string[] result = _String.Split( _Separator );
+			string[] result = _String.Split( _Separator.ToCharArray() );
 			return result;
 		}
 
 		public static List<string> StringToStringList( string _String, string _Separator = "," ) {
-			string[] result = _String.Split( _Separator );
+			string[] result = _String.Split( _Separator.ToCharArray() );
 			return result.ToList();
+		}
+
+		public static string ByteArrayToString( byte[] _ByteArray ) {
+			return Encoding.UTF8.GetString( _ByteArray );
 		}
 
 		public static (T, bool) EnumParse<T>( string _Value, T _DefaultValue, string _Suffix = "", string _Prefix = "e" ) where T : struct, IConvertible {
