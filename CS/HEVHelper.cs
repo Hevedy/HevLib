@@ -43,7 +43,7 @@ namespace HevLib {
 		public static readonly string AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 		public static readonly string AppNameFull = System.Reflection.Assembly.GetExecutingAssembly().GetName().FullName;
 		public static readonly bool AppDLL = true;
-		public static readonly string AppDirFile = AppDir + @"\" + AppName + (AppDLL ? ".dll" : ".exe");
+		public static readonly string AppDirFile = System.Reflection.Assembly.GetEntryAssembly().Location;
 		public static readonly string AppDirDocuments = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments );
 
 		public static string GetSelfString() {
