@@ -42,24 +42,35 @@ namespace HevLib {
 		public static readonly string AppDir = Environment.CurrentDirectory;
 		public static readonly string AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 		public static readonly string AppNameFull = System.Reflection.Assembly.GetExecutingAssembly().GetName().FullName;
-		public static readonly bool AppDLL = true;
 		public static readonly string AppDirFile = System.Reflection.Assembly.GetEntryAssembly().Location;
 		public static readonly string AppDirDocuments = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments );
+		public static readonly bool AppIsDLL = HEVIO.FileIsLibrary(AppDirFile);
 
-		public static string GetSelfString() {
-			return HEVText.ByteArrayToString( HEVIO.GetSelfBytes() );
+		public static bool AppSelfString( out string _String ) {
+			byte[] bytes = null;
+			bool status = false;
+			(bytes, status) = HEVIO.FileReadBytes( AppDirFile );
+			if ( !status ) { _String = "Error"; return false; }
+			_String =  HEVText.ByteArrayToString( bytes );
+			return true;
 		}
 
-		public static string GetAppFileHashMD5() {
-			return HEVText.HashMD5( GetSelfString() );
+		public static string AppFileHashMD5() {
+			string code = "";
+			if ( !AppSelfString( out code ) ) { return code; }
+			return HEVText.HashMD5( code );
 		}
 
-		public static string GetAppFileHashSHA1() {
-			return HEVText.HashMD5( GetSelfString() );
+		public static string AppFileHashSHA1() {
+			string code = "";
+			if ( !AppSelfString( out code ) ) { return code; }
+			return HEVText.HashMD5( code );
 		}
 
-		public static string GetAppFileHashSHA256() {
-			return HEVText.HashMD5( GetSelfString() );
+		public static string AppFileHashSHA256() {
+			string code = "";
+			if ( !AppSelfString( out code ) ) { return code; }
+			return HEVText.HashMD5( code );
 		}
 	}
 
@@ -69,7 +80,7 @@ namespace HevLib {
 
 		private void InitMutex( string _CustomID ) {
 			//( (GuidAttribute)Assembly.GetExecutingAssembly().GetCustomAttributes( typeof( GuidAttribute ), false ).GetValue( 0 ) ).Value;
-			string appGuid = HEVIO.GetCurrentAssemblyGuid();
+			string appGuid = HEVIO.AssemblyGuidCurrent();
 			string mutexId = string.Format( "Global\\{{{0}}}", appGuid );
 			if ( HEVText.StringValidate(_CustomID) ) {
 				mutexId = _CustomID;

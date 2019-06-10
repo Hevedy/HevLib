@@ -29,7 +29,6 @@ HEVIO.cs
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using IniParser;
 using IniParser.Model;
 using IniParser.Model.Configuration;
@@ -39,7 +38,6 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 #else
 using System.Linq;
-using System.Security.Cryptography;
 #endif
 
 namespace HevLib {
@@ -53,6 +51,53 @@ namespace HevLib {
 			} else {
 				return true;
 			}
+		}
+
+		public static bool FileIsExecutable( string _URL ) {
+			string ext = Path.GetExtension( _URL );
+			if ( ext == ".exe" || ext == ".com" || ext == ".bat" || ext == ".msi" || ext == ".sh" || ext == ".deb" || 
+				ext == ".elf" || ext == ".bin" || ext == ".rpm" || ext == ".py" ) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		public static bool FileIsLibrary( string _URL ) {
+			string ext = Path.GetExtension( _URL );
+			if ( ext == ".dll" || ext == ".dll.lib" || ext == ".ocx" || ext == ".so" || ext == ".o" || ext == ".dylib" || 
+				ext == ".bundle" ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		public static bool FileIsPackage( string _URL ) {
+			string ext = Path.GetExtension( _URL );
+			if ( ext == ".zip" || ext == ".rar" || ext == ".7zip" || ext == ".tar.gz" || ext == ".tar" || ext == ".gz" || 
+				ext == ".bz2" || ext == ".wim" || ext == ".xz" ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		public static (byte[], bool) FileReadBytes( string _URL ) {
+			byte[] bytes = null;
+			bool status = false;
+			if ( !FileValidate( _URL ) ) {
+				return (bytes, status);
+			} else {
+				status = true;
+			}
+			FileStream running = File.OpenRead( _URL );
+
+			byte[] selfBytes = new byte[running.Length];
+			running.Read( selfBytes, 0, selfBytes.Length );
+			running.Close();
+			bytes = selfBytes;
+			return (bytes, status);
 		}
 
 		public static (string[], bool) FileTextRead( string _URL, int _StartLine = 0, int _EndLine = -1 ) {
@@ -140,7 +185,8 @@ namespace HevLib {
 		}
 
 		public static (string[], bool) FileTextReadToString( string _URL ) {
-			if ( HEVText.StringValidate( _URL ) ) { HEVConsole.Print( "FileTextReadToString() Invalid URL." + _URL, EPrintType.eError ); return (null, false); }
+			if ( HEVText.StringValidate( _URL ) ) { HEVConsole.Print( "FileTextReadToString() Invalid URL." + _URL, 
+				EPrintType.eError ); return (null, false); }
 			string[] data = null;
 			string fileURL = null;
 			bool status = false;
@@ -176,7 +222,8 @@ namespace HevLib {
 			bool status = false;
 			(fileLines, status) = FileTextRead( _URL );
 			fileText = HEVText.StringArrayToString( fileLines );
-			if ( !status ) { HEVConsole.Print( "FileJSONRead() Missing File.", EPrintType.eError ); return (localClass, false); }
+			if ( !status ) { HEVConsole.Print( "FileJSONRead() Missing File.", EPrintType.eError );
+				return (localClass, false); }
 
 			bool isValidObject = fileText.JsonTryParse<T>( out localClass );
 			if ( isValidObject ) {
@@ -194,7 +241,8 @@ namespace HevLib {
 			bool status = false;
 			(fileLines, status) = FileTextRead( _URL );
 			fileText = HEVText.StringArrayToString( fileLines );
-			if ( !status ) { HEVConsole.Print( "FileJSONReadList() Missing File.", EPrintType.eError ); return (localClass, false); }
+			if ( !status ) { HEVConsole.Print( "FileJSONReadList() Missing File.", EPrintType.eError );
+				return (localClass, false); }
 
 			bool isValidObject = fileText.JsonTryParse<List<T>>( out localClass );
 			if ( isValidObject ) {
@@ -231,7 +279,8 @@ namespace HevLib {
 
 		public static bool FileINIWrite( string _URL, IniData _Data ) {
 			bool status = FileValidate( _URL );
-			if ( !status ) { HEVConsole.Print( "FileINIWrite() Missing File. Creating one...", EPrintType.eWarning ); return false; }
+			if ( !status ) { HEVConsole.Print( "FileINIWrite() Missing File. Creating one...", EPrintType.eWarning );
+				return false; }
 
 			FileIniDataParser parser = new FileIniDataParser();
 			IniData data = _Data;
@@ -245,22 +294,12 @@ namespace HevLib {
 			return true;
 		}
 
-		public static string GetCurrentAssemblyGuid() {
+		public static string AssemblyGuidCurrent() {
 			System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
 			Object[] attributes = assembly.GetCustomAttributes( typeof( GuidAttribute ), false );
 			if ( attributes.Any() ) { return ( (GuidAttribute)attributes.First() ).Value; }
 			return "HEVLib";
 		}
 
-		public static byte[] GetSelfBytes() {
-			string path = HEVHelper.AppDirFile;
-			FileStream running = File.OpenRead( path );
-
-			byte[] exeBytes = new byte[running.Length];
-			running.Read( exeBytes, 0, exeBytes.Length );
-			running.Close();
-
-			return exeBytes;
-		}
 	}
 }
