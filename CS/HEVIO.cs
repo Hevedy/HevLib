@@ -100,7 +100,7 @@ namespace HevLib {
 			return (bytes, status);
 		}
 
-		public static (string[], bool) FileTextRead( string _URL, int _StartLine = 0, int _EndLine = -1 ) {
+		public static (string[], bool) FileReadText( string _URL, int _StartLine = 0, int _EndLine = -1 ) {
 			string[] lines = null;
 			int lastLine = 0;
 			if ( !FileValidate( _URL ) ) {
@@ -133,7 +133,7 @@ namespace HevLib {
 
 		// URL, Line Index if -1 whole doc
 		// Double check possible bug at get from line count
-		public static bool FileTextWrite( string _URL, string[] _Text, int _LineIndex = -1, bool _Replace = true ) {
+		public static bool FileWriteText( string _URL, string[] _Text, int _LineIndex = -1, bool _Replace = true ) {
 			if ( !FileValidate( _URL ) ) {
 				HEVConsole.Print( "FileTextWrite() Missing File. Creating new one..." + _URL, EPrintType.eWarning );
 			}
@@ -141,8 +141,8 @@ namespace HevLib {
 			string[] linesPre = null;
 			string[] linesPost = null;
 			string[] linesFinal = null;
-			(linesPre, status) = FileTextRead( _URL, 0, _LineIndex );
-			(linesPost, status) = FileTextRead( _URL, _LineIndex, -1 );
+			(linesPre, status) = FileReadText( _URL, 0, _LineIndex );
+			(linesPost, status) = FileReadText( _URL, _LineIndex, -1 );
 			try {
 				if ( status == false ) {
 					linesFinal = _Text;
@@ -184,7 +184,7 @@ namespace HevLib {
 			}
 		}
 
-		public static (string[], bool) FileTextReadToString( string _URL ) {
+		public static (string[], bool) FileReadTextToString( string _URL ) {
 			if ( HEVText.StringValidate( _URL ) ) { HEVConsole.Print( "FileTextReadToString() Invalid URL." + _URL, 
 				EPrintType.eError ); return (null, false); }
 			string[] data = null;
@@ -194,7 +194,7 @@ namespace HevLib {
 			if ( !FileValidate( fileURL ) ) {
 				return (null, false);
 			}
-			(data, status) = FileTextRead( fileURL );
+			(data, status) = FileReadText( fileURL );
 			if ( !status ) {
 				HEVConsole.Print( "FileTextReadToString() Invalid File.", EPrintType.eError );
 				return (null, false);
@@ -214,13 +214,13 @@ namespace HevLib {
 			return status;
 		}
 
-		public static (T, bool) FileJSONRead<T>( string _URL ) where T : class, new() {
+		public static (T, bool) FileReadJSON<T>( string _URL ) where T : class, new() {
 			if ( !typeof( T ).IsClass ) throw new ArgumentException( "Error - " + _URL + " must have a valid class." );
 			T localClass = new T();
 			string fileText = "";
 			string[] fileLines = null;
 			bool status = false;
-			(fileLines, status) = FileTextRead( _URL );
+			(fileLines, status) = FileReadText( _URL );
 			fileText = HEVText.StringArrayToString( fileLines );
 			if ( !status ) { HEVConsole.Print( "FileJSONRead() Missing File.", EPrintType.eError );
 				return (localClass, false); }
@@ -233,13 +233,13 @@ namespace HevLib {
 			}
 		}
 
-		public static (List<T>, bool) FileJSONReadList<T>( string _URL ) where T : class, new() {
+		public static (List<T>, bool) FileReadJSONList<T>( string _URL ) where T : class, new() {
 			if ( !typeof( T ).IsClass ) throw new ArgumentException( "Error - " + _URL + " must have a valid class." );
 			List<T> localClass = new List<T>();
 			string fileText = "";
 			string[] fileLines = null;
 			bool status = false;
-			(fileLines, status) = FileTextRead( _URL );
+			(fileLines, status) = FileReadText( _URL );
 			fileText = HEVText.StringArrayToString( fileLines );
 			if ( !status ) { HEVConsole.Print( "FileJSONReadList() Missing File.", EPrintType.eError );
 				return (localClass, false); }
@@ -252,11 +252,11 @@ namespace HevLib {
 			}
 		}
 
-		public static (IniData, bool) FileINIRead( string _URL ) {
+		public static (IniData, bool) FileReadINI( string _URL ) {
 			bool status = FileValidate( _URL );
 			if ( !status ) { HEVConsole.Print( "FileINIRead() Missing File.", EPrintType.eError ); return (null, false); }
 
-			/*
+			/* TODO
 			IniParserConfiguration iniParserConfig = new IniParserConfiguration()
 			{
 				CommentString = "#",
@@ -277,7 +277,7 @@ namespace HevLib {
 			return (data, true);
 		}
 
-		public static bool FileINIWrite( string _URL, IniData _Data ) {
+		public static bool FileWriteINI( string _URL, IniData _Data ) {
 			bool status = FileValidate( _URL );
 			if ( !status ) { HEVConsole.Print( "FileINIWrite() Missing File. Creating one...", EPrintType.eWarning );
 				return false; }
