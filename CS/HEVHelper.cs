@@ -49,7 +49,7 @@ namespace HevLib {
 		public static bool AppSelfString( out string _String ) {
 			byte[] bytes = null;
 			bool status = false;
-			(bytes, status) = HEVIO.FileReadBytes( AppDirFile );
+			(bytes, status) = HEVIO.FileBytesRead( AppDirFile );
 			if ( !status ) { _String = "Error"; return false; }
 			_String =  HEVText.ByteArrayToString( bytes );
 			return true;

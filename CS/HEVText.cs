@@ -75,6 +75,32 @@ namespace HevLib {
 			return Encoding.UTF8.GetString( _ByteArray );
 		}
 
+		public static (string[], bool) GetStringArrayLines( string[] _String, int _StartLine = 0, int _EndLine = -1 ) {
+			string[] lines = _String;
+			int lastLine = 0;
+
+			if ( lines.Length < 1 ) {
+				HEVConsole.Print( "GetStringArrayLines() Empty string array.", EPrintType.eError );
+				return (lines, false);
+			}
+			lastLine = lines.Length - 1;
+			if ( _StartLine == 0 && _EndLine == -1 ) {
+			} else if ( _StartLine == -1 ) {
+				lines = new string[] { lines[lastLine] };
+			} else {
+				int startLine = Math.Max( _StartLine, 0 );
+				startLine = Math.Min( startLine, lastLine );
+				int endLine = Math.Min( _EndLine, lastLine );
+				endLine = Math.Max( _StartLine, _EndLine );
+				List<string> linesList = new List<string>();
+				for ( int i = startLine; i < endLine; i++ ) {
+					linesList.Add( lines[i] );
+				}
+				lines = linesList.ToArray();
+			}
+			return (lines, true);
+		}
+
 		public static (T, bool) EnumParse<T>( string _Value, T _DefaultValue, string _Suffix = "", string _Prefix = "e" ) where T : struct, IConvertible {
 			string value = _Prefix + _Value + _Suffix;
 			if ( !typeof( T ).IsEnum ) throw new ArgumentException( "Error - " + value + " T must be an enumerated type." );
