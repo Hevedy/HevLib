@@ -34,11 +34,11 @@ using UnityEngine;
 
 namespace HevLib {
 
-	public enum EPrintType { eInfo, eWarning, eError };
+	public enum EPrintType { eDefault, eInfo, eSuccess, eWarning, eError };
 
 	public static class HEVConsole {
 
-		public static void Print( string Text, EPrintType _Type = EPrintType.eInfo ) {
+		public static void Print( string Text, EPrintType _Type = EPrintType.eDefault ) {
 			string msg = "";
 #if UNITY_EDITOR || UNITY_STANDALONE
 #else
@@ -46,17 +46,28 @@ namespace HevLib {
 			ConsoleColor color = Console.ForegroundColor;
 #endif
 			switch ( _Type ) {
+				case EPrintType.eDefault:
+
+					break;
 				case EPrintType.eInfo:
 #if UNITY_EDITOR || UNITY_STANDALONE
-				msg = "<color=blue>Info</color> - ";
+					msg = "<color=blue>Info</color> - ";
 #else
 					color = ConsoleColor.Blue;
 					msg = "Info - ";
 #endif
 					break;
+				case EPrintType.eSuccess:
+#if UNITY_EDITOR || UNITY_STANDALONE
+					msg = "<color=green>Success</color> - ";
+#else
+					color = ConsoleColor.Green;
+					msg = "Success - ";
+#endif
+					break;
 				case EPrintType.eWarning:
 #if UNITY_EDITOR || UNITY_STANDALONE
-				msg = "<color=yellow>Warning</color> - ";
+					msg = "<color=yellow>Warning</color> - ";
 #else
 					color = ConsoleColor.Yellow;
 					msg = "Warning - ";
@@ -64,7 +75,7 @@ namespace HevLib {
 					break;
 				case EPrintType.eError:
 #if UNITY_EDITOR || UNITY_STANDALONE
-				msg = "<color=red>Error</color> - ";
+					msg = "<color=red>Error</color> - ";
 #else
 					color = ConsoleColor.Red;
 					msg = "Error - ";
@@ -72,12 +83,23 @@ namespace HevLib {
 					break;
 			}
 #if UNITY_EDITOR || UNITY_STANDALONE
-		Debug.Log( msg + Text );
+			Debug.Log( msg + Text );
 #else
 			Console.ForegroundColor = color;
 			Console.WriteLine( msg + Text );
 			Console.ForegroundColor = lastColor;
 #endif
+		}
+
+		public static void LineJump( int _Lines = 1 ) {
+			int lines = Math.Min( _Lines, 10 );
+#if UNITY_EDITOR || UNITY_STANDALONE
+#else
+			for ( int i = 0; i < lines; i++ ) {
+				Console.WriteLine();
+			}
+#endif
+
 		}
 	}
 }

@@ -85,13 +85,6 @@ namespace HevLib {
 			}
 		}
 
-		public static string AssemblyGuidCurrent() {
-			System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-			Object[] attributes = assembly.GetCustomAttributes( typeof( GuidAttribute ), false );
-			if ( attributes.Any() ) { return ( (GuidAttribute)attributes.First() ).Value; }
-			return "HEVLib";
-		}
-
 		public static (byte[], bool) FileBytesRead( string _URL ) {
 			byte[] data = null;
 			bool status = false;
@@ -109,16 +102,24 @@ namespace HevLib {
 			return (data, status);
 		}
 
+		public static string AssemblyGuidCurrent() {
+			System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+			Object[] attributes = assembly.GetCustomAttributes( typeof( GuidAttribute ), false );
+			if ( attributes.Any() ) { return ( (GuidAttribute)attributes.First() ).Value; }
+			return "";
+		}
+
 		public static (string, bool) AssemblyStringRead( string _URL, Assembly _Assembly = null, bool _Self = true ) {
 			string data = "";
+			string url = _URL;
 			Assembly assem = Assembly.GetEntryAssembly();
 			if( _Self || _Assembly == null ) {
 				assem = Assembly.GetEntryAssembly();
+				url = HEVHelper.AppName + "." + url;
 			} else {
 				assem = _Assembly;
 			}
-
-			Stream stream = assem.GetManifestResourceStream( _URL );
+			Stream stream = assem.GetManifestResourceStream( url );
 			using ( StreamReader reader = new StreamReader( stream ) ) {
 				data = reader.ReadToEnd();
 			}
@@ -126,21 +127,24 @@ namespace HevLib {
 
 		}
 
-		public static (string, bool) ResourcesTextReadString( string _URL ) {
-			return AssemblyStringRead( _URL );
+		public static bool ResourcesTextReadString( string _URL, out string _String ) {
+			bool status = false;
+			(_String,status) = AssemblyStringRead( _URL );
+			return status;
 		}
 
-		public static (string[], bool) ResourcesTextReadStringArray( string _URL, int _StartLine = 0, int _EndLine = -1 ) {
+		public static bool ResourcesTextReadStringArray( string _URL, out string[] _Strings, int _StartLine = 0, int _EndLine = -1 ) {
 			string[] lines = null;
 			string data = "";
 			bool status = false;
 			(data, status) = AssemblyStringRead( _URL );
-			if ( !status ) { return (lines, false); }
+			if ( !status ) { _Strings = lines; return false; }
 			lines = HEVText.StringToStringArray( data, "\r\n" );
 
 			(lines, status) = HEVText.GetStringArrayLines( lines, _StartLine, _EndLine );
-			if ( !status ) { return (lines, false); }
-			return (lines, true);
+			if ( !status ) { _Strings = lines; return false; }
+			_Strings = lines;
+			return true;
 		}
 
 		public static (string, bool) FileTextReadString( string _URL ) {
@@ -168,20 +172,30 @@ namespace HevLib {
 			return (lines, true);
 		}
 
+
+		public static bool FileTextWriteString( string _URL, string _Text, bool _Replace = true ) {
+			string[] fileLines = HEVText.StringToStringArray(_Text, "\r\n");
+			return FileTextWriteStringArray( _URL, fileLines, _Replace );
+		}  
+
 		// URL, Line Index if -1 whole doc
 		// Double check possible bug at get from line count
-		public static bool FileTextWriteStringArray( string _URL, string[] _Text, int _LineIndex = -1, bool _Replace = true ) {
+		public static bool FileTextWriteStringArray( string _URL, string[] _Text, bool _Replace = true, int _LineIndex = -1 ) {
+			bool file = true;
 			if ( !FileValidate( _URL ) ) {
-				HEVConsole.Print( "FileTextWrite() Missing file. Creating new one..." + _URL, EPrintType.eWarning );
+				HEVConsole.Print( "FileTextWriteStringArray() Missing file. Creating new one..." + _URL, EPrintType.eWarning );
+				file = false;
 			}
-			bool status = true;
+			bool status = false;
 			string[] linesPre = null;
 			string[] linesPost = null;
 			string[] linesFinal = null;
-			(linesPre, status) = FileTextReadStringArray( _URL );
-			if ( !status ) { return false; }
-			(linesPost, status) = HEVText.GetStringArrayLines( linesPre, _LineIndex, -1 );
-			(linesPre, status) = HEVText.GetStringArrayLines( linesPre, 0, _LineIndex );
+			if ( file ) {
+				(linesPre, status) = FileTextReadStringArray( _URL );
+				if ( !status ) { return false; }
+				(linesPost, status) = HEVText.GetStringArrayLines( linesPre, _LineIndex, -1 );
+				(linesPre, status) = HEVText.GetStringArrayLines( linesPre, 0, _LineIndex );
+			}
 			try {
 				if ( status == false ) {
 					linesFinal = _Text;
@@ -216,7 +230,7 @@ namespace HevLib {
 				status = false;
 			}
 			if ( !status ) {
-				HEVConsole.Print( "FileTextWrite() At write." + _URL, EPrintType.eError );
+				HEVConsole.Print( "FileTextWriteStringArray() At write." + _URL, EPrintType.eError );
 				return false;
 			} else {
 				return true;
@@ -264,7 +278,8 @@ namespace HevLib {
 		}
 
 		public static (T, bool) FileJSONReadClass<T>( string _URL ) where T : class, new() {
-			if ( !typeof( T ).IsClass ) throw new ArgumentException( "Error - FileJSONReadClass() " + _URL + " must have a valid class." );
+			if ( !typeof( T ).IsClass ) throw new ArgumentException( "Error - FileJSONReadClass() " + _URL + 
+				" must have a valid class." );
 			T localClass = new T();
 			string fileText = "";
 			bool status = false;
@@ -278,7 +293,8 @@ namespace HevLib {
 		}
 
 		public static (List<T>, bool) FileJSONReadClassList<T>( string _URL ) where T : class, new() {
-			if ( !typeof( T ).IsClass ) throw new ArgumentException( "Error - FileJSONReadClassList() " + _URL + " must have a valid class." );
+			if ( !typeof( T ).IsClass ) throw new ArgumentException( "Error - FileJSONReadClassList() " + _URL + 
+				" must have a valid class." );
 			List<T> localClass = new List<T>();
 			string fileText = "";
 			bool status = false;
@@ -363,6 +379,5 @@ namespace HevLib {
 			if ( !status ) { HEVConsole.Print( "FileINIWrite() Parser file write.", EPrintType.eError ); return false; }
 			return true;
 		}
-
 	}
 }

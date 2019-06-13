@@ -50,7 +50,7 @@ namespace HevLib {
 			byte[] bytes = null;
 			bool status = false;
 			(bytes, status) = HEVIO.FileBytesRead( AppDirFile );
-			if ( !status ) { _String = "Error"; return false; }
+			if ( !status ) { _String = null; return false; }
 			_String =  HEVText.ByteArrayToString( bytes );
 			return true;
 		}
@@ -105,7 +105,7 @@ namespace HevLib {
 				}
 
 				if ( hasHandle == false )
-					throw new TimeoutException( "Timeout waiting for exclusive access on SingleInstance" );
+					throw new TimeoutException( "Timeout waiting for exclusive access on HEVInstanceHelper()" );
 			} catch ( AbandonedMutexException ) {
 				hasHandle = true;
 			}
