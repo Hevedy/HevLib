@@ -56,18 +56,28 @@ namespace HevLib {
 			return true;
 		}
 
-		public static string StringArrayToString( string[] _Array, string _Separator = "\r\n" ) {
+		public static string StringArrayToString( string[] _Array, string _Separator = "\r\n" ) { //\r\n
 			string result = string.Join( _Separator, _Array );
 			return result;
 		}
 
-		public static string[] StringToStringArray( string _String, string _Separator = "," ) {
+		public static string[] StringToStringArray( string _String, string _Separator = ",", bool _ClearJumps = true ) {
 			string[] result = _String.Split( _Separator.ToCharArray() );
+			if ( _ClearJumps ) {
+				for ( int i = 0; i < result.Length; i++ ) {
+					result[i] = result[i].Replace( "\n\r\t", "" ).Replace( "\r\n", "" ).Replace( "\r", "" ).Replace( "\n", "" );
+				}
+			}
 			return result;
 		}
 
-		public static List<string> StringToStringList( string _String, string _Separator = "," ) {
+		public static List<string> StringToStringList( string _String, string _Separator = ",", bool _ClearJumps = true ) {
 			string[] result = _String.Split( _Separator.ToCharArray() );
+			if( _ClearJumps ) {
+				for ( int i = 0; i < result.Length; i++ ) {
+					result[i] = result[i].Replace( "\n\r\t", "" ).Replace( "\r\n", "" ).Replace( "\r", "" ).Replace( "\n", "" );
+				}
+			}
 			return result.ToList();
 		}
 

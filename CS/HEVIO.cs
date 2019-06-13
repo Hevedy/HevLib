@@ -46,9 +46,11 @@ namespace HevLib {
 
 	public static class HEVIO {
 
-		public static bool FileValidate( string _URL ) {
+		public static bool FileValidate( string _URL, bool _Critical = true ) {
 			if ( !System.IO.File.Exists( _URL ) ) {
-				HEVConsole.Print( "FileValidate() Missing file." + _URL, EPrintType.eError );
+				EPrintType val;
+				if ( _Critical ) { val = EPrintType.eError; } else { val = EPrintType.eWarning; }
+				HEVConsole.Print( "FileValidate() Missing file: " + _URL, val );
 				return false;
 			} else {
 				return true;
@@ -139,7 +141,7 @@ namespace HevLib {
 			bool status = false;
 			(data, status) = AssemblyStringRead( _URL );
 			if ( !status ) { _Strings = lines; return false; }
-			lines = HEVText.StringToStringArray( data, "\r\n" );
+			lines = HEVText.StringToStringArray( data, "\n" );
 
 			(lines, status) = HEVText.GetStringArrayLines( lines, _StartLine, _EndLine );
 			if ( !status ) { _Strings = lines; return false; }
@@ -161,7 +163,7 @@ namespace HevLib {
 				return (lines, false);
 			}
 			if ( !HEVText.StringValidate( System.IO.File.ReadAllText( _URL ) ) ) {
-				HEVConsole.Print( "FileTextRead() Invalid URL." + _URL, EPrintType.eWarning );
+				HEVConsole.Print( "FileTextRead() Invalid URL " + _URL, EPrintType.eWarning );
 				lines = new string[] { "Empty" };
 				return (lines, false);
 			}
@@ -174,58 +176,65 @@ namespace HevLib {
 
 
 		public static bool FileTextWriteString( string _URL, string _Text, bool _Replace = true ) {
-			string[] fileLines = HEVText.StringToStringArray(_Text, "\r\n");
+			string[] fileLines = HEVText.StringToStringArray(_Text, "\n"); //\r\n Count as double
 			return FileTextWriteStringArray( _URL, fileLines, _Replace );
 		}  
 
-		// URL, Line Index if -1 whole doc
-		// Double check possible bug at get from line count
 		public static bool FileTextWriteStringArray( string _URL, string[] _Text, bool _Replace = true, int _LineIndex = -1 ) {
 			bool file = true;
-			if ( !FileValidate( _URL ) ) {
-				HEVConsole.Print( "FileTextWriteStringArray() Missing file. Creating new one..." + _URL, EPrintType.eWarning );
+			if ( !FileValidate( _URL, false ) ) {
+				HEVConsole.Print( "FileTextWriteStringArray() Missing file. Creating new one at " + _URL, EPrintType.eWarning );
 				file = false;
 			}
 			bool status = false;
 			string[] linesPre = null;
 			string[] linesPost = null;
 			string[] linesFinal = null;
+
 			if ( file ) {
 				(linesPre, status) = FileTextReadStringArray( _URL );
 				if ( !status ) { return false; }
 				(linesPost, status) = HEVText.GetStringArrayLines( linesPre, _LineIndex, -1 );
 				(linesPre, status) = HEVText.GetStringArrayLines( linesPre, 0, _LineIndex );
 			}
-			try {
-				if ( status == false ) {
+
+			if ( status == false ) {
+				linesFinal = _Text;
+			} else if ( _LineIndex == 0 ) {
+				if ( _Replace ) {
 					linesFinal = _Text;
-					System.IO.File.WriteAllLines( _URL, linesFinal, System.Text.Encoding.Unicode );
-					status = true;
-				} else if ( _LineIndex == 0 ) {
-					if ( _Replace ) {
-						linesFinal = _Text;
-					} else {
-						linesFinal = _Text.Concat( linesPost ).ToArray();
-					}
-					System.IO.File.WriteAllLines( _URL, linesFinal, System.Text.Encoding.Unicode );
-					status = true;
-				} else if ( _LineIndex == -1 ) {
-					if ( _Replace ) {
-						linesFinal = linesPre.Concat( _Text ).ToArray();
-					} else {
-						linesFinal = linesPre.Concat( _Text ).Concat( linesPost ).ToArray();
-					}
-					System.IO.File.WriteAllLines( _URL, linesFinal, System.Text.Encoding.Unicode );
-					status = true;
-				}  else {
-					if ( _Replace ) {
-						linesFinal = linesPre.Concat( _Text ).ToArray();
-					} else {
-						linesFinal = linesPre.Concat( _Text ).Concat( linesPost ).ToArray();
-					}
-					System.IO.File.WriteAllLines( _URL, linesFinal, System.Text.Encoding.Unicode );
-					status = true;
+				} else {
+					linesFinal = _Text.Concat( linesPost ).ToArray();
 				}
+			} else if ( _LineIndex == -1 ) {
+				if ( _Replace ) {
+					linesFinal = linesPre.Concat( _Text ).ToArray();
+				} else {
+					linesFinal = linesPre.Concat( _Text ).Concat( linesPost ).ToArray();
+				}
+			} else {
+				if ( _Replace ) {
+					linesFinal = linesPre.Concat( _Text ).ToArray();
+				} else {
+					linesFinal = linesPre.Concat( _Text ).Concat( linesPost ).ToArray();
+				}
+			}
+
+			try {
+				if ( !file ) {
+					string dir = System.IO.Path.GetDirectoryName( _URL );
+					HEVConsole.Print( dir, EPrintType.eInfo);
+					if ( !System.IO.Directory.Exists( dir ) ) {
+						DirectoryInfo di = System.IO.Directory.CreateDirectory( dir );
+						if ( !di.Exists ) {
+							HEVConsole.Print( "Administrator privileges are need in order to create the files.", EPrintType.eError );
+							return false;
+						}
+					}
+					//System.IO.File.CreateText( _URL );
+				} 
+				System.IO.File.WriteAllLines( _URL, linesFinal, System.Text.Encoding.UTF8 );
+				status = true;
 			} catch {
 				status = false;
 			}
@@ -284,7 +293,7 @@ namespace HevLib {
 			string fileText = "";
 			bool status = false;
 			(fileText, status) = FileTextReadString( _URL );
-			if ( !status ) { HEVConsole.Print( "FileJSONReadClass() Missing File.", EPrintType.eError );
+			if ( !status ) { HEVConsole.Print( "FileJSONReadClass() Missing File at " + _URL, EPrintType.eError );
 				return (localClass, false);
 			}
 
@@ -299,7 +308,7 @@ namespace HevLib {
 			string fileText = "";
 			bool status = false;
 			(fileText, status) = FileTextReadString( _URL );
-			if ( !status ) { HEVConsole.Print( "FileJSONReadClassList() Missing file.", EPrintType.eError );
+			if ( !status ) { HEVConsole.Print( "FileJSONReadClassList() Missing file at " + _URL, EPrintType.eError );
 				return (localClass, false);
 			}
 
@@ -347,7 +356,7 @@ namespace HevLib {
 
 		public static (IniData, bool) FileINIRead( string _URL ) {
 			bool status = FileValidate( _URL );
-			if ( !status ) { HEVConsole.Print( "FileINIRead() Missing file.", EPrintType.eError ); return (null, false); }
+			if ( !status ) { HEVConsole.Print( "FileINIRead() Missing file at " + _URL, EPrintType.eError ); return (null, false); }
 
 			FileIniDataParser parser = new FileIniDataParser();
 			parser.Parser.Configuration.ThrowExceptionsOnError = true;
@@ -364,7 +373,7 @@ namespace HevLib {
 
 		public static bool FileINIWrite( string _URL, IniData _Data ) {
 			bool status = FileValidate( _URL );
-			if ( !status ) { HEVConsole.Print( "FileINIWrite() Missing file. Creating one...", EPrintType.eWarning );
+			if ( !status ) { HEVConsole.Print( "FileINIWrite() Missing file. Creating one at " + _URL, EPrintType.eWarning );
 				return false; }
 
 			FileIniDataParser parser = new FileIniDataParser();
