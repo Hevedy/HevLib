@@ -111,7 +111,8 @@ namespace HEVLib {
 			return (lines, true);
 		}
 
-		public static (T, bool) EnumParse<T>( string _Value, T _DefaultValue, string _Suffix = "", string _Prefix = "e" ) where T : struct, IConvertible {
+		public static (T, bool) EnumParse<T>( string _Value, T _DefaultValue, string _Suffix = "", string _Prefix = "e" ) 
+			where T : struct, IConvertible {
 			string value = _Prefix + _Value + _Suffix;
 			if ( !typeof( T ).IsEnum ) throw new ArgumentException( "Error - " + value + " T must be an enumerated type." );
 			if ( HEVText.StringValidate( value ) ) return (_DefaultValue, false);

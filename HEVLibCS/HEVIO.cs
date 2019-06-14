@@ -31,7 +31,6 @@ using System.Collections.Generic;
 using System.IO;
 using IniParser;
 using IniParser.Model;
-using IniParser.Model.Configuration;
 using Newtonsoft.Json;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -117,29 +116,38 @@ namespace HEVLib {
 			Assembly assem = Assembly.GetEntryAssembly();
 			if( _Self || _Assembly == null ) {
 				assem = Assembly.GetEntryAssembly();
-				url = HEVProgram.Name + "." + url;
+				//url = HEVProgram.Name + "." + url; Gets Exe name but no assembly
+				url = HEVProgram.Namespace + "." + url;
 			} else {
 				assem = _Assembly;
 			}
+#if !HEVSAFE
+			return (data, false);
+#else
 			Stream stream = assem.GetManifestResourceStream( url );
 			using ( StreamReader reader = new StreamReader( stream ) ) {
 				data = reader.ReadToEnd();
 			}
 			return (data, true);
-
+#endif
 		}
 
 		public static bool ResourcesTextReadString( string _URL, out string _String ) {
 			bool status = false;
+#if HEVSAFE
 			(_String,status) = AssemblyStringRead( _URL );
+#endif
 			return status;
 		}
 
-		public static bool ResourcesTextReadStringArray( string _URL, out string[] _Strings, int _StartLine = 0, int _EndLine = -1 ) {
+		public static bool ResourcesTextReadStringArray( string _URL, out string[] _Strings, int _StartLine = 0, 
+			int _EndLine = -1 ) {
 			string[] lines = null;
 			string data = "";
 			bool status = false;
+#if HEVSAFE
 			(data, status) = AssemblyStringRead( _URL );
+#endif
 			if ( !status ) { _Strings = lines; return false; }
 			lines = HEVText.StringToStringArray( data, "\n" );
 
@@ -180,10 +188,12 @@ namespace HEVLib {
 			return FileTextWriteStringArray( _URL, fileLines, _Replace );
 		}  
 
-		public static bool FileTextWriteStringArray( string _URL, string[] _Text, bool _Replace = true, int _LineIndex = -1 ) {
+		public static bool FileTextWriteStringArray( string _URL, string[] _Text, bool _Replace = true, 
+			int _LineIndex = -1 ) {
 			bool file = true;
 			if ( !FileValidate( _URL, false ) ) {
-				HEVConsole.Print( "FileTextWriteStringArray() Missing file. Creating new one at " + _URL, EPrintType.eWarning );
+				HEVConsole.Print( "FileTextWriteStringArray() Missing file. Creating new one at " + 
+					_URL, EPrintType.eWarning );
 				file = false;
 			}
 			bool status = false;
@@ -227,7 +237,8 @@ namespace HEVLib {
 					if ( !System.IO.Directory.Exists( dir ) ) {
 						DirectoryInfo di = System.IO.Directory.CreateDirectory( dir );
 						if ( !di.Exists ) {
-							HEVConsole.Print( "Administrator privileges are need in order to create the files.", EPrintType.eError );
+							HEVConsole.Print( "Administrator privileges are need in order to create the files.", 
+								EPrintType.eError );
 							return false;
 						}
 					}
@@ -254,7 +265,8 @@ namespace HEVLib {
 				MissingMemberHandling = MissingMemberHandling.Error
 			};
 			_Result = JsonConvert.DeserializeObject<T>( _String, settings );
-			if ( !status ) { HEVConsole.Print( "JSONParseClassTry().", EPrintType.eError );  }
+			if ( !status ) HEVConsole.Print( "JSONParseClassTry().", EPrintType.eError );
+
 			return status;
 		}
 
@@ -293,7 +305,8 @@ namespace HEVLib {
 			string fileText = "";
 			bool status = false;
 			(fileText, status) = FileTextReadString( _URL );
-			if ( !status ) { HEVConsole.Print( "FileJSONReadClass() Missing File at " + _URL, EPrintType.eError );
+			if ( !status ) {
+				HEVConsole.Print( "FileJSONReadClass() Missing File at " + _URL, EPrintType.eError );
 				return (localClass, false);
 			}
 
@@ -308,7 +321,8 @@ namespace HEVLib {
 			string fileText = "";
 			bool status = false;
 			(fileText, status) = FileTextReadString( _URL );
-			if ( !status ) { HEVConsole.Print( "FileJSONReadClassList() Missing file at " + _URL, EPrintType.eError );
+			if ( !status ) {
+				HEVConsole.Print( "FileJSONReadClassList() Missing file at " + _URL, EPrintType.eError );
 				return (localClass, false);
 			}
 
@@ -332,7 +346,10 @@ namespace HEVLib {
 			} catch {
 				status = false;
 			}
-			if ( !status ) { HEVConsole.Print( "INIRead() Parser to data.", EPrintType.eError ); return (null, false); }
+			if ( !status ) {
+				HEVConsole.Print( "INIRead() Parser to data.", EPrintType.eError );
+				return (null, false);
+			}
 			return (data, true);
 		}
 
@@ -350,13 +367,19 @@ namespace HEVLib {
 			} catch {
 				status = false;
 			}
-			if ( !status ) { HEVConsole.Print( "INIWrite() Parser to string.", EPrintType.eError ); return (null,false); }
+			if ( !status ) {
+				HEVConsole.Print( "INIWrite() Parser to string.", EPrintType.eError );
+				return (null,false);
+			}
 			return (data, true);
 		}
 
 		public static (IniData, bool) FileINIRead( string _URL ) {
 			bool status = FileValidate( _URL );
-			if ( !status ) { HEVConsole.Print( "FileINIRead() Missing file at " + _URL, EPrintType.eError ); return (null, false); }
+			if ( !status ) {
+				HEVConsole.Print( "FileINIRead() Missing file at " + _URL, EPrintType.eError );
+				return (null, false);
+			}
 
 			FileIniDataParser parser = new FileIniDataParser();
 			parser.Parser.Configuration.ThrowExceptionsOnError = true;
@@ -367,14 +390,19 @@ namespace HEVLib {
 			} catch {
 				status = false;
 			}
-			if ( !status ) { HEVConsole.Print( "FileINIRead() Parser file read.", EPrintType.eError ); return (null,false); }
+			if ( !status ) {
+				HEVConsole.Print( "FileINIRead() Parser file read.", EPrintType.eError );
+				return (null,false);
+			}
 			return (data, true);
 		}
 
 		public static bool FileINIWrite( string _URL, IniData _Data ) {
 			bool status = FileValidate( _URL );
-			if ( !status ) { HEVConsole.Print( "FileINIWrite() Missing file. Creating one at " + _URL, EPrintType.eWarning );
-				return false; }
+			if ( !status ) {
+				HEVConsole.Print( "FileINIWrite() Missing file. Creating one at " + _URL, EPrintType.eWarning );
+				return false;
+			}
 
 			FileIniDataParser parser = new FileIniDataParser();
 			parser.Parser.Configuration.ThrowExceptionsOnError = true;
@@ -385,7 +413,10 @@ namespace HEVLib {
 			} catch {
 				status = false;
 			}
-			if ( !status ) { HEVConsole.Print( "FileINIWrite() Parser file write.", EPrintType.eError ); return false; }
+			if ( !status ) {
+				HEVConsole.Print( "FileINIWrite() Parser file write.", EPrintType.eError );
+				return false;
+			}
 			return true;
 		}
 	}

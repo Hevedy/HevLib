@@ -38,7 +38,7 @@ namespace HEVLib {
 
 	public static class HEVConsole {
 
-		public static void Print( string Text, EPrintType _Type = EPrintType.eDefault ) {
+		public static void Print( string Text = "Hello World!", EPrintType _Type = EPrintType.eDefault ) {
 			string msg = "";
 #if UNITY_EDITOR || UNITY_STANDALONE
 #else

@@ -339,59 +339,73 @@ namespace HEVLib {
 		}
 
 		public static sbyte Closer( sbyte _Value, sbyte _A, sbyte _B ) {
-			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? 
+				( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
 		}
 
 		public static short Closer( short _Value, short _A, short _B ) {
-			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? 
+				( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
 		}
 
 		public static int Closer( int _Value, int _A, int _B ) {
-			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? 
+				( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
 		}
 
 		public static long Closer( long _Value, long _A, long _B ) {
-			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? 
+				( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
 		}
 
 		public static float Closer( float _Value, float _A, float _B ) {
-			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? 
+				( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
 		}
 
 		public static double Closer( double _Value, double _A, double _B ) {
-			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? 
+				( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
 		}
 
 		public static decimal Closer( decimal _Value, decimal _A, decimal _B ) {
-			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) <= ( ( ( _Value - _B ) >= 0 ) ? 
+				( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
 		}
 
 		public static sbyte Further( sbyte _Value, sbyte _A, sbyte _B ) {
-			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? 
+				( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
 		}
 
 		public static short Further( short _Value, short _A, short _B ) {
-			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? 
+				( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
 		}
 
 		public static int Further( int _Value, int _A, int _B ) {
-			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? 
+				( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
 		}
 
 		public static long Further( long _Value, long _A, long _B ) {
-			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? 
+				( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
 		}
 
 		public static float Further( float _Value, float _A, float _B ) {
-			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? 
+				( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
 		}
 
 		public static double Further( double _Value, double _A, double _B ) {
-			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? 
+				( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
 		}
 
 		public static decimal Further( decimal _Value, decimal _A, decimal _B ) {
-			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? ( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
+			return ( ( ( _Value - _A ) >= 0 ) ? ( _Value - _A ) : -( _Value - _A ) ) >= ( ( ( _Value - _B ) >= 0 ) ? 
+				( _Value - _B ) : -( _Value - _B ) ) ? _A : _B;
 		}
 	}
 

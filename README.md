@@ -11,6 +11,18 @@ using HevLib;
 ```
 You will need to include the dependencies aswell to your project.
 
+If you want to use the functions:
+```csharp
+ResourcesTextReadString()
+ResourcesTextReadStringArray()
+```
+ * If Project Name and Default RootNamespace are equal then only need to declare "HEVSAFE" into the project "Conditional compilation symbols".
+
+ * If Project Name and Default RootNamespace are different then need to declare aswell "HEVSAFE" into the project "Conditional compilation symbols" then set your project default RootNamespace into the file "HEVProgram.cs" line 47.
+```csharp
+private static readonly string CustomNamespace = "YourRootNamespace";
+```
+
 ### Dependencies
  * INI Parser: https://www.nuget.org/packages/ini-parser/
  * JSON Parser: https://www.nuget.org/packages/Newtonsoft.Json/

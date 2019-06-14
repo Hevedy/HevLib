@@ -31,23 +31,30 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading;
 using System.IO;
+using System.Reflection;
 #if UNITY_EDITOR || UNITY_STANDALONE
 using UnityEngine;
 #else
-using System.Linq;
+
 #endif
+
 
 namespace HEVLib {
 	class HEVProgram {
+		// You must set here you project default namespace if is different from build one otherwise expect crashes.
+		// After define this make sure you add "HEVSAFE" to the compiler in order to unlock unsafe parts.
+		private static readonly string CustomNamespace = "";
+
 		public static readonly string Dir = Environment.CurrentDirectory;
-		public static readonly string Name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
-		public static readonly string NameFull = System.Reflection.Assembly.GetExecutingAssembly().GetName().FullName;
-		public static readonly string DirFile = System.Reflection.Assembly.GetEntryAssembly().Location;
+		public static readonly string Name = Assembly.GetExecutingAssembly().GetName().Name;
+		public static readonly string NameFull = Assembly.GetExecutingAssembly().GetName().FullName;
+		// System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace; / typeof( HEVProgram ).Namespace;
+		public static readonly string Namespace = HEVText.StringValidate( CustomNamespace ) ? CustomNamespace : Name;
+		public static readonly string DirFile = Assembly.GetEntryAssembly().Location;
 		public static readonly string DirDocuments = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments );
 		public static readonly bool IsDLL = HEVIO.FileIsLibrary(DirFile);
 
 		private static double Timestamp = 0;
-
 
 		public static bool FileString( out string _String ) {
 			byte[] bytes = null;
@@ -100,7 +107,8 @@ namespace HEVLib {
 			}
 			mutex = new Mutex( false, mutexId );
 
-			var allowEveryoneRule = new MutexAccessRule( new SecurityIdentifier( WellKnownSidType.WorldSid, null ), MutexRights.FullControl, AccessControlType.Allow );
+			var allowEveryoneRule = new MutexAccessRule( new SecurityIdentifier( WellKnownSidType.WorldSid, null ), 
+				MutexRights.FullControl, AccessControlType.Allow );
 			var securitySettings = new MutexSecurity();
 			securitySettings.AddAccessRule( allowEveryoneRule );
 			mutex.SetAccessControl( securitySettings );
