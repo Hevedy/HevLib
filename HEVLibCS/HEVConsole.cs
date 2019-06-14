@@ -101,5 +101,23 @@ namespace HEVLib {
 #endif
 
 		}
+
+		public static void Wait( int _Seconds = 5, bool _AnyKey = false ) {
+			// Don't allow more than 5 min
+			int secs = Math.Clamp( _Seconds, 1, 300 );
+#if UNITY_EDITOR || UNITY_STANDALONE
+			WaitForSeconds(secs);
+#else
+			if ( _Seconds < 1 ) {
+				if ( _AnyKey ) {
+					Console.ReadKey();
+				} else {
+					Console.ReadLine();
+				}
+			} else {
+				System.Threading.Thread.Sleep( secs * 1000 );
+			}
+#endif
+		}
 	}
 }
