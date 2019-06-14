@@ -32,7 +32,7 @@ using UnityEngine;
 using System.Runtime.CompilerServices;
 #endif
 
-namespace HevLib {
+namespace HEVLib {
 	public static class HEVMathHelpers {
 
 #if UNITY_EDITOR || UNITY_STANDALONE

@@ -32,7 +32,7 @@ using UnityEngine;
 #else
 #endif
 
-namespace HevLib {
+namespace HEVLib {
 
 	public enum EPrintType { eDefault, eInfo, eSuccess, eWarning, eError };
 

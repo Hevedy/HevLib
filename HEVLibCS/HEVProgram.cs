@@ -37,44 +37,57 @@ using UnityEngine;
 using System.Linq;
 #endif
 
-namespace HevLib {
-	class HEVHelper {
-		public static readonly string AppDir = Environment.CurrentDirectory;
-		public static readonly string AppName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
-		public static readonly string AppNameFull = System.Reflection.Assembly.GetExecutingAssembly().GetName().FullName;
-		public static readonly string AppDirFile = System.Reflection.Assembly.GetEntryAssembly().Location;
-		public static readonly string AppDirDocuments = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments );
-		public static readonly bool AppIsDLL = HEVIO.FileIsLibrary(AppDirFile);
+namespace HEVLib {
+	class HEVProgram {
+		public static readonly string Dir = Environment.CurrentDirectory;
+		public static readonly string Name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+		public static readonly string NameFull = System.Reflection.Assembly.GetExecutingAssembly().GetName().FullName;
+		public static readonly string DirFile = System.Reflection.Assembly.GetEntryAssembly().Location;
+		public static readonly string DirDocuments = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments );
+		public static readonly bool IsDLL = HEVIO.FileIsLibrary(DirFile);
 
-		public static bool AppSelfString( out string _String ) {
+		private static double Timestamp = 0;
+
+
+		public static bool FileString( out string _String ) {
 			byte[] bytes = null;
 			bool status = false;
-			(bytes, status) = HEVIO.FileBytesRead( AppDirFile );
+			(bytes, status) = HEVIO.FileBytesRead( DirFile );
 			if ( !status ) { _String = null; return false; }
 			_String =  HEVText.ByteArrayToString( bytes );
 			return true;
 		}
 
-		public static string AppFileHashMD5() {
+		public static string FileHashMD5() {
 			string code = "";
-			if ( !AppSelfString( out code ) ) { return code; }
+			if ( !FileString( out code ) ) { return code; }
 			return HEVText.HashMD5( code );
 		}
 
-		public static string AppFileHashSHA1() {
+		public static string FileHashSHA1() {
 			string code = "";
-			if ( !AppSelfString( out code ) ) { return code; }
+			if ( !FileString( out code ) ) { return code; }
 			return HEVText.HashMD5( code );
 		}
 
-		public static string AppFileHashSHA256() {
+		public static string FileHashSHA256() {
 			string code = "";
-			if ( !AppSelfString( out code ) ) { return code; }
+			if ( !FileString( out code ) ) { return code; }
 			return HEVText.HashMD5( code );
+		}
+
+		public static double CurrentTime() {
+			double time = DateTime.Now.Millisecond;
+			Timestamp = time;
+			return time;
+		}
+
+		public static double LastTime() {
+			return Timestamp;
 		}
 	}
 
-	class HEVInstanceHelper : IDisposable {
+	class HEVProgramInstance : IDisposable {
 		public bool hasHandle = false;
 		Mutex mutex;
 
@@ -93,7 +106,7 @@ namespace HevLib {
 			mutex.SetAccessControl( securitySettings );
 		}
 
-		public HEVInstanceHelper( int _TimeOut, string _CustomID = "" ) {
+		public HEVProgramInstance( int _TimeOut, string _CustomID = "" ) {
 			InitMutex( _CustomID );
 			try {
 				if ( _TimeOut < 0 ) {

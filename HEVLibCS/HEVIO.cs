@@ -42,7 +42,7 @@ using UnityEngine;
 using System.Linq;
 #endif
 
-namespace HevLib {
+namespace HEVLib {
 
 	public static class HEVIO {
 
@@ -117,7 +117,7 @@ namespace HevLib {
 			Assembly assem = Assembly.GetEntryAssembly();
 			if( _Self || _Assembly == null ) {
 				assem = Assembly.GetEntryAssembly();
-				url = HEVHelper.AppName + "." + url;
+				url = HEVProgram.Name + "." + url;
 			} else {
 				assem = _Assembly;
 			}

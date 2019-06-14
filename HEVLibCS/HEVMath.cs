@@ -32,7 +32,7 @@ using UnityEngine;
 #else
 #endif
 
-namespace HevLib {
+namespace HEVLib {
 	public static class HEVMath {
 
 		public static bool Validate( sbyte _Min, sbyte _Max, params sbyte[] _SByteList ) {

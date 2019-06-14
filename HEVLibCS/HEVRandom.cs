@@ -35,7 +35,7 @@ using System.Linq;
 using System.Security.Cryptography;
 #endif
 
-namespace HevLib {
+namespace HEVLib {
 	public static class HEVRandom {
 
 		private static readonly System.Random RandomSeedFixed = new System.Random();
@@ -47,7 +47,7 @@ namespace HevLib {
 		}
 
 		/// <returns>Returns a pseudo-random integer variable.</returns>
-		public static int Integer() {
+		public static int Int() {
 			return RandomSeed.Next();
 		}
 
@@ -62,7 +62,7 @@ namespace HevLib {
 		}
 
 		/// <returns>Returns a pseudo-random integer variable.</returns>
-		public static int Integer( int _Max ) {
+		public static int Int( int _Max ) {
 			return RandomSeed.Next( _Max );
 		}
 
@@ -78,12 +78,12 @@ namespace HevLib {
 
 		public static string Char( string _Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ) {
 			return new string( Enumerable.Repeat( _Chars, 1 )
-			  .Select( s => s[Integer( s.Length )] ).ToArray() );
+			  .Select( s => s[Int( s.Length )] ).ToArray() );
 		}
 
 		public static string String( int _Length = 10, string _Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ) {
 			return new string( Enumerable.Repeat( _Chars, _Length )
-			  .Select( s => s[Integer( s.Length )] ).ToArray() );
+			  .Select( s => s[Int( s.Length )] ).ToArray() );
 		}
 
 		/// <returns>Returns a pseudo-random integer variable within the given min/max range.</returns>

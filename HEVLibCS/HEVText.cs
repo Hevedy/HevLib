@@ -36,7 +36,7 @@ using System.Security.Cryptography;
 using System.Text;
 #endif
 
-namespace HevLib {
+namespace HEVLib {
 	public static class HEVText {
 
 		public static bool StringIsNullOrInvalid( string _String ) {
