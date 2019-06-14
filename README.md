@@ -13,12 +13,13 @@ You will need to include the dependencies aswell to your project.
 
 If you want to use the functions:
 ```csharp
+AssemblyStringRead()
 ResourcesTextReadString()
 ResourcesTextReadStringArray()
 ```
  * If Project Name and Default RootNamespace are equal then only need to declare "HEVSAFE" into the project "Conditional compilation symbols".
 
- * If Project Name and Default RootNamespace are different then need to declare aswell "HEVSAFE" into the project "Conditional compilation symbols" then set your project default RootNamespace into the file "HEVProgram.cs" line 47.
+ * If Project Name and Default RootNamespace are different then need to declare aswell "HEVSAFE" into the project "Conditional compilation symbols" then set your project default RootNamespace into the file "HEVProgram.cs" line 44.
 ```csharp
 private static readonly string CustomNamespace = "YourRootNamespace";
 ```

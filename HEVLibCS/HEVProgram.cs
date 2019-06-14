@@ -22,7 +22,7 @@ SOFTWARE.
 
 /*
 ================================================
-HEVHelper.cs
+HEVProgram.cs
 ================================================
 */
 
@@ -35,15 +35,13 @@ using System.Reflection;
 #if UNITY_EDITOR || UNITY_STANDALONE
 using UnityEngine;
 #else
-
 #endif
-
 
 namespace HEVLib {
 	class HEVProgram {
 		// You must set here you project default namespace if is different from build one otherwise expect crashes.
 		// After define this make sure you add "HEVSAFE" to the compiler in order to unlock unsafe parts.
-		private static readonly string CustomNamespace = "";
+		private static readonly string CustomNamespace = ""; //EDIT THIS
 
 		public static readonly string Dir = Environment.CurrentDirectory;
 		public static readonly string Name = Assembly.GetExecutingAssembly().GetName().Name;
