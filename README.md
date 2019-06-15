@@ -4,6 +4,26 @@ Hevedy Library for C# (Net Core &amp; Net Framework &amp; Unity 2019) and C++ fo
 
 ## C#
 
+### Core
+ * Console helper.
+ * Program help funtions.
+ * Math functions and helpers.
+ * String conversion tools.
+ * Random generators.
+ * Hash MD5, SHA1, SHA256 generators.
+ * Mutex manager per instance.
+ 
+### IO
+ * Assembly helpers.
+ * Folder tools.
+ * File tools.
+ * Bytes reader.
+ * Text reader and writer with helpers.
+ * INI reader and writer with helpers.
+ * JSON reader and writer with helpers.
+
+
+
 ### Installation
 Include the CS folder files into your project, then include the namespace into the files of your project.
 ```csharp
