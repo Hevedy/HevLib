@@ -106,21 +106,24 @@ namespace HEVLib {
 			return TryParse( _String, out _Result, _Clamp, _Min, _Max );
 		}
 
-		public static string ListToString( List<string> _Array, string _Separator = "\r\n" ) { //\r\n
+		public static string ToString( List<string> _Array, string _Separator = "\r\n" ) { //\r\n
 			if ( _Array.Count < 1 ) return null;
-			string result = string.Join( _Separator, _Array );
+			string separator = ( _Separator == "" ? "\r\n" : _Separator );
+			string result = string.Join( separator, _Array );
 			return result;
 		}
 
-		public static string ArrayToString( string[] _Array, string _Separator = "\r\n" ) { //\r\n
+		public static string ToString( string[] _Array, string _Separator = "\r\n" ) { //\r\n
 			if ( _Array.Length < 1 ) return null;
-			string result = string.Join( _Separator, _Array );
+			string separator = ( _Separator == "" ? "\r\n" : _Separator );
+			string result = string.Join( separator, _Array );
 			return result;
 		}
 
 		public static string[] ToStringArray( string _String, string _Separator = ",", bool _ClearJumps = true ) {
 			if ( !Validate( _String ) ) return null;
-			string[] result = _String.Split( _Separator.ToCharArray() );
+			string separator = (_Separator == "" ? "," : _Separator);
+			string[] result = _String.Split( separator.ToCharArray() );
 			if ( _ClearJumps ) {
 				for ( int i = 0; i < result.Length; i++ ) {
 					result[i] = result[i].Replace( "\n\r\t", "" ).Replace( "\r\n", "" ).Replace( "\r", "" ).Replace( "\n", "" );

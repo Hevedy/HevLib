@@ -161,7 +161,7 @@ namespace HEVLib {
 			string[] fileLines = null;
 			bool status = false;
 			(fileLines, status) = FileTextReadStringArray( _URL );
-			return (HEVText.ArrayToString( fileLines ), true);
+			return (HEVText.ToString( fileLines ), true);
 		}
 
 		public static (string[], bool) FileTextReadStringArray( string _URL, int _StartLine = 0, int _EndLine = -1 ) {
@@ -487,10 +487,10 @@ namespace HEVLib {
 			return status;
 		}
 
-		public static bool DataINIReadWrite( this IniData _Data, string _Section, string _Key, ref List<string> _Value ) {
+		public static bool DataINIReadWrite( this IniData _Data, string _Section, string _Key, ref List<string> _Value, string _Separator = "," ) {
 			IniData data = _Data;
 			bool status = false;
-			string value = HEVText.ListToString( _Value, "," );
+			string value = HEVText.ToString( _Value, _Separator );
 			string dataValue = data[_Section][_Key];
 			if ( !HEVText.Validate( dataValue ) ) {
 				if ( value == "" && dataValue == "" ) {
@@ -504,7 +504,7 @@ namespace HEVLib {
 				status = true;
 			}
 			_Data = data;
-			_Value = HEVText.ToStringList(value, ",", true);
+			_Value = HEVText.ToStringList(value, _Separator, true);
 			return status;
 		}
 	}
