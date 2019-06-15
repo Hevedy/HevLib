@@ -38,6 +38,7 @@ namespace HEVLib {
 
 	public static class HEVConsole {
 
+		/// <summary>Print on console text.</summary>
 		public static void Print( string Text = "Hello World!", EPrintType _Type = EPrintType.eDefault, bool _DebugOnly = false ) {
 			string msg = "";
 #if DEBUG || UNITY_EDITOR
@@ -97,6 +98,7 @@ namespace HEVLib {
 #endif
 		}
 
+		/// <summary>Print on console an empty line jump or line break.</summary>
 		public static void LineJump( int _Lines = 1 ) {
 			int lines = Math.Min( _Lines, 10 );
 #if UNITY_EDITOR || UNITY_STANDALONE
@@ -108,6 +110,7 @@ namespace HEVLib {
 
 		}
 
+		/// <summary>Wait for imput or wait for time on thread call.</summary>
 		public static void Wait( int _Seconds = 5, bool _AnyKey = false ) {
 			// Don't allow more than 5 min
 			int secs = Math.Clamp( _Seconds, 1, 300 );

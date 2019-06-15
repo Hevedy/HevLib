@@ -41,19 +41,20 @@ namespace HEVLib {
 	class HEVProgram {
 		// You must set here you project default namespace if is different from build one otherwise expect crashes.
 		// After define this make sure you add "HEVSAFE" to the compiler in order to unlock unsafe parts.
-		private static readonly string CustomNamespace = ""; //EDIT THIS
+		private static readonly string CUSTOM_NAMESPACE = ""; //EDIT THIS
 
 		public static readonly string Dir = Environment.CurrentDirectory;
 		public static readonly string Name = Assembly.GetExecutingAssembly().GetName().Name;
 		public static readonly string NameFull = Assembly.GetExecutingAssembly().GetName().FullName;
 		// System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace; / typeof( HEVProgram ).Namespace;
-		public static readonly string Namespace = HEVText.StringValidate( CustomNamespace ) ? CustomNamespace : Name;
+		public static readonly string Namespace = HEVText.StringValidate( CUSTOM_NAMESPACE ) ? CUSTOM_NAMESPACE : Name;
 		public static readonly string DirFile = Assembly.GetEntryAssembly().Location;
 		public static readonly string DirDocuments = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments );
 		public static readonly bool IsDLL = HEVIO.FileIsLibrary(DirFile);
 
-		private static double Timestamp = 0;
+		private static double Timestamp = CurrentTime();
 
+		/// <summary>Validate a string or a list of strings, make sure aren't empty, invalid or null.</summary>
 		public static bool FileString( out string _String ) {
 			byte[] bytes = null;
 			bool status = false;
@@ -63,30 +64,35 @@ namespace HEVLib {
 			return true;
 		}
 
+		/// <summary>Return current program MD5 key.</summary>
 		public static string FileHashMD5() {
 			string code = "";
 			if ( !FileString( out code ) ) { return code; }
 			return HEVText.HashMD5( code );
 		}
 
+		/// <summary>Return current program SHA1 key.</summary>
 		public static string FileHashSHA1() {
 			string code = "";
 			if ( !FileString( out code ) ) { return code; }
 			return HEVText.HashMD5( code );
 		}
 
+		/// <summary>Return current program SHA256 key.</summary>
 		public static string FileHashSHA256() {
 			string code = "";
 			if ( !FileString( out code ) ) { return code; }
 			return HEVText.HashMD5( code );
 		}
 
+		/// <summary>Return current program milliseconds.</summary>
 		public static double CurrentTime() {
 			double time = DateTime.Now.Millisecond;
 			Timestamp = time;
 			return time;
 		}
 
+		/// <summary>Return current program elapsed milliseconds since the last CurrentTime() call.</summary>
 		public static double LastTime() {
 			return Timestamp;
 		}

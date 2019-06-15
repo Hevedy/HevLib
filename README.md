@@ -21,7 +21,7 @@ ResourcesTextReadStringArray()
 
  * If Project Name and Default RootNamespace are different then need to declare aswell "HEVSAFE" into the project "Conditional compilation symbols" then set your project default RootNamespace into the file "HEVProgram.cs" line 44.
 ```csharp
-private static readonly string CustomNamespace = "YourRootNamespace";
+private static readonly string CUSTOM_NAMESPACE = "YourRootNamespace";
 ```
 
 ### Dependencies

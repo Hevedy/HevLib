@@ -39,7 +39,7 @@ using System.Security.Cryptography;
 namespace HEVLib {
 	public static class HEVText {
 
-		public static bool StringIsNullOrInvalid( string _String ) {
+		private static bool StringIsNullOrInvalid( string _String ) {
 			if ( string.IsNullOrEmpty( _String ) || _String == " " || _String == "  " || _String == "   " || _String == "    " ) {
 				return true;
 			} else {
@@ -47,6 +47,7 @@ namespace HEVLib {
 			}
 		}
 
+		/// <summary>Validate a string or a list of strings, make sure aren't empty, invalid or null.</summary>
 		public static bool StringValidate( params string[] _StringList ) {
 			foreach ( string str in _StringList ) {
 				if ( StringIsNullOrInvalid( str ) ) {
@@ -163,6 +164,7 @@ namespace HEVLib {
 			return (lines, true);
 		}
 
+		/// <summary>Returns enum from string.</summary>
 		public static (T, bool) EnumParse<T>( string _Value, T _DefaultValue, string _Suffix = "", string _Prefix = "e" ) 
 			where T : struct, IConvertible {
 			string value = _Prefix + _Value + _Suffix;
@@ -175,6 +177,7 @@ namespace HEVLib {
 			return (_DefaultValue, false);
 		}
 
+		/// <summary>Returns hash MD5 from given string.</summary>
 		public static string HashMD5( string _Input, bool _LowerCase = false ) {
 			using ( MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider() ) {
 				byte[] inputBytes = System.Text.Encoding.UTF8.GetBytes( _Input );
@@ -189,6 +192,7 @@ namespace HEVLib {
 			}
 		}
 
+		/// <summary>Returns hash SHA1 from given string.</summary>
 		public static string HashSHA1( string _Input, bool _LowerCase = false ) {
 			using ( SHA1Managed sha1 = new SHA1Managed() ) {
 				byte[] inputBytes = System.Text.Encoding.UTF8.GetBytes( _Input );
@@ -203,6 +207,7 @@ namespace HEVLib {
 			}
 		}
 
+		/// <summary>Returns hash SHA256 from given string.</summary>
 		public static string HashSHA256( string _Input, bool _LowerCase = false ) {
 			using ( SHA256Managed sha256 = new SHA256Managed() ) {
 				byte[] inputBytes = System.Text.Encoding.UTF8.GetBytes( _Input );
