@@ -113,10 +113,8 @@ namespace HEVLib {
 
 		/// <summary>Wait for imput or wait for time on thread call.</summary>
 		public static void Wait( int _Seconds = 5, bool _AnyKey = false ) {
-			// Don't allow more than 5 min
-			int secs = HEVMath.Clamp( _Seconds, 1, 300 );
 #if UNITY_EDITOR || UNITY_STANDALONE
-			new WaitForSeconds( secs );
+			HEVProgram.WaitForSeconds( _Seconds );
 #else
 			if ( _Seconds < 1 ) {
 				if ( _AnyKey ) {
@@ -125,7 +123,7 @@ namespace HEVLib {
 					Console.ReadLine();
 				}
 			} else {
-				System.Threading.Thread.Sleep( secs * 1000 );
+				HEVProgram.WaitForSeconds( _Seconds );
 			}
 #endif
 		}

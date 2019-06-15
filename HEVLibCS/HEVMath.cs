@@ -88,12 +88,12 @@ namespace HEVLib {
 #if UNITY_EDITOR || UNITY_STANDALONE
 			return Mathf.Floor( _Value );
 #else
-			return Math.Floor( _Value );
+			return (float)Math.Floor( _Value );
 #endif
 		}
 
 		public static double Floor( double _Value ) {
-			return Math.Floor( _Value );
+			return (double)Math.Floor( _Value );
 		}
 
 		public static int Min( int _A, int _B ) {

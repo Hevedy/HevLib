@@ -54,6 +54,16 @@ namespace HEVLib {
 
 		private static double Timestamp = CurrentTime();
 
+		/// <summary>Main thread wait for given seconds, max 5 min.</summary>
+		public static void WaitForSeconds( int _Seconds ) {
+			int secs = HEVMath.Clamp( _Seconds, 0, 300 );
+#if UNITY_EDITOR || UNITY_STANDALONE
+			new WaitForSeconds( secs );
+#else
+			System.Threading.Thread.Sleep( secs * 1000 );
+#endif
+		}
+
 		/// <summary>Validate a string or a list of strings, make sure aren't empty, invalid or null.</summary>
 		public static bool FileString( out string _String ) {
 			byte[] bytes = null;
