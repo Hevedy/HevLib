@@ -26,15 +26,16 @@ HEVMathHelpers.cs
 ================================================
 */
 
+using System.Runtime.CompilerServices;
 #if UNITY_EDITOR || UNITY_STANDALONE
 using UnityEngine;
 #else
-using System.Runtime.CompilerServices;
+
 #endif
 
 namespace HEVLib {
 	public static class HEVMathHelpers {
-
+/*
 #if UNITY_EDITOR || UNITY_STANDALONE
 		private static int NonGeneric( bool x ) => 100;
 		private static int NonGeneric( sbyte x ) => 101;
@@ -49,6 +50,8 @@ namespace HEVLib {
 		private static int NonGeneric( double x ) => 110;
 		private static int NonGeneric( decimal x ) => 111;
 #else
+#endif
+*/
 		[MethodImpl( MethodImplOptions.AggressiveInlining )] // Post Net Core 2.0 Optimized
 		private static int Generic<T>( T x ) {
 			if ( typeof( T ) == typeof( bool ) ) return 100;
@@ -65,7 +68,6 @@ namespace HEVLib {
 			else if ( typeof( T ) == typeof( decimal ) ) return 111;
 			else return -1;
 		}
-#endif
 
 		//Add<double>(3.6, 2.12)
 		// Adds

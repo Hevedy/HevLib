@@ -28,11 +28,12 @@ HEVRandom.cs
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
 #if UNITY_EDITOR || UNITY_STANDALONE
 using UnityEngine;
 #else
-using System.Linq;
-using System.Security.Cryptography;
+
 #endif
 
 namespace HEVLib {
@@ -125,15 +126,15 @@ namespace HEVLib {
 			CryptoGenerator.GetBytes( randomNumber );
 
 			double asciiValueOfRandomCharacter = Convert.ToDouble( randomNumber[0] );
-			double multiplier = Math.Max( 0, ( asciiValueOfRandomCharacter / 255d ) - 0.00000000001d );
+			double multiplier = HEVMath.Max( 0, ( asciiValueOfRandomCharacter / 255d ) - 0.00000000001d );
 			int range = _Max - _Min + 1;
-			double randomValueInRange = Math.Floor( multiplier * range );
+			double randomValueInRange = HEVMath.Floor( multiplier * range );
 
 			return (int)( _Min + randomValueInRange );
 		}
 
 		public static int CryptoRandomInt( uint _Length = 1 ) {
-			int length = (int)Math.Max( 1, _Length );
+			int length = (int)HEVMath.Max( 1, _Length );
 			return CryptoRandomInt( 0, ( 10 ^ length ) - 1 );
 		}
 	}

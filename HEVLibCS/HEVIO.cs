@@ -35,10 +35,11 @@ using Newtonsoft.Json;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Reflection;
+using System.Linq;
 #if UNITY_EDITOR || UNITY_STANDALONE
 using UnityEngine;
 #else
-using System.Linq;
+
 #endif
 
 namespace HEVLib {
@@ -105,7 +106,7 @@ namespace HEVLib {
 
 		public static string AssemblyGuidCurrent() {
 			System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-			Object[] attributes = assembly.GetCustomAttributes( typeof( GuidAttribute ), false );
+			System.Object[] attributes = assembly.GetCustomAttributes( typeof( GuidAttribute ), false );
 			if ( attributes.Any() ) { return ( (GuidAttribute)attributes.First() ).Value; }
 			return "";
 		}
@@ -134,9 +135,11 @@ namespace HEVLib {
 
 		public static bool ResourcesTextReadString( string _URL, out string _String ) {
 			bool status = false;
+			string str = "";
 #if HEVSAFE
-			(_String,status) = AssemblyStringRead( _URL );
+			(str,status) = AssemblyStringRead( _URL );
 #endif
+			_String = str;
 			return status;
 		}
 
@@ -445,7 +448,7 @@ namespace HEVLib {
 			if ( !HEVText.TryParse( data[_Section][_Key], out value, false ) ) {
 				value = _Value;
 				if ( _Clamp ) {
-					value = Math.Clamp( value, _Min, _Max );
+					value = HEVMath.Clamp( value, _Min, _Max );
 				}
 				data[_Section][_Key] = value.ToString();
 				status = false;
@@ -454,7 +457,7 @@ namespace HEVLib {
 					status = true;
 				} else {
 					if ( _Clamp ) {
-						value = Math.Clamp( value, _Min, _Max );
+						value = HEVMath.Clamp( value, _Min, _Max );
 						status = false;
 					} else {
 						status = true;

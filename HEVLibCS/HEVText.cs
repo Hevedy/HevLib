@@ -29,11 +29,12 @@ HEVText.cs
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
 #if UNITY_EDITOR || UNITY_STANDALONE
 using UnityEngine;
 #else
-using System.Linq;
-using System.Security.Cryptography;
+
 #endif
 
 namespace HEVLib {
@@ -76,12 +77,12 @@ namespace HEVLib {
 			if ( !int.TryParse( str, out value ) ) { _Result = value; return false; }
 
 			if( _Clamp ) {
-				int min = Math.Min( _Min, _Max );
-				int max = Math.Max( _Min, _Max );
+				int min = HEVMath.Min( _Min, _Max );
+				int max = HEVMath.Max( _Min, _Max );
 				if ( min == max ) {
 					value = max;
 				} else {
-					value = Math.Clamp( value, min, max );
+					value = HEVMath.Clamp( value, min, max );
 				}
 			}
 			_Result = value;
@@ -160,10 +161,10 @@ namespace HEVLib {
 			} else if ( _StartLine == -1 ) {
 				lines = new string[] { lines[lastLine] };
 			} else {
-				int startLine = Math.Max( _StartLine, 0 );
-				startLine = Math.Min( startLine, lastLine );
-				int endLine = Math.Min( _EndLine, lastLine );
-				endLine = Math.Max( _StartLine, _EndLine );
+				int startLine = HEVMath.Max( _StartLine, 0 );
+				startLine = HEVMath.Min( startLine, lastLine );
+				int endLine = HEVMath.Min( _EndLine, lastLine );
+				endLine = HEVMath.Max( _StartLine, _EndLine );
 				List<string> linesList = new List<string>();
 				for ( int i = startLine; i < endLine; i++ ) {
 					linesList.Add( lines[i] );

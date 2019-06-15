@@ -84,12 +84,85 @@ namespace HEVLib {
 			return true;
 		}
 
+		public static float Floor( float _Value ) {
+#if UNITY_EDITOR || UNITY_STANDALONE
+			return Mathf.Floor( _Value );
+#else
+			return Math.Floor( _Value );
+#endif
+		}
+
+		public static double Floor( double _Value ) {
+			return Math.Floor( _Value );
+		}
+
+		public static int Min( int _A, int _B ) {
+#if UNITY_EDITOR || UNITY_STANDALONE
+			return Mathf.Min( _A, _B );
+#else
+			return Math.Min( _A, _B );
+#endif
+		}
+
+		public static float Min( float _A, float _B ) {
+#if UNITY_EDITOR || UNITY_STANDALONE
+			return Mathf.Min( _A, _B );
+#else
+			return Math.Min( _A, _B );
+#endif
+		}
+
+		public static double Min( double _A, double _B ) {
+			return Math.Min( _A, _B );
+		}
+
+		public static int Max( int _A, int _B ) {
+#if UNITY_EDITOR || UNITY_STANDALONE
+			return Mathf.Max( _A, _B );
+#else
+			return Math.Max( _A, _B );
+#endif
+		}
+
+		public static float Max( float _A, float _B ) {
+#if UNITY_EDITOR || UNITY_STANDALONE
+			return Mathf.Max( _A, _B );
+#else
+			return Math.Max( _A, _B );
+#endif
+		}
+
+		public static double Max( double _A, double _B ) {
+			return Math.Max( _A, _B );
+		}
+
+		public static int Clamp( int _Value, int _Min, int _Max ) {
+#if UNITY_EDITOR || UNITY_STANDALONE
+			return Mathf.Clamp( _Value, _Min, _Max );
+#else
+			return Math.Clamp( _Value, _Min, _Max );
+#endif
+		}
+
+		public static float Clamp( float _Value, float _Min, float _Max ) {
+#if UNITY_EDITOR || UNITY_STANDALONE
+			return Mathf.Clamp( _Value, _Min, _Max );
+#else
+			return Math.Clamp( _Value, _Min, _Max );
+#endif
+		}
+
 		public static int FloorToInt( float _Value ) {
+#if UNITY_EDITOR || UNITY_STANDALONE
+			return Mathf.FloorToInt( _Value );
+#else
 			return (int)Math.Floor( _Value );
+#endif
 		}
 
 		public static int FloorToInt( double _Value ) {
 			return (int)Math.Floor( _Value );
+
 		}
 
 		public static int FloorToInt( decimal _Value ) {
@@ -97,7 +170,11 @@ namespace HEVLib {
 		}
 
 		public static int TruncateToInt( float _Value ) {
+#if UNITY_EDITOR || UNITY_STANDALONE
+			return Mathf.RoundToInt( _Value );
+#else
 			return (int)Math.Truncate( _Value );
+#endif
 		}
 
 		public static int TruncateToInt( double _Value ) {
@@ -111,7 +188,11 @@ namespace HEVLib {
 		// Integral.Fractional
 		// Returns signed fractional part of a float.
 		public static float Fractional( float _Value ) {
+#if UNITY_EDITOR || UNITY_STANDALONE
+			return ( _Value - Mathf.Round( _Value ) );
+#else
 			return ( _Value - (float)Math.Truncate( _Value ) );
+#endif
 		}
 
 		// Returns signed fractional part of a double.
@@ -138,7 +219,11 @@ namespace HEVLib {
 
 		// Returns the fractional part of a float.
 		public static float Frac( float _Value ) {
+#if UNITY_EDITOR || UNITY_STANDALONE
+			return ( _Value - Mathf.Round( _Value ) );
+#else
 			return ( _Value - (float)Math.Floor( _Value ) );
+#endif
 		}
 
 		// Returns the fractional part of a double.
@@ -172,7 +257,11 @@ namespace HEVLib {
 		}
 
 		public static int Count( int _Value ) {
+#if UNITY_EDITOR || UNITY_STANDALONE
+			return _Value == 0 ? 1 : FloorToInt( Mathf.Log10( Mathf.Abs( _Value ) ) ) + 1;
+#else
 			return _Value == 0 ? 1 : FloorToInt( Math.Log10( Math.Abs( _Value ) ) ) + 1;
+#endif
 		}
 
 		public static int Count( long _Value ) {
@@ -180,7 +269,11 @@ namespace HEVLib {
 		}
 
 		public static int Count( float _Value ) {
+#if UNITY_EDITOR || UNITY_STANDALONE
+			return _Value == 0 ? 1 : FloorToInt( Mathf.Log10( Mathf.Abs( _Value ) ) );
+#else
 			return _Value == 0 ? 1 : FloorToInt( Math.Log10( Math.Abs( _Value ) ) );
+#endif
 		}
 
 		public static int Count( double _Value ) {

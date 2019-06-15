@@ -28,6 +28,7 @@ HEVConsole.cs
 
 using System;
 #if UNITY_EDITOR || UNITY_STANDALONE
+using System.Collections;
 using UnityEngine;
 #else
 #endif
@@ -100,7 +101,7 @@ namespace HEVLib {
 
 		/// <summary>Print on console an empty line jump or line break.</summary>
 		public static void LineJump( int _Lines = 1 ) {
-			int lines = Math.Min( _Lines, 10 );
+			int lines = HEVMath.Min( _Lines, 10 );
 #if UNITY_EDITOR || UNITY_STANDALONE
 #else
 			for ( int i = 0; i < lines; i++ ) {
@@ -113,9 +114,9 @@ namespace HEVLib {
 		/// <summary>Wait for imput or wait for time on thread call.</summary>
 		public static void Wait( int _Seconds = 5, bool _AnyKey = false ) {
 			// Don't allow more than 5 min
-			int secs = Math.Clamp( _Seconds, 1, 300 );
+			int secs = HEVMath.Clamp( _Seconds, 1, 300 );
 #if UNITY_EDITOR || UNITY_STANDALONE
-			WaitForSeconds(secs);
+			new WaitForSeconds( secs );
 #else
 			if ( _Seconds < 1 ) {
 				if ( _AnyKey ) {
