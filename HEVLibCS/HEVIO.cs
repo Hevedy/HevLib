@@ -419,5 +419,65 @@ namespace HEVLib {
 			}
 			return true;
 		}
+
+		// Returns false if need to save the file
+		public static bool DataINIReadWrite( this IniData _Data, string _Section, string _Key, ref bool _Value ) {
+			IniData data = _Data;
+			bool status = false;
+			bool value = _Value;
+			if ( !HEVText.TryParse( data[_Section][_Key], out value ) ) {
+				value = _Value;
+				data[_Section][_Key] = value.ToString();
+				status = false;
+			} else {
+				status = true;
+			}
+			_Data = data;
+			_Value = value;
+			return status;
+		}
+
+		public static bool DataINIReadWrite( this IniData _Data, string _Section, string _Key, ref int _Value, bool _Clamp = false, int _Min = 0, int _Max = 9999 ) {
+			IniData data = _Data;
+			bool status = false;
+			int value = _Value;
+			if ( !HEVText.TryParse( data[_Section][_Key], out value, false ) ) {
+				value = _Value;
+				if ( _Clamp ) {
+					value = Math.Clamp( value, _Min, _Max );
+				}
+				data[_Section][_Key] = value.ToString();
+				status = false;
+			} else {
+				if ( HEVMath.Validate( _Min, _Max, value ) ) {
+					status = true;
+				} else {
+					if ( _Clamp ) {
+						value = Math.Clamp( value, _Min, _Max );
+						status = false;
+					} else {
+						status = true;
+					}
+				}
+			}
+			_Data = data;
+			_Value = value;
+			return status;
+		}
+
+		public static bool DataINIReadWrite( this IniData _Data, string _Section, string _Key, ref string _Value ) {
+			IniData data = _Data;
+			bool status = false;
+			string value = _Value;
+			if ( !HEVText.StringValidate( data[_Section][_Key] ) ) {
+				data[_Section][_Key] = _Value;
+				status = false;
+			} else {
+				status = true;
+			}
+			_Data = data;
+			_Value = value;
+			return status;
+		}
 	}
 }

@@ -38,8 +38,14 @@ namespace HEVLib {
 
 	public static class HEVConsole {
 
-		public static void Print( string Text = "Hello World!", EPrintType _Type = EPrintType.eDefault ) {
+		public static void Print( string Text = "Hello World!", EPrintType _Type = EPrintType.eDefault, bool _DebugOnly = false ) {
 			string msg = "";
+#if DEBUG || UNITY_EDITOR
+
+#else
+			if( _DebugOnly ) { return; }
+#endif
+
 #if UNITY_EDITOR || UNITY_STANDALONE
 #else
 			ConsoleColor lastColor = Console.ForegroundColor;

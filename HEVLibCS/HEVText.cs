@@ -27,13 +27,13 @@ HEVText.cs
 */
 
 using System;
+using System.Text;
 using System.Collections.Generic;
 #if UNITY_EDITOR || UNITY_STANDALONE
 using UnityEngine;
 #else
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 #endif
 
 namespace HEVLib {
@@ -56,12 +56,63 @@ namespace HEVLib {
 			return true;
 		}
 
+		public static bool TryParse( string _String, out bool _Result ) {
+			if ( !StringValidate( _String ) ) { _Result = false; return false; }
+			string str = _String.ToLower();
+			if ( str == "0" || str == "f" || str == "false" ) {
+				_Result = false; return true;
+			} else if ( str == "1" || str == "t" || str == "true" ) {
+				_Result = true; return true;
+			} else {
+				_Result = false; return false;
+			}
+		}
+
+		public static bool TryParse( string _String, out int _Result, bool _Clamp = false, int _Min = 0, int _Max = 9999 ) {
+			int value = -1;
+			if ( !StringValidate( _String ) ) { _Result = value; return false; }
+			string str = _String.ToLower();
+			if ( !int.TryParse( str, out value ) ) { _Result = value; return false; }
+
+			if( _Clamp ) {
+				int min = Math.Min( _Min, _Max );
+				int max = Math.Max( _Min, _Max );
+				if ( min == max ) {
+					value = max;
+				} else {
+					value = Math.Clamp( value, min, max );
+				}
+			}
+			_Result = value;
+			return true;
+			/* Sensitive
+			if ( HEVMath.Validate( _Min, _Max, value ) ) {
+				_Result = value;
+				return true;
+			} else {
+				value = Math.Clamp( value, _Min, _Max );
+				_Result = value;
+				return false;
+			}
+			*/
+		}
+
+		public static bool TryParseHEV( this string _String, out bool _Result ) {
+			return TryParse( _String, out _Result );
+		}
+
+		public static bool TryParseHEV( this string _String, out int _Result, bool _Clamp = false, int _Min = 0, int _Max = 9999 ) {
+			return TryParse( _String, out _Result, _Clamp, _Min, _Max );
+		}
+
 		public static string StringArrayToString( string[] _Array, string _Separator = "\r\n" ) { //\r\n
+			if ( _Array.Length < 1 ) return null;
 			string result = string.Join( _Separator, _Array );
 			return result;
 		}
 
 		public static string[] StringToStringArray( string _String, string _Separator = ",", bool _ClearJumps = true ) {
+			if ( !StringValidate( _String ) ) return null;
 			string[] result = _String.Split( _Separator.ToCharArray() );
 			if ( _ClearJumps ) {
 				for ( int i = 0; i < result.Length; i++ ) {
@@ -72,6 +123,7 @@ namespace HEVLib {
 		}
 
 		public static List<string> StringToStringList( string _String, string _Separator = ",", bool _ClearJumps = true ) {
+			if ( !StringValidate( _String ) ) return null;
 			string[] result = _String.Split( _Separator.ToCharArray() );
 			if( _ClearJumps ) {
 				for ( int i = 0; i < result.Length; i++ ) {
