@@ -39,7 +39,7 @@ using System.Security.Cryptography;
 namespace HEVLib {
 	public static class HEVText {
 
-		private static bool StringIsNullOrInvalid( string _String ) {
+		private static bool IsNullOrInvalid( string _String ) {
 			if ( string.IsNullOrEmpty( _String ) || _String == " " || _String == "  " || _String == "   " || _String == "    " ) {
 				return true;
 			} else {
@@ -48,9 +48,9 @@ namespace HEVLib {
 		}
 
 		/// <summary>Validate a string or a list of strings, make sure aren't empty, invalid or null.</summary>
-		public static bool StringValidate( params string[] _StringList ) {
+		public static bool Validate( params string[] _StringList ) {
 			foreach ( string str in _StringList ) {
-				if ( StringIsNullOrInvalid( str ) ) {
+				if ( IsNullOrInvalid( str ) ) {
 					return false;
 				}
 			}
@@ -58,7 +58,7 @@ namespace HEVLib {
 		}
 
 		public static bool TryParse( string _String, out bool _Result ) {
-			if ( !StringValidate( _String ) ) { _Result = false; return false; }
+			if ( !Validate( _String ) ) { _Result = false; return false; }
 			string str = _String.ToLower();
 			if ( str == "0" || str == "f" || str == "false" ) {
 				_Result = false; return true;
@@ -71,7 +71,7 @@ namespace HEVLib {
 
 		public static bool TryParse( string _String, out int _Result, bool _Clamp = false, int _Min = 0, int _Max = 9999 ) {
 			int value = -1;
-			if ( !StringValidate( _String ) ) { _Result = value; return false; }
+			if ( !Validate( _String ) ) { _Result = value; return false; }
 			string str = _String.ToLower();
 			if ( !int.TryParse( str, out value ) ) { _Result = value; return false; }
 
@@ -106,14 +106,20 @@ namespace HEVLib {
 			return TryParse( _String, out _Result, _Clamp, _Min, _Max );
 		}
 
-		public static string StringArrayToString( string[] _Array, string _Separator = "\r\n" ) { //\r\n
+		public static string ListToString( List<string> _Array, string _Separator = "\r\n" ) { //\r\n
+			if ( _Array.Count < 1 ) return null;
+			string result = string.Join( _Separator, _Array );
+			return result;
+		}
+
+		public static string ArrayToString( string[] _Array, string _Separator = "\r\n" ) { //\r\n
 			if ( _Array.Length < 1 ) return null;
 			string result = string.Join( _Separator, _Array );
 			return result;
 		}
 
-		public static string[] StringToStringArray( string _String, string _Separator = ",", bool _ClearJumps = true ) {
-			if ( !StringValidate( _String ) ) return null;
+		public static string[] ToStringArray( string _String, string _Separator = ",", bool _ClearJumps = true ) {
+			if ( !Validate( _String ) ) return null;
 			string[] result = _String.Split( _Separator.ToCharArray() );
 			if ( _ClearJumps ) {
 				for ( int i = 0; i < result.Length; i++ ) {
@@ -123,8 +129,8 @@ namespace HEVLib {
 			return result;
 		}
 
-		public static List<string> StringToStringList( string _String, string _Separator = ",", bool _ClearJumps = true ) {
-			if ( !StringValidate( _String ) ) return null;
+		public static List<string> ToStringList( string _String, string _Separator = ",", bool _ClearJumps = true ) {
+			if ( !Validate( _String ) ) return null;
 			string[] result = _String.Split( _Separator.ToCharArray() );
 			if( _ClearJumps ) {
 				for ( int i = 0; i < result.Length; i++ ) {
@@ -169,7 +175,7 @@ namespace HEVLib {
 			where T : struct, IConvertible {
 			string value = _Prefix + _Value + _Suffix;
 			if ( !typeof( T ).IsEnum ) throw new ArgumentException( "Error - " + value + " T must be an enumerated type." );
-			if ( HEVText.StringValidate( value ) ) return (_DefaultValue, false);
+			if ( !Validate( value ) ) return (_DefaultValue, false);
 
 			foreach ( T item in Enum.GetValues( typeof( T ) ) ) {
 				if ( item.ToString().ToLower().Equals( value.Trim().ToLower() ) ) return (item, true);

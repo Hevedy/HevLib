@@ -47,7 +47,7 @@ namespace HEVLib {
 		public static readonly string Name = Assembly.GetExecutingAssembly().GetName().Name;
 		public static readonly string NameFull = Assembly.GetExecutingAssembly().GetName().FullName;
 		// System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace; / typeof( HEVProgram ).Namespace;
-		public static readonly string Namespace = HEVText.StringValidate( CUSTOM_NAMESPACE ) ? CUSTOM_NAMESPACE : Name;
+		public static readonly string Namespace = HEVText.Validate( CUSTOM_NAMESPACE ) ? CUSTOM_NAMESPACE : Name;
 		public static readonly string DirFile = Assembly.GetEntryAssembly().Location;
 		public static readonly string DirDocuments = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments );
 		public static readonly bool IsDLL = HEVIO.FileIsLibrary(DirFile);
@@ -106,7 +106,7 @@ namespace HEVLib {
 			//( (GuidAttribute)Assembly.GetExecutingAssembly().GetCustomAttributes( typeof( GuidAttribute ), false ).GetValue( 0 ) ).Value;
 			string appGuid = HEVIO.AssemblyGuidCurrent();
 			string mutexId = string.Format( "Global\\{{{0}}}", appGuid );
-			if ( HEVText.StringValidate(_CustomID) ) {
+			if ( HEVText.Validate(_CustomID) ) {
 				mutexId = _CustomID;
 			}
 			mutex = new Mutex( false, mutexId );

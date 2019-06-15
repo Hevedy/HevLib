@@ -149,7 +149,7 @@ namespace HEVLib {
 			(data, status) = AssemblyStringRead( _URL );
 #endif
 			if ( !status ) { _Strings = lines; return false; }
-			lines = HEVText.StringToStringArray( data, "\n" );
+			lines = HEVText.ToStringArray( data, "\n" );
 
 			(lines, status) = HEVText.GetStringArrayLines( lines, _StartLine, _EndLine );
 			if ( !status ) { _Strings = lines; return false; }
@@ -161,7 +161,7 @@ namespace HEVLib {
 			string[] fileLines = null;
 			bool status = false;
 			(fileLines, status) = FileTextReadStringArray( _URL );
-			return (HEVText.StringArrayToString( fileLines ), true);
+			return (HEVText.ArrayToString( fileLines ), true);
 		}
 
 		public static (string[], bool) FileTextReadStringArray( string _URL, int _StartLine = 0, int _EndLine = -1 ) {
@@ -170,7 +170,7 @@ namespace HEVLib {
 			if ( !FileValidate( _URL ) ) {
 				return (lines, false);
 			}
-			if ( !HEVText.StringValidate( System.IO.File.ReadAllText( _URL ) ) ) {
+			if ( !HEVText.Validate( System.IO.File.ReadAllText( _URL ) ) ) {
 				HEVConsole.Print( "FileTextRead() Invalid URL " + _URL, EPrintType.eWarning );
 				lines = new string[] { "Empty" };
 				return (lines, false);
@@ -184,7 +184,7 @@ namespace HEVLib {
 
 
 		public static bool FileTextWriteString( string _URL, string _Text, bool _Replace = true ) {
-			string[] fileLines = HEVText.StringToStringArray(_Text, "\n"); //\r\n Count as double
+			string[] fileLines = HEVText.ToStringArray(_Text, "\n"); //\r\n Count as double
 			return FileTextWriteStringArray( _URL, fileLines, _Replace );
 		}  
 
@@ -276,7 +276,7 @@ namespace HEVLib {
 			string fileText = _String;
 			bool status = false;
 
-			if ( !HEVText.StringValidate( _String ) ) {
+			if ( !HEVText.Validate( _String ) ) {
 				HEVConsole.Print( "JSONReadClass() Empty string.", EPrintType.eWarning);
 				return (localClass, false);
 			}
@@ -290,7 +290,7 @@ namespace HEVLib {
 			string fileText = _String;
 			bool status = false;
 
-			if ( !HEVText.StringValidate( _String ) ) {
+			if ( !HEVText.Validate( _String ) ) {
 				HEVConsole.Print( "JSONReadClassList() Empty string.", EPrintType.eWarning );
 				return (localClass, false);
 			}
@@ -331,7 +331,7 @@ namespace HEVLib {
 		}
 
 		public static (IniData, bool) INIRead( string _String ) {
-			if ( !HEVText.StringValidate( _String ) ) {
+			if ( !HEVText.Validate( _String ) ) {
 				HEVConsole.Print( "INIRead() Empty string.", EPrintType.eError );
 				return (null, false);
 			}
@@ -425,11 +425,12 @@ namespace HEVLib {
 			IniData data = _Data;
 			bool status = false;
 			bool value = _Value;
-			if ( !HEVText.TryParse( data[_Section][_Key], out value ) ) {
-				value = _Value;
+			bool dataValue = _Value;
+			if ( !HEVText.TryParse( data[_Section][_Key], out dataValue ) ) {
 				data[_Section][_Key] = value.ToString();
 				status = false;
 			} else {
+				value = dataValue;
 				status = true;
 			}
 			_Data = data;
@@ -469,14 +470,41 @@ namespace HEVLib {
 			IniData data = _Data;
 			bool status = false;
 			string value = _Value;
-			if ( !HEVText.StringValidate( data[_Section][_Key] ) ) {
-				data[_Section][_Key] = _Value;
-				status = false;
+			string dataValue = data[_Section][_Key];
+			if ( !HEVText.Validate( dataValue ) ) {
+				if ( value == "" && dataValue == "" ) {
+					status = true;
+				} else {
+					data[_Section][_Key] = value;
+					status = false;
+				}
 			} else {
+				value = dataValue;
 				status = true;
 			}
 			_Data = data;
 			_Value = value;
+			return status;
+		}
+
+		public static bool DataINIReadWrite( this IniData _Data, string _Section, string _Key, ref List<string> _Value ) {
+			IniData data = _Data;
+			bool status = false;
+			string value = HEVText.ListToString( _Value, "," );
+			string dataValue = data[_Section][_Key];
+			if ( !HEVText.Validate( dataValue ) ) {
+				if ( value == "" && dataValue == "" ) {
+					status = true;
+				} else {
+					data[_Section][_Key] = value;
+					status = false;
+				}
+			} else {
+				value = dataValue;
+				status = true;
+			}
+			_Data = data;
+			_Value = HEVText.ToStringList(value, ",", true);
 			return status;
 		}
 	}
