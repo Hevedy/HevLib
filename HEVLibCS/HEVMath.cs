@@ -397,31 +397,31 @@ namespace HEVLib {
 			return 1.0m - _Value;
 		}
 
-		public static sbyte Invert( sbyte _Value ) {
+		public static sbyte Negate( sbyte _Value ) {
 			return (sbyte)(_Value * -1);
 		}
 
-		public static short Invert( short _Value ) {
+		public static short Negate( short _Value ) {
 			return (short)(_Value * -1);
 		}
 
-		public static int Invert( int _Value ) {
+		public static int Negate( int _Value ) {
 			return _Value * -1;
 		}
 
-		public static long Invert( long _Value ) {
+		public static long Negate( long _Value ) {
 			return _Value * -1;
 		}
 
-		public static float Invert( float _Value ) {
+		public static float Negate( float _Value ) {
 			return _Value * -1.0f;
 		}
 
-		public static double Invert( double _Value ) {
+		public static double Negate( double _Value ) {
 			return _Value * -1.0;
 		}
 
-		public static decimal Invert( decimal _Value ) {
+		public static decimal Negate( decimal _Value ) {
 			return _Value * -1.0m;
 		}
 
