@@ -370,30 +370,58 @@ namespace HEVLib {
 		}
 
 		public static sbyte OneMinus( sbyte _Value ) {
-			return (sbyte)(_Value * -1);
+			return (sbyte)( 1 - _Value );
 		}
 
 		public static short OneMinus( short _Value ) {
-			return (short)(_Value * -1);
+			return (short)( 1 - _Value );
 		}
 
 		public static int OneMinus( int _Value ) {
-			return _Value * -1;
+			return 1 - _Value;
 		}
 
 		public static long OneMinus( long _Value ) {
-			return _Value * -1;
+			return 1 - _Value;
 		}
 
 		public static float OneMinus( float _Value ) {
-			return _Value * -1.0f;
+			return 1.0f - _Value;
 		}
 
 		public static double OneMinus( double _Value ) {
-			return _Value * -1.0;
+			return 1.0 - _Value;
 		}
 
 		public static decimal OneMinus( decimal _Value ) {
+			return 1.0m - _Value;
+		}
+
+		public static sbyte Invert( sbyte _Value ) {
+			return (sbyte)(_Value * -1);
+		}
+
+		public static short Invert( short _Value ) {
+			return (short)(_Value * -1);
+		}
+
+		public static int Invert( int _Value ) {
+			return _Value * -1;
+		}
+
+		public static long Invert( long _Value ) {
+			return _Value * -1;
+		}
+
+		public static float Invert( float _Value ) {
+			return _Value * -1.0f;
+		}
+
+		public static double Invert( double _Value ) {
+			return _Value * -1.0;
+		}
+
+		public static decimal Invert( decimal _Value ) {
 			return _Value * -1.0m;
 		}
 
