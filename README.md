@@ -1,8 +1,8 @@
 # HevLib
 [Hevedy Library][ProjectURL] for C# (Net Core &amp; Net Framework &amp; Unity 2019) and C++ for Unreal Engine 4
 
-Author: Hevedy. 
-Version: 0.4.6
+Author: Hevedy\
+Version: 0.4.6\
 
 
 ## C#
@@ -24,6 +24,7 @@ Version: 0.4.6
  * Text reader and writer with helpers.
  * INI reader and writer with helpers.
  * JSON reader and writer with helpers.
+
 
 
 ### Installation
@@ -52,6 +53,7 @@ private static readonly string CUSTOM_NAMESPACE = "YourRootNamespace";
 
 
 
+
 ## C++ (WIP)
 
 ### Core
@@ -65,6 +67,7 @@ private static readonly string CUSTOM_NAMESPACE = "YourRootNamespace";
  * File tools.
  * Text reader and writer with helpers.
  * INI reader and writer with helpers.
+
 
 
 ### Installation
