@@ -39,15 +39,12 @@ using UnityEngine;
 
 namespace HEVLib {
 	class HEVProgram {
-		// You must set here you project default namespace if is different from build one otherwise expect crashes.
-		// After define this make sure you add "HEVSAFE" to the compiler in order to unlock unsafe parts.
-		private static readonly string CUSTOM_NAMESPACE = ""; //EDIT THIS
 
 		public static readonly string Dir = Environment.CurrentDirectory;
 		public static readonly string Name = Assembly.GetExecutingAssembly().GetName().Name;
 		public static readonly string NameFull = Assembly.GetExecutingAssembly().GetName().FullName;
 		// System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace; / typeof( HEVProgram ).Namespace;
-		public static readonly string Namespace = HEVText.Validate( CUSTOM_NAMESPACE ) ? CUSTOM_NAMESPACE : Name;
+		public static readonly string Namespace = HEVText.Validate( HEVInfo.CUSTOM_NAMESPACE ) ? HEVInfo.CUSTOM_NAMESPACE : Name;
 		public static readonly string DirFile = Assembly.GetEntryAssembly().Location;
 		public static readonly string DirDocuments = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments );
 		public static readonly bool IsDLL = HEVIO.FileIsLibrary(DirFile);

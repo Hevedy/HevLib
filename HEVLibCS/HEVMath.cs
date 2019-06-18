@@ -509,6 +509,20 @@ namespace HEVLib {
 			return Lerp( curIndexVal, nextIndexVal, curTimeFrac );
 		}
 
+		public static double LerpList( float _Time, List<double> _Array, out double _TimeMax ) {
+			int count = _Array.Count;
+			if ( count < 1 ) { _TimeMax = 0.0f; return 0; }
+			float calTime = ( count - 1 ) * 1.0f;
+			_TimeMax = calTime;
+			float curTime = Min( Max( _Time, 0.0f ), calTime );
+			float curTimeFrac = Fractional( curTime );
+			int curIndex = FloorToInt( curTime );
+			double curIndexVal = _Array[curIndex];
+			int nextIndex = Clamp( curIndex + 1, 0, count - 1 );
+			double nextIndexVal = _Array[nextIndex];
+			return Lerp( curIndexVal, nextIndexVal, curTimeFrac );
+		}
+
 		public static float BoxPerimeter( float _XSize, float _YSize ) {
 			return _XSize * 2 + _YSize * 2;
 		}
@@ -523,98 +537,6 @@ namespace HEVLib {
 
 		public static float Distance( float _AX, float _AY, float _BX, float _BY ) {
 			return (float)Math.Sqrt( Math.Pow( ( _BX - _AX ), 2 ) + Math.Pow( ( _BY - _AY ), 2 ) );
-		}
-
-		public static int CalculateHexGrid( float _XSize, float _YSize, float _XLocation, float _YLocation, bool _Center, float _Radius, bool _Hex,
-			out int _HexRows, out int _HexColums, out float _HexXSize, out float _HexYSize, out float _HexDistance, out float _HexOverlap, 
-			out List<float> _HexLocationX, out List<float> _HexLocationY ) {
-			float xM = _XSize / 2;
-			float yM = _YSize / 2;
-			float hexSize = _Radius * 2;
-			float hexDistance = BoxSide( hexSize );
-			float hexOverlap = hexSize - hexDistance;
-			int hexXNum = FloorToInt((( _XSize / hexDistance ) + ( _XSize % hexDistance )));
-			int hexYNum = FloorToInt((( _YSize / hexDistance ) + ( _YSize % hexDistance )));
-			float hexXSize = hexXNum * hexDistance;
-			float hexYSize = hexYNum * hexDistance;
-			float fXLocation = _XLocation;
-			float fYLocation = _YLocation;
-			if ( !_Center ) {
-				fXLocation = ( fXLocation - xM );
-				fYLocation = ( fYLocation - yM );
-			} else {
-				fXLocation = fXLocation - ( hexXSize / 2 );
-				fYLocation = fYLocation - ( hexYSize / 2 );
-			}
-
-			float lXDefault = 0;
-			float lYDefault = 0;
-			float lX = lXDefault;
-			float lY = lYDefault;
-
-			List<float> hexLocationX = new List<float>( hexXNum );
-			List<float> hexLocationY = new List<float>( hexYNum );
-
-			bool sw = false;
-			for ( int y = 0; y < hexXNum; y++ ) {
-				if ( sw ) {
-					lX = lXDefault;
-				} else {
-					lX = hexDistance / 2;
-				}
-				for ( int x = 0; x < hexYNum; x++ ) {
-					hexLocationX[x] = lX - (hexDistance / 2);
-					hexLocationY[y] = lY - (hexDistance / 2);
-					lX = lX + hexDistance;
-				}
-				if( _Hex ) sw = !sw;
-				lY = lY + hexDistance;
-			}
-
-			_HexRows = hexXNum;
-			_HexColums = hexYNum;
-			_HexXSize = hexXSize;
-			_HexYSize = hexYSize;
-			_HexDistance = hexDistance;
-			_HexOverlap = hexOverlap;
-
-			_HexLocationX = hexLocationX;
-			_HexLocationY = hexLocationY;
-
-			return (int)(hexXNum * hexYNum);
-		}
-
-		public static int SimulateHexGrid( float _GridXSize, float _GridYSize, float _GridXLocation, float _GridYLocation, bool _GridCenter, float _HexRadius,
-			float _CurXLocation, float _CurYLocation, out float _HexXLocation, out float _HexYLocation, out float _Distance, bool _Hex = true ) {
-
-			int hexRows = 0;
-			int hexColums = 0;
-			float hexXSize = 0;
-			float hexYSize = 0;
-			float hexDistance = 0;
-			float hexOverlap = 0;
-			List<float> hexLocationX; 
-			List<float> hexLocationY;
-
-			int hexNum = CalculateHexGrid( _GridXSize, _GridYSize, _GridXLocation, _GridYLocation, _GridCenter, _HexRadius, _Hex,
-			out hexRows, out hexColums, out hexXSize, out hexYSize, out hexDistance, out hexOverlap, out hexLocationX, out hexLocationY );
-
-			float distance = Distance( hexLocationX[0], hexLocationY[0], _CurXLocation, _CurYLocation );
-			int index = 0;
-			float distCalc;
-			for ( int i = 0; i < hexLocationX.Count; i++ ) {
-				distCalc = Distance( hexLocationX[i], hexLocationY[i], _CurXLocation, _CurYLocation );
-				if( distCalc < distance ) {
-					distance = distCalc;
-					index = i;
-				}
-			}
-
-			_HexXLocation = hexLocationX[index];
-			_HexYLocation = hexLocationY[index];
-			_Distance = distance;
-
-			return index;
 		}
 
 		public static sbyte Closer( sbyte _Value, sbyte _A, sbyte _B ) {
@@ -696,6 +618,32 @@ namespace HEVLib {
 		* @param	Optional pointer for returning the index of the closer element, if multiple closer elements the first index is returned
 		* @return	The closer value found in the array or default value if the array was empty or can't find a correct value
 		*/
+		public static int Closer( int _Reference, List<int> _Values, bool _NotEqual, out int _CloserIndex ) {
+			if ( _Values.Count == 0 ) {
+				_CloserIndex = 0;
+				return 0;
+			}
+
+			int curCloser = ( ( _Reference - _Values[0] ) >= 0 ) ? ( _Reference - _Values[0] ) : -( _Reference - _Values[0] );
+			int curCloserIndex = 0;
+			if ( curCloser == 0 && _NotEqual ) {
+				curCloserIndex = -1;
+			}
+
+			for ( int v = 1; v < _Values.Count; ++v ) {
+				int value = ( ( _Reference - _Values[v] ) >= 0 ) ? ( _Reference - _Values[v] ) : -( _Reference - _Values[v] );
+				if ( value < curCloser ) {
+					if ( !_NotEqual || ( _NotEqual && value != 0f ) ) {
+						curCloser = value;
+						curCloserIndex = v;
+					}
+				}
+			}
+
+			_CloserIndex = curCloserIndex == -1 ? 0 : curCloserIndex;
+			return _Values.Count == 0 ? 0 : _Values[curCloserIndex == -1 ? 0 : curCloserIndex];
+		}
+
 		public static float Closer( float _Reference, List<float> _Values, bool _NotEqual, out int _CloserIndex ) {
 			if ( _Values.Count == 0 ) {
 				_CloserIndex = 0;
@@ -722,6 +670,32 @@ namespace HEVLib {
 			return _Values.Count == 0 ? 0 : _Values[curCloserIndex == -1 ? 0 : curCloserIndex];
 		}
 
+		public static double Closer( float _Reference, List<double> _Values, bool _NotEqual, out int _CloserIndex ) {
+			if ( _Values.Count == 0 ) {
+				_CloserIndex = 0;
+				return 0;
+			}
+
+			double curCloser = ( ( _Reference - _Values[0] ) >= 0 ) ? ( _Reference - _Values[0] ) : -( _Reference - _Values[0] );
+			int curCloserIndex = 0;
+			if ( curCloser == 0 && _NotEqual ) {
+				curCloserIndex = -1;
+			}
+
+			for ( int v = 1; v < _Values.Count; ++v ) {
+				double value = ( ( _Reference - _Values[v] ) >= 0 ) ? ( _Reference - _Values[v] ) : -( _Reference - _Values[v] );
+				if ( value < curCloser ) {
+					if ( !_NotEqual || ( _NotEqual && value != 0f ) ) {
+						curCloser = value;
+						curCloserIndex = v;
+					}
+				}
+			}
+
+			_CloserIndex = curCloserIndex == -1 ? 0 : curCloserIndex;
+			return _Values.Count == 0 ? 0 : _Values[curCloserIndex == -1 ? 0 : curCloserIndex];
+		}
+
 		/**
 		* Further number to given of Array
 		* @param	Array of templated type
@@ -729,10 +703,30 @@ namespace HEVLib {
 		* @param	Optional pointer for returning the index of the further element, if multiple further elements the first index is returned
 		* @return	The further value found in the array or default value if the array was empty
 		*/
+		public static int Further( int _Reference, List<int> _Values, out int _FurtherIndex ) {
+			if ( _Values.Count == 0 ) {
+				_FurtherIndex = 0;
+				return 0;
+			}
+
+			int curFurther = ( ( _Reference - _Values[0] ) >= 0 ) ? ( _Reference - _Values[0] ) : -( _Reference - _Values[0] );
+			int curFurtherIndex = 0;
+			for ( int v = 1; v < _Values.Count; ++v ) {
+				int value = ( ( _Reference - _Values[v] ) >= 0 ) ? ( _Reference - _Values[v] ) : -( _Reference - _Values[v] );
+				if ( curFurther < value ) {
+					curFurther = value;
+					curFurtherIndex = v;
+				}
+			}
+
+			_FurtherIndex = curFurtherIndex == -1 ? 0 : curFurtherIndex;
+			return _Values.Count == 0 ? 0 : _Values[curFurtherIndex == -1 ? 0 : curFurtherIndex];
+		}
+
 		public static float Further( float _Reference, List<float> _Values, out int _FurtherIndex ) {
 			if ( _Values.Count == 0 ) {
 				_FurtherIndex = 0;
-				return 0f;
+				return 0.0f;
 			}
 
 			float curFurther = ( ( _Reference - _Values[0] ) >= 0 ) ? ( _Reference - _Values[0] ) : -( _Reference - _Values[0] );
@@ -749,7 +743,118 @@ namespace HEVLib {
 			return _Values.Count == 0 ? 0 : _Values[curFurtherIndex == -1 ? 0 : curFurtherIndex];
 		}
 
+		public static double Further( double _Reference, List<double> _Values, out int _FurtherIndex ) {
+			if ( _Values.Count == 0 ) {
+				_FurtherIndex = 0;
+				return 0.0f;
+			}
+
+			double curFurther = ( ( _Reference - _Values[0] ) >= 0 ) ? ( _Reference - _Values[0] ) : -( _Reference - _Values[0] );
+			int curFurtherIndex = 0;
+			for ( int v = 1; v < _Values.Count; ++v ) {
+				double value = ( ( _Reference - _Values[v] ) >= 0 ) ? ( _Reference - _Values[v] ) : -( _Reference - _Values[v] );
+				if ( curFurther < value ) {
+					curFurther = value;
+					curFurtherIndex = v;
+				}
+			}
+
+			_FurtherIndex = curFurtherIndex == -1 ? 0 : curFurtherIndex;
+			return _Values.Count == 0 ? 0 : _Values[curFurtherIndex == -1 ? 0 : curFurtherIndex];
+		}
+
+		// Calculate grids on hex(circles)
+		public static int CalculateHexGrid( float _XSize, float _YSize, float _XLocation, float _YLocation, bool _Center, float _Radius, bool _Hex,
+			out int _HexRows, out int _HexColums, out float _HexXSize, out float _HexYSize, out float _HexDistance, out float _HexOverlap,
+			out List<float> _HexLocationX, out List<float> _HexLocationY ) {
+			float xM = _XSize / 2;
+			float yM = _YSize / 2;
+			float hexSize = _Radius * 2;
+			float hexDistance = BoxSide( hexSize );
+			float hexOverlap = hexSize - hexDistance;
+			int hexXNum = FloorToInt( ( ( _XSize / hexDistance ) + ( _XSize % hexDistance ) ) );
+			int hexYNum = FloorToInt( ( ( _YSize / hexDistance ) + ( _YSize % hexDistance ) ) );
+			float hexXSize = hexXNum * hexDistance;
+			float hexYSize = hexYNum * hexDistance;
+			float fXLocation = _XLocation;
+			float fYLocation = _YLocation;
+			if ( !_Center ) {
+				fXLocation = ( fXLocation - xM );
+				fYLocation = ( fYLocation - yM );
+			} else {
+				fXLocation = fXLocation - ( hexXSize / 2 );
+				fYLocation = fYLocation - ( hexYSize / 2 );
+			}
+
+			float lXDefault = 0;
+			float lYDefault = 0;
+			float lX = lXDefault;
+			float lY = lYDefault;
+
+			List<float> hexLocationX = new List<float>( hexXNum );
+			List<float> hexLocationY = new List<float>( hexYNum );
+
+			bool sw = false;
+			for ( int y = 0; y < hexXNum; y++ ) {
+				if ( sw ) {
+					lX = lXDefault;
+				} else {
+					lX = hexDistance / 2;
+				}
+				for ( int x = 0; x < hexYNum; x++ ) {
+					hexLocationX[x] = lX - ( hexDistance / 2 );
+					hexLocationY[y] = lY - ( hexDistance / 2 );
+					lX = lX + hexDistance;
+				}
+				if ( _Hex ) sw = !sw;
+				lY = lY + hexDistance;
+			}
+
+			_HexRows = hexXNum;
+			_HexColums = hexYNum;
+			_HexXSize = hexXSize;
+			_HexYSize = hexYSize;
+			_HexDistance = hexDistance;
+			_HexOverlap = hexOverlap;
+
+			_HexLocationX = hexLocationX;
+			_HexLocationY = hexLocationY;
+
+			return (int)( hexXNum * hexYNum );
+		}
+
+		public static int SimulateHexGrid( float _GridXSize, float _GridYSize, float _GridXLocation, float _GridYLocation, bool _GridCenter, float _HexRadius,
+			float _CurXLocation, float _CurYLocation, out float _HexXLocation, out float _HexYLocation, out float _Distance, bool _Hex = true ) {
+
+			int hexRows = 0;
+			int hexColums = 0;
+			float hexXSize = 0;
+			float hexYSize = 0;
+			float hexDistance = 0;
+			float hexOverlap = 0;
+			List<float> hexLocationX;
+			List<float> hexLocationY;
+
+			int hexNum = CalculateHexGrid( _GridXSize, _GridYSize, _GridXLocation, _GridYLocation, _GridCenter, _HexRadius, _Hex,
+			out hexRows, out hexColums, out hexXSize, out hexYSize, out hexDistance, out hexOverlap, out hexLocationX, out hexLocationY );
+
+			float distance = Distance( hexLocationX[0], hexLocationY[0], _CurXLocation, _CurYLocation );
+			int index = 0;
+			float distCalc;
+			for ( int i = 0; i < hexLocationX.Count; i++ ) {
+				distCalc = Distance( hexLocationX[i], hexLocationY[i], _CurXLocation, _CurYLocation );
+				if ( distCalc < distance ) {
+					distance = distCalc;
+					index = i;
+				}
+			}
+
+			_HexXLocation = hexLocationX[index];
+			_HexYLocation = hexLocationY[index];
+			_Distance = distance;
+
+			return index;
+		}
+
 	}
-
-
 }
