@@ -1,8 +1,8 @@
 # HevLib
 [Hevedy Library][ProjectURL] for C# (Net Core &amp; Net Framework &amp; Unity 2019) and C++ for Unreal Engine 4
 
-Author: Hevedy\
-Version: 0.4.6\
+Author: Hevedy<br/>
+Version: 0.4.6<br/>
 
 
 ## C#
@@ -25,7 +25,7 @@ Version: 0.4.6\
  * INI reader and writer with helpers.
  * JSON reader and writer with helpers.
 
-
+<br/>
 
 ### Installation
 Include the CS folder files into your project, then include the namespace into the files of your project.
@@ -51,7 +51,7 @@ private static readonly string CUSTOM_NAMESPACE = "YourRootNamespace";
  * INI Parser: https://www.nuget.org/packages/ini-parser/
  * JSON Parser: https://www.nuget.org/packages/Newtonsoft.Json/
 
-
+<br/><br/>
 
 
 ## C++ (WIP)
@@ -68,7 +68,7 @@ private static readonly string CUSTOM_NAMESPACE = "YourRootNamespace";
  * Text reader and writer with helpers.
  * INI reader and writer with helpers.
 
-
+<br/>
 
 ### Installation
 Same structure of [Purpleprint Kit 2][PurpleprintKitURL], needs manual split for non UE4 setups.
