@@ -108,21 +108,23 @@ namespace HEVLib {
 		}
 
 		public static string ToString( List<string> _Array, string _Separator = "\r\n" ) { //\r\n
-			if ( _Array.Count < 1 ) return null;
+			if ( _Array == null ) { _Array = new List<string>( 0 ); }
+			if ( _Array.Count < 1 ) return "";
 			string separator = ( _Separator == "" ? "\r\n" : _Separator );
 			string result = string.Join( separator, _Array );
 			return result;
 		}
 
 		public static string ToString( string[] _Array, string _Separator = "\r\n" ) { //\r\n
-			if ( _Array.Length < 1 ) return null;
+			if ( _Array == null ) { _Array = new string[0]; }
+			if ( _Array.Length < 1 ) return "";
 			string separator = ( _Separator == "" ? "\r\n" : _Separator );
 			string result = string.Join( separator, _Array );
 			return result;
 		}
 
 		public static string[] ToStringArray( string _String, string _Separator = ",", bool _ClearJumps = true ) {
-			if ( !Validate( _String ) ) return null;
+			if ( !Validate( _String ) ) return new string[0];
 			string separator = (_Separator == "" ? "," : _Separator);
 			string[] result = _String.Split( separator.ToCharArray() );
 			if ( _ClearJumps ) {
@@ -134,7 +136,7 @@ namespace HEVLib {
 		}
 
 		public static List<string> ToStringList( string _String, string _Separator = ",", bool _ClearJumps = true ) {
-			if ( !Validate( _String ) ) return null;
+			if ( !Validate( _String ) ) return new List<string>(0);
 			string[] result = _String.Split( _Separator.ToCharArray() );
 			if( _ClearJumps ) {
 				for ( int i = 0; i < result.Length; i++ ) {
