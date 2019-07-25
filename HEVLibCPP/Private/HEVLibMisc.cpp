@@ -202,16 +202,16 @@ FString UHEVLibMisc::FormatNumberZeros( const int32 Number, const int32 Length, 
 }
 
 // Based in https://answers.unrealengine.com/questions/153956/get-distance-along-spline-from-world-location.html from caasanchezcu
-float UHEVLibMisc::GetDistanceAlongSplineForWorldLocation( USplineComponent *SplineComponent, FVector Location, int32 DistanceSolverIterations ) const {
-	const float ClosestInputKey = SplineComponent->FindInputKeyClosestToWorldLocation( Location );
+float UHEVLibMisc::GetDistanceAlongSplineForWorldLocation( USplineComponent *_SplineComponent, FVector _Location, int32 _DistanceSolverIterations ) const {
+	const float ClosestInputKey = _SplineComponent->FindInputKeyClosestToWorldLocation( _Location );
 	const int32 PreviousPoint = FMath::TruncToInt( ClosestInputKey );
 
-	float Distance = SplineComponent->GetDistanceAlongSplineAtSplinePoint( PreviousPoint );
-	Distance += ( ClosestInputKey - PreviousPoint ) * ( SplineComponent->GetDistanceAlongSplineAtSplinePoint( PreviousPoint + 1 ) - Distance );
+	float Distance = _SplineComponent->GetDistanceAlongSplineAtSplinePoint( PreviousPoint );
+	Distance += ( ClosestInputKey - PreviousPoint ) * ( _SplineComponent->GetDistanceAlongSplineAtSplinePoint( PreviousPoint + 1 ) - Distance );
 
-	for ( int32 i = 0; i < DistanceSolverIterations; ++i ) {
-		const float InputKeyAtDistance = SplineComponent->SplineCurves.ReparamTable.Eval( Distance, 0.0f );
-		const float Delta = ( SplineComponent->GetLocationAtSplineInputKey( InputKeyAtDistance, ESplineCoordinateSpace::World ) - SplineComponent->GetLocationAtSplineInputKey( ClosestInputKey, ESplineCoordinateSpace::World ) ).Size();
+	for ( int32 i = 0; i < _DistanceSolverIterations; ++i ) {
+		const float InputKeyAtDistance = _SplineComponent->SplineCurves.ReparamTable.Eval( Distance, 0.0f );
+		const float Delta = ( _SplineComponent->GetLocationAtSplineInputKey( InputKeyAtDistance, ESplineCoordinateSpace::World ) - _SplineComponent->GetLocationAtSplineInputKey( ClosestInputKey, ESplineCoordinateSpace::World ) ).Size();
 		if ( InputKeyAtDistance < ClosestInputKey ) {
 			Distance += Delta;
 		} else if ( InputKeyAtDistance > ClosestInputKey ) {
@@ -220,5 +220,5 @@ float UHEVLibMisc::GetDistanceAlongSplineForWorldLocation( USplineComponent *Spl
 			break;
 		}
 	}
-	return FMath::Clamp( Distance, 0.0f, SplineComponent->GetSplineLength() );
+	return FMath::Clamp( Distance, 0.0f, _SplineComponent->GetSplineLength() );
 }

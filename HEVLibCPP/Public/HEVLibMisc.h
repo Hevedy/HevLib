@@ -262,9 +262,9 @@ public:
 	UFUNCTION( BlueprintPure, Category = "HevLib|Misc|Vector" )
 		static FVector4 Vector4OrderLeft( const FVector4 &Vec4Value );
 
-	UFUNCTION( BlueprintPure, Category = "HevedyLibrary|Tools" )
+	UFUNCTION( BlueprintPure, Category = "HevLib|Tools" )
 		static FString FormatNumberZeros( const int32 Number, const int32 Length = 3, const bool LeftAlign = true );
 		
-	UFUNCTION( BlueprintPure, Category = "HevedyLibrary|Tools" )
-		float GetDistanceAlongSplineForWorldLocation( USplineComponent *SplineComponent, FVector Location, int32 DistanceSolverIterations ) const;
+	UFUNCTION( BlueprintPure, Category = "HevLib|Tools" )
+		float GetDistanceAlongSplineForWorldLocation( USplineComponent *_SplineComponent, FVector _Location, int32 _DistanceSolverIterations ) const;
 };
