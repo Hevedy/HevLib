@@ -19,59 +19,29 @@ SOFTWARE.
 
 /*
 ================================================
-HEVLibRandom.cpp
+HEVLibPrivatePCH.h
 ================================================
 */
 
 
-#include "HEVLibRandom.h"
-#include "HEVLibPrivatePCH.h"
+#include "IHEVLib.h"
+//#include "CoreUObject.h"
+//#include "UObject/ObjectMacros.h"
 
-UHEVLibRandom::UHEVLibRandom( const class FObjectInitializer& ObjectInitializer ) {
+#include "Runtime/Launch/Resources/Version.h"
 
-}
+#if ENGINE_MINOR_VERSION >= 15
+#include "CoreMinimal.h"
+#include "EngineDefines.h"
+#include "Engine/Engine.h"
+#include "UObject/Object.h"
+#include "UObject/ScriptMacros.h"
+#else
+#include "CoreUObject.h"
+#include "Engine.h"
+#endif
 
+//#include "SharedPointer.h"
 
-bool UHEVLibRandom::RandomBool_Uniform() {
-	return false;
-}
-
-bool UHEVLibRandom::RandomBool_Bernoulli( const float Bias ) {
-	return false;
-}
-
-bool UHEVLibRandom::RandomBool_MersenneTwister( const float Bias ) {
-	return false;
-}
-
-uint8 UHEVLibRandom::RandomByte_Uniform( const uint8 Max ) {
-	return 0;
-}
-
-uint8 UHEVLibRandom::RandomByte_Bernoulli( const float Bias ) {
-	return 0;
-}
-
-uint8 UHEVLibRandom::RandomByte_MersenneTwister( const float Bias ) {
-	return 0;
-}
-
-int32 UHEVLibRandom::RandomInt_Uniform( const int32 Max ) {
-	return 0;
-}
-
-int32 UHEVLibRandom::RandomInt_Bernoulli( const float Bias ) {
-	return 0;
-}
-
-int32 UHEVLibRandom::RandomInt_MersenneTwister( const float Bias ) {
-	return 0;
-}
-
-float UHEVLibRandom::RandomFloat_Uniform( const float Max ) {
-	return 0.0f;
-}
-
-float UHEVLibRandom::RandomFloat_Canonical() {
-	return 0.0f;
-}
+// You should place include statements to your module's private header files here.  You only need to
+// add includes for headers that are used in most of your module's source files though.

@@ -29,7 +29,7 @@ HEVLibIO.h
 #include "CoreMinimal.h"
 #include "Engine.h"
 #include "Engine/Engine.h"
-#include "HEVLibraryMath.h"
+#include "HEVLibMath.h"
 
 #include "DDSLoader.h"
 #include "ImageUtils.h"
@@ -42,21 +42,29 @@ HEVLibIO.h
 
 
 UENUM()
+enum class EHEVFilesDirList : uint8 {
+	eGame 			UMETA( DisplayName = "Game" ),
+	ePlugin			UMETA( DisplayName = "Plugin" ),
+	eConfig			UMETA( DisplayName = "Config" ),
+	eUser			UMETA( DisplayName = "User" )
+};
+
+UENUM()
 enum class EHEVINIFilesList : uint8 {
-	GGameIni 				UMETA( DisplayName = "Game" ),
-	GGameUserSettingsIni	UMETA( DisplayName = "User Settings" ),
-	GScalabilityIni			UMETA( DisplayName = "Scalability" ),
-	GInputIni				UMETA( DisplayName = "Input" ),
-	GEngineIni				UMETA( DisplayName = "Engine" ),
-	GameSettingsConfig		UMETA( DisplayName = "Game Settings" ),
-	PlayerSettingsConfig	UMETA( DisplayName = "Player Settings" )
+	eGGameIni 				UMETA( DisplayName = "Game" ),
+	eGGameUserSettingsIni	UMETA( DisplayName = "User Settings" ),
+	eGScalabilityIni		UMETA( DisplayName = "Scalability" ),
+	eGInputIni				UMETA( DisplayName = "Input" ),
+	eGEngineIni				UMETA( DisplayName = "Engine" ),
+	eGameSettingsConfig		UMETA( DisplayName = "Game Settings" ),
+	ePlayerSettingsConfig	UMETA( DisplayName = "Player Settings" )
 };
 
 UCLASS()
-class HEVLIBRARY_API UHEVLibraryFiles : public UBlueprintFunctionLibrary {
+class HEVLIB_API UHEVLibIO : public UBlueprintFunctionLibrary {
 	GENERATED_BODY()
 
-	UHEVLibraryFiles( const FObjectInitializer& ObjectInitializer );
+	UHEVLibIO( const FObjectInitializer& ObjectInitializer );
 private:
 
 protected:
@@ -106,6 +114,10 @@ public:
 	/** Returns the value of the selected FText from the selected ini config file */
 	UFUNCTION( BlueprintPure, Category = "HevLib|IO" )
 		static FText GetConfigText( const FString SectionName, const FString VariableName, const EHEVINIFilesList INIFile, const int32 ProfileIndex, bool &ReadError );
+
+	/** Returns the list of files by extension on the given folder */
+	UFUNCTION( BlueprintPure, Category = "HevLib|IO" )
+		static TArray<FString> GetFilesByExtension( const FString _Extension, const EHEVFilesDirList _Directory, const int32 _ProfileIndex, bool &_ReadError );
 
 	/** Set the value of the selected bool from the selected ini config file */
 	UFUNCTION( BlueprintCallable, Category = "HevLib|IO" )

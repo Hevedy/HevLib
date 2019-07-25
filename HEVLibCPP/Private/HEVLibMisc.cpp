@@ -83,7 +83,7 @@ void UHEVLibMisc::ActorCompAddLocalQuaternion( USceneComponent* Target, const FV
 float UHEVLibMisc::MakeFloatFromIntegers( const int32 A, const int32 B ) {
 	float value = A;
 	int32 m = 1;
-	for ( int32 i = 0; i <= UHEVLibraryMath::IntegerCount( B ); ++i ) { m *= 10; }
+	for ( int32 i = 0; i <= UHEVLibMath::IntegerCount( B ); ++i ) { m *= 10; }
 	return value + ( B / m );
 }
 
@@ -96,7 +96,7 @@ float UHEVLibMisc::InvertFloat( const float FloatValue ) {
 	int32 a = FMath::TruncToInt( FloatValue );
 	int32 b = FMath::Frac( FloatValue );
 	int32 m = 1;
-	for ( int32 i = 0; i <= UHEVLibraryMath::IntegerCount( FloatValue ); ++i ) { m *= 10; }
+	for ( int32 i = 0; i <= UHEVLibMath::IntegerCount( FloatValue ); ++i ) { m *= 10; }
 	return b + ( a / m );
 }
 
@@ -187,7 +187,7 @@ FVector4 UHEVLibMisc::Vector4OrderLeft( const FVector4 &Vec4Value ) {
 FString UHEVLibMisc::FormatNumberZeros( const int32 Number, const int32 Length, const bool LeftAlign ) {
 	FString str = FString::FromInt( Number );
 	FString subStr = "";
-	int32 numLength = UHEVLibraryMath::IntegerCount( Number );
+	int32 numLength = UHEVLibMath::IntegerCount( Number );
 	if ( numLength >= Length && Length == 0 && numLength == 0 ) {
 		return "-1";
 	} else if ( numLength >= Length ) {

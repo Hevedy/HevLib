@@ -33,7 +33,7 @@ HEVLibMath.h
 
 
 UCLASS()
-class HEVLIBRARY_API UHEVLibMath : public UBlueprintFunctionLibrary {
+class HEVLIB_API UHEVLibMath : public UBlueprintFunctionLibrary {
 	GENERATED_BODY()
 
 	UHEVLibMath( const FObjectInitializer& ObjectInitializer );
@@ -50,6 +50,8 @@ public:
 	/** Returns the Euler from a Quaternion */
 	UFUNCTION( BlueprintCallable, Category = "HevLib|Misc|Rotator" )
 		static FRotator QuaternionToEuler( const FVector4& Vec4Value );
+
+	static int32 FullRotSector( const float FloatValue, const int32 SectorsNumber );
 
 	/** Returns the sector index of the float using as reference the number of sectors */
 	UFUNCTION( BlueprintPure, Category = "HevLib|Misc|Byte" )

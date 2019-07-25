@@ -54,26 +54,26 @@ bool UHEVLibIO::GetConfigBool( const FString SectionName, const FString Variable
 	bool value = false;
 	bool error = false;
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			GConfig->GetBool( *SectionName, *VariableName, value, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			GConfig->GetBool( *SectionName, *VariableName, value, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			GConfig->GetBool( *SectionName, *VariableName, value, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			GConfig->GetBool( *SectionName, *VariableName, value, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			GConfig->GetBool( *SectionName, *VariableName, value, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			GConfig->GetBool( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			GConfig->GetBool( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -90,26 +90,26 @@ uint8 UHEVLibIO::GetConfigByte( const FString SectionName, const FString Variabl
 	int32 value = 0;
 	bool error = false;
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			error = GConfig->GetInt( *SectionName, *VariableName, value, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			error = GConfig->GetInt( *SectionName, *VariableName, value, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			error = GConfig->GetInt( *SectionName, *VariableName, value, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			error = GConfig->GetInt( *SectionName, *VariableName, value, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			error = GConfig->GetInt( *SectionName, *VariableName, value, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			error = GConfig->GetInt( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			error = GConfig->GetInt( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -125,26 +125,26 @@ int32 UHEVLibIO::GetConfigInteger( const FString SectionName, const FString Vari
 	int32 value = 0;
 	bool error = false;
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			error = GConfig->GetInt( *SectionName, *VariableName, value, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			error = GConfig->GetInt( *SectionName, *VariableName, value, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			error = GConfig->GetInt( *SectionName, *VariableName, value, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			error = GConfig->GetInt( *SectionName, *VariableName, value, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			error = GConfig->GetInt( *SectionName, *VariableName, value, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			error = GConfig->GetInt( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			error = GConfig->GetInt( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -160,26 +160,26 @@ float UHEVLibIO::GetConfigFloat( const FString SectionName, const FString Variab
 	float value = 0.0f;
 	bool error = false;
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			error = GConfig->GetFloat( *SectionName, *VariableName, value, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			error = GConfig->GetFloat( *SectionName, *VariableName, value, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			error = GConfig->GetFloat( *SectionName, *VariableName, value, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			error = GConfig->GetFloat( *SectionName, *VariableName, value, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			error = GConfig->GetFloat( *SectionName, *VariableName, value, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			error = GConfig->GetFloat( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			error = GConfig->GetFloat( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -195,26 +195,26 @@ FVector2D UHEVLibIO::GetConfigVector2D( const FString SectionName, const FString
 	FVector2D value = FVector2D::ZeroVector;
 	bool error = false;
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			error = GConfig->GetVector2D( *SectionName, *VariableName, value, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			error = GConfig->GetVector2D( *SectionName, *VariableName, value, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			error = GConfig->GetVector2D( *SectionName, *VariableName, value, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			error = GConfig->GetVector2D( *SectionName, *VariableName, value, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			error = GConfig->GetVector2D( *SectionName, *VariableName, value, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			error = GConfig->GetVector2D( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			error = GConfig->GetVector2D( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -230,26 +230,26 @@ FVector UHEVLibIO::GetConfigVector( const FString SectionName, const FString Var
 	FVector value = FVector::ZeroVector;
 	bool error = false;
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			error = GConfig->GetVector( *SectionName, *VariableName, value, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			error = GConfig->GetVector( *SectionName, *VariableName, value, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			error = GConfig->GetVector( *SectionName, *VariableName, value, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			error = GConfig->GetVector( *SectionName, *VariableName, value, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			error = GConfig->GetVector( *SectionName, *VariableName, value, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			error = GConfig->GetVector( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			error = GConfig->GetVector( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -268,26 +268,26 @@ FVector4 UHEVLibIO::GetConfigVector4( const FString SectionName, const FString V
 	FVector4 value = FVector4( 0.f, 0.f, 0.f, 0.f );
 	bool error = false;
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			error = GConfig->GetVector4( *SectionName, *VariableName, value, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			error = GConfig->GetVector4( *SectionName, *VariableName, value, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			error = GConfig->GetVector4( *SectionName, *VariableName, value, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			error = GConfig->GetVector4( *SectionName, *VariableName, value, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			error = GConfig->GetVector4( *SectionName, *VariableName, value, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			error = GConfig->GetVector4( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			error = GConfig->GetVector4( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -303,26 +303,26 @@ FRotator UHEVLibIO::GetConfigRotator( const FString SectionName, const FString V
 	FRotator value = FRotator::ZeroRotator;
 	bool error = false;
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			error = GConfig->GetRotator( *SectionName, *VariableName, value, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			error = GConfig->GetRotator( *SectionName, *VariableName, value, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			error = GConfig->GetRotator( *SectionName, *VariableName, value, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			error = GConfig->GetRotator( *SectionName, *VariableName, value, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			error = GConfig->GetRotator( *SectionName, *VariableName, value, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			error = GConfig->GetRotator( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			error = GConfig->GetRotator( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -338,26 +338,26 @@ FLinearColor UHEVLibIO::GetConfigColor( const FString SectionName, const FString
 	FColor value = FColor::Black;
 	bool error = false;
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			error = GConfig->GetColor( *SectionName, *VariableName, value, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			error = GConfig->GetColor( *SectionName, *VariableName, value, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			error = GConfig->GetColor( *SectionName, *VariableName, value, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			error = GConfig->GetColor( *SectionName, *VariableName, value, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			GConfig->GetColor( *SectionName, *VariableName, value, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			error = GConfig->GetColor( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			error = GConfig->GetColor( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -373,26 +373,26 @@ FString UHEVLibIO::GetConfigString( const FString SectionName, const FString Var
 	FString value = "";
 	bool error = false;
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			error = GConfig->GetString( *SectionName, *VariableName, value, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			error = GConfig->GetString( *SectionName, *VariableName, value, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			error = GConfig->GetString( *SectionName, *VariableName, value, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			error = GConfig->GetString( *SectionName, *VariableName, value, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			error = GConfig->GetString( *SectionName, *VariableName, value, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			error = GConfig->GetString( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			error = GConfig->GetString( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -408,26 +408,26 @@ FText UHEVLibIO::GetConfigText( const FString SectionName, const FString Variabl
 	FText value = FText::GetEmpty();
 	bool error = false;
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			error = GConfig->GetText( *SectionName, *VariableName, value, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			error = GConfig->GetText( *SectionName, *VariableName, value, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			error = GConfig->GetText( *SectionName, *VariableName, value, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			error = GConfig->GetText( *SectionName, *VariableName, value, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			error = GConfig->GetText( *SectionName, *VariableName, value, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			error = GConfig->GetText( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->Flush( true, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			error = GConfig->GetText( *SectionName, *VariableName, value, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -436,30 +436,76 @@ FText UHEVLibIO::GetConfigText( const FString SectionName, const FString Variabl
 	return value;
 }
 
+TArray<FString> UHEVLibIO::GetFilesByExtension( const FString _Extension, const EHEVFilesDirList _Directory, const int32 _ProfileIndex, bool &_ReadError ) {
+	TArray<FString> save = TArray<FString>();
+	TArray<FString> save_Slots = TArray<FString>();
+
+	bool error = false;
+	FString dir = "";
+	switch ( _Directory ) {
+		case EHEVFilesDirList::eGame:
+			dir = FPaths::ConvertRelativePathToFull( FPaths::ProjectDir() );
+			break;
+		case EHEVFilesDirList::ePlugin:
+			dir = FPaths::ConvertRelativePathToFull( FPaths::ProjectPluginsDir() );
+			break;
+		case EHEVFilesDirList::eConfig:
+			dir = FPaths::ConvertRelativePathToFull( FPaths::ProjectConfigDir() );
+			break;
+		case EHEVFilesDirList::eUser:
+			dir = FPaths::ConvertRelativePathToFull( FPaths::ProjectUserDir() );
+			break;
+	}
+
+	FPaths::NormalizeDirectoryName( dir );
+	FString ext = "*." + _Extension;
+	const TCHAR* charExt = *ext;
+	//FText textVariable = FText::AsCultureInvariant( "*." + _Extension );
+	IFileManager::Get().FindFilesRecursive( save, *dir, charExt, true, true, true );
+	//IFileManager::Get().FindFilesRecursive( save, *dir, TEXT( textVariable ), true, true, true );
+
+#if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
+
+	for ( int32 i = 0; i < save.Num(); ++i ) {
+		save_Slots.Add( FPaths::GetBaseFilename( save[i] ) );
+	}
+
+#else
+
+	for ( int32 i = 0; i < save.Num(); ++i ) {
+		save_Slots.Add( FPaths::GetBaseFilename( save[i] ) );
+	}
+
+#endif
+
+	_ReadError = error;
+	return save_Slots;
+}
+
 void UHEVLibIO::SetConfigBool( const FString SectionName, const FString VariableName, const bool BoolValue, 
 									  const EHEVINIFilesList INIFile, const int32 ProfileIndex ) {
 	if ( !GConfig ) return;
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			GConfig->SetBool( *SectionName, *VariableName, BoolValue, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			GConfig->SetBool( *SectionName, *VariableName, BoolValue, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			GConfig->SetBool( *SectionName, *VariableName, BoolValue, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			GConfig->SetBool( *SectionName, *VariableName, BoolValue, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			GConfig->SetBool( *SectionName, *VariableName, BoolValue, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->SetBool( *SectionName, *VariableName, BoolValue, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->SetBool( *SectionName, *VariableName, BoolValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -473,26 +519,26 @@ void UHEVLibIO::SetConfigByte( const FString SectionName, const FString Variable
 
 	// PR SetByte
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			GConfig->SetInt( *SectionName, *VariableName, ByteValue, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			GConfig->SetInt( *SectionName, *VariableName, ByteValue, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			GConfig->SetInt( *SectionName, *VariableName, ByteValue, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			GConfig->SetInt( *SectionName, *VariableName, ByteValue, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			GConfig->SetInt( *SectionName, *VariableName, ByteValue, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->SetInt( *SectionName, *VariableName, ByteValue, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->SetInt( *SectionName, *VariableName, ByteValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -504,26 +550,26 @@ void UHEVLibIO::SetConfigInteger( const FString SectionName, const FString Varia
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			GConfig->SetInt( *SectionName, *VariableName, IntValue, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			GConfig->SetInt( *SectionName, *VariableName, IntValue, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			GConfig->SetInt( *SectionName, *VariableName, IntValue, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			GConfig->SetInt( *SectionName, *VariableName, IntValue, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			GConfig->SetInt( *SectionName, *VariableName, IntValue, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->SetInt( *SectionName, *VariableName, IntValue, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->SetInt( *SectionName, *VariableName, IntValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -535,26 +581,26 @@ void UHEVLibIO::SetConfigFloat( const FString SectionName, const FString Variabl
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			GConfig->SetFloat( *SectionName, *VariableName, FloatValue, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			GConfig->SetFloat( *SectionName, *VariableName, FloatValue, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			GConfig->SetFloat( *SectionName, *VariableName, FloatValue, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			GConfig->SetFloat( *SectionName, *VariableName, FloatValue, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			GConfig->SetFloat( *SectionName, *VariableName, FloatValue, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->SetFloat( *SectionName, *VariableName, FloatValue, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->SetFloat( *SectionName, *VariableName, FloatValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -566,26 +612,26 @@ void UHEVLibIO::SetConfigVector2D( const FString SectionName, const FString Vari
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			GConfig->SetVector2D( *SectionName, *VariableName, Vec2Value, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			GConfig->SetVector2D( *SectionName, *VariableName, Vec2Value, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			GConfig->SetVector2D( *SectionName, *VariableName, Vec2Value, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			GConfig->SetVector2D( *SectionName, *VariableName, Vec2Value, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			GConfig->SetVector2D( *SectionName, *VariableName, Vec2Value, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->SetVector2D( *SectionName, *VariableName, Vec2Value, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->SetVector2D( *SectionName, *VariableName, Vec2Value, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -597,26 +643,26 @@ void UHEVLibIO::SetConfigVector( const FString SectionName, const FString Variab
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			GConfig->SetVector( *SectionName, *VariableName, VecValue, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			GConfig->SetVector( *SectionName, *VariableName, VecValue, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			GConfig->SetVector( *SectionName, *VariableName, VecValue, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			GConfig->SetVector( *SectionName, *VariableName, VecValue, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			GConfig->SetVector( *SectionName, *VariableName, VecValue, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->SetVector( *SectionName, *VariableName, VecValue, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->SetVector( *SectionName, *VariableName, VecValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -628,26 +674,26 @@ void UHEVLibIO::SetConfigVector4( const FString SectionName, const FString Varia
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			GConfig->SetVector4( *SectionName, *VariableName, Vec4Value, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			GConfig->SetVector4( *SectionName, *VariableName, Vec4Value, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			GConfig->SetVector4( *SectionName, *VariableName, Vec4Value, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			GConfig->SetVector4( *SectionName, *VariableName, Vec4Value, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			GConfig->SetVector4( *SectionName, *VariableName, Vec4Value, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->SetVector4( *SectionName, *VariableName, Vec4Value, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->SetVector4( *SectionName, *VariableName, Vec4Value, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -659,26 +705,26 @@ void UHEVLibIO::SetConfigRotator( const FString SectionName, const FString Varia
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			GConfig->SetRotator( *SectionName, *VariableName, RotValue, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			GConfig->SetRotator( *SectionName, *VariableName, RotValue, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			GConfig->SetRotator( *SectionName, *VariableName, RotValue, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			GConfig->SetRotator( *SectionName, *VariableName, RotValue, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			GConfig->SetRotator( *SectionName, *VariableName, RotValue, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->SetRotator( *SectionName, *VariableName, RotValue, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->SetRotator( *SectionName, *VariableName, RotValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -690,26 +736,26 @@ void UHEVLibIO::SetConfigColor( const FString SectionName, const FString Variabl
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			GConfig->SetColor( *SectionName, *VariableName, ColorValue.ToFColor( true ), GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			GConfig->SetColor( *SectionName, *VariableName, ColorValue.ToFColor( true ), GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			GConfig->SetColor( *SectionName, *VariableName, ColorValue.ToFColor( true ), GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			GConfig->SetColor( *SectionName, *VariableName, ColorValue.ToFColor( true ), GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			GConfig->SetColor( *SectionName, *VariableName, ColorValue.ToFColor( true ), GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->SetColor( *SectionName, *VariableName, ColorValue.ToFColor( true ), FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->SetColor( *SectionName, *VariableName, ColorValue.ToFColor( true ), FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -721,26 +767,26 @@ void UHEVLibIO::SetConfigString( const FString SectionName, const FString Variab
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			GConfig->SetString( *SectionName, *VariableName, *StrValue, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			GConfig->SetString( *SectionName, *VariableName, *StrValue, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			GConfig->SetString( *SectionName, *VariableName, *StrValue, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			GConfig->SetString( *SectionName, *VariableName, *StrValue, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			GConfig->SetString( *SectionName, *VariableName, *StrValue, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->SetString( *SectionName, *VariableName, *StrValue, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->SetString( *SectionName, *VariableName, *StrValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;
@@ -752,26 +798,26 @@ void UHEVLibIO::SetConfigText( const FString SectionName, const FString Variable
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
-		case EHEVINIFilesList::GGameIni:
+		case EHEVINIFilesList::eGGameIni:
 			GConfig->SetText( *SectionName, *VariableName, TextValue, GGameIni );
 			break;
-		case EHEVINIFilesList::GGameUserSettingsIni:
+		case EHEVINIFilesList::eGGameUserSettingsIni:
 			GConfig->SetText( *SectionName, *VariableName, TextValue, GGameUserSettingsIni );
 			break;
-		case EHEVINIFilesList::GScalabilityIni:
+		case EHEVINIFilesList::eGScalabilityIni:
 			GConfig->SetText( *SectionName, *VariableName, TextValue, GScalabilityIni );
 			break;
-		case EHEVINIFilesList::GInputIni:
+		case EHEVINIFilesList::eGInputIni:
 			GConfig->SetText( *SectionName, *VariableName, TextValue, GInputIni );
 			break;
-		case EHEVINIFilesList::GEngineIni:
+		case EHEVINIFilesList::eGEngineIni:
 			GConfig->SetText( *SectionName, *VariableName, TextValue, GEngineIni );
 			break;
-		case EHEVINIFilesList::GameSettingsConfig:
+		case EHEVINIFilesList::eGameSettingsConfig:
 			GConfig->SetText( *SectionName, *VariableName, TextValue, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
-		case EHEVINIFilesList::PlayerSettingsConfig:
+		case EHEVINIFilesList::ePlayerSettingsConfig:
 			GConfig->SetText( *SectionName, *VariableName, TextValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
 			break;

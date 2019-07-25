@@ -1,0 +1,25 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.1",
+	"FriendlyName": "Hevedy Library Plugin",
+	"Description": "New functions and new nodes for Blueprints",
+	"Category": "Hevedy",
+	"CreatedBy": "David 'Hevedy' Palacios",
+	"CreatedByURL": "https://github.com/Hevedy",
+	"DocsURL": "https://github.com/Hevedy",
+	"MarketplaceURL": "",
+	"SupportURL": "https://github.com/Hevedy",
+	"EngineVersion" : "4.21",
+	"Modules": [
+		{
+			"Name": "HEVLib",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
+	"EnabledByDefault": false,
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"Installed": true
+}

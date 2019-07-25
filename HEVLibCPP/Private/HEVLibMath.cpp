@@ -90,11 +90,13 @@ FVector UHEVLibMath::FullRotSectorRotator( const FRotator RotValue, const FVecto
 }
 
 int32 UHEVLibMath::IntegerCount( const int32 IntValue ) {
-	return IntValue == 0 ? 1 : FMath::FloorToInt( FMath::Log10( FMath::Abs( IntValue ) ) ) + 1;
+	//return IntValue == 0 ? 1 : FMath::FloorToInt( FMath::Log10( FMath::Abs( IntValue ) ) ) + 1;
+	return 0;
 }
 
 int32 UHEVLibMath::FloatCount( const float FloatValue ) {
-	return FloatValue == 0 ? 1 : FMath::FloorToInt( FMath::Log10( FMath::Abs( FloatValue ) ) );
+	//return FloatValue == 0 ? 1 : FMath::FloorToInt( FMath::Log10( FMath::Abs( FloatValue ) ) );
+	return 0;
 }
 
 int32 UHEVLibMath::DecimalCount( const float FloatValue ) {

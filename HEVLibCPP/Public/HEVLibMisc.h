@@ -29,14 +29,112 @@ HEVLibMisc.h
 #include "CoreMinimal.h"
 #include "Engine.h"
 #include "Engine/Engine.h"
-#include "HEVLibraryMath.h"
+#include "HEVLibMath.h"
 #include "GameFramework/Actor.h"
 #include "Components/SplineComponent.h"
-#include "HEVLiMisc.generated.h"
+#include "HEVLibMisc.generated.h"
 
+
+USTRUCT( BlueprintType )
+struct FHEVStr2Struct : public FTableRowBase {
+	GENERATED_USTRUCT_BODY()
+
+public:
+
+	FHEVStr2Struct()
+		: StrA( "" )
+		, StrB( "" ) {}
+
+	/** First Colum add index */
+
+	/** String */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "HevLib|Misc|Struct" )
+		FString StrA;
+
+	/** String */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "HevLib|Misc|Struct" )
+		FString StrB;
+
+};
+
+USTRUCT( BlueprintType )
+struct FHEVStr3Struct : public FTableRowBase {
+	GENERATED_USTRUCT_BODY()
+
+public:
+
+	FHEVStr3Struct()
+		: StrA( "" )
+		, StrB( "" )
+		, StrC( "" ) {}
+
+	/** First Colum add index */
+
+	/** String */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "HevLib|Misc|Struct" )
+		FString StrA;
+
+	/** String */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "HevLib|Misc|Struct" )
+		FString StrB;
+
+	/** String */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "HevLib|Misc|Struct" )
+		FString StrC;
+
+};
+
+USTRUCT( BlueprintType )
+struct FHEVInt2Struct : public FTableRowBase {
+	GENERATED_USTRUCT_BODY()
+
+public:
+
+	FHEVInt2Struct()
+		: IntA( 0 )
+		, IntB( 0 ) {}
+
+	/** First Colum add index */
+
+	/** String */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "HevLib|Misc|Struct" )
+		int32 IntA;
+
+	/** String */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "HevLib|Misc|Struct" )
+		int32 IntB;
+
+};
+
+USTRUCT( BlueprintType )
+struct FHEVInt3Struct : public FTableRowBase {
+	GENERATED_USTRUCT_BODY()
+
+public:
+
+	FHEVInt3Struct()
+		: IntA( 0 )
+		, IntB( 0 )
+		, IntC( 0 ) {}
+
+	/** First Colum add index */
+
+	/** String */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "HevLib|Misc|Struct" )
+		int32 IntA;
+
+	/** String */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "HevLib|Misc|Struct" )
+		int32 IntB;
+
+	/** String */
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "HevLib|Misc|Struct" )
+		int32 IntC;
+
+};
 
 UCLASS()
-class HEVLIBRARY_API UHEVLibraryMisc : public UBlueprintFunctionLibrary {
+class HEVLIB_API UHEVLibMisc : public UBlueprintFunctionLibrary {
 	GENERATED_BODY()
 
 	UHEVLibMisc( const FObjectInitializer& ObjectInitializer );

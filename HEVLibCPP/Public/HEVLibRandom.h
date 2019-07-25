@@ -32,10 +32,10 @@ HEVLibRandom.h
 #include "HEVLibRandom.generated.h"
 
 UCLASS()
-class HEVLIBRARY_API UHEVLibRandom : public UBlueprintFunctionLibrary {
+class HEVLIB_API UHEVLibRandom : public UBlueprintFunctionLibrary {
 	GENERATED_BODY()
 
-	UHEVLibraryRandom( const FObjectInitializer& ObjectInitializer );
+	UHEVLibRandom( const FObjectInitializer& ObjectInitializer );
 private:
 
 protected:
