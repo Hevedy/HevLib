@@ -436,12 +436,13 @@ FText UHEVLibIO::GetConfigText( const FString SectionName, const FString Variabl
 	return value;
 }
 
-TArray<FString> UHEVLibIO::GetFilesByExtension( const FString _Extension, const EHEVFilesDirList _Directory, const int32 _ProfileIndex, bool &_ReadError ) {
+TArray<FString> UHEVLibIO::GetFilesByExtension( const FString _Extension, const EHEVFilesDirList _Directory, const FString _SubDirectory, const bool _Recursive, bool &_Empty ) {
 	TArray<FString> save = TArray<FString>();
 	TArray<FString> save_Slots = TArray<FString>();
 
 	bool error = false;
 	FString dir = "";
+
 	switch ( _Directory ) {
 		case EHEVFilesDirList::eGame:
 			dir = FPaths::ConvertRelativePathToFull( FPaths::ProjectDir() );
@@ -456,34 +457,45 @@ TArray<FString> UHEVLibIO::GetFilesByExtension( const FString _Extension, const 
 			dir = FPaths::ConvertRelativePathToFull( FPaths::ProjectUserDir() );
 			break;
 	}
+	dir = dir + _SubDirectory;
 
 	FPaths::NormalizeDirectoryName( dir );
-	FString ext = "*." + _Extension;
-	const TCHAR* charExt = *ext;
+	FString ext = _Extension == "" ? "*" : _Extension;
+	FString extComp = "*." + ext;
+	const TCHAR* charExt = *extComp;
 	//FText textVariable = FText::AsCultureInvariant( "*." + _Extension );
-	IFileManager::Get().FindFilesRecursive( save, *dir, charExt, true, true, true );
+	if ( _Recursive ) {
+		IFileManager::Get().FindFilesRecursive( save, *dir, charExt, true, false, true );
+	} else {
+		IFileManager::Get().FindFiles( save, *dir, charExt );
+	}
 	//IFileManager::Get().FindFilesRecursive( save, *dir, TEXT( textVariable ), true, true, true );
+
+	int filesCount = save.Num();
+	if ( filesCount <= 0 ) {
+		_Empty = true;
+		return save_Slots;
+	}
 
 #if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
 
-	for ( int32 i = 0; i < save.Num(); ++i ) {
+	for ( int32 i = 0; i < filesCount; ++i ) {
 		save_Slots.Add( FPaths::GetBaseFilename( save[i] ) );
 	}
 
 #else
 
-	for ( int32 i = 0; i < save.Num(); ++i ) {
+	for ( int32 i = 0; i < filesCount; ++i ) {
 		save_Slots.Add( FPaths::GetBaseFilename( save[i] ) );
 	}
 
 #endif
 
-	_ReadError = error;
+	_Empty = error;
 	return save_Slots;
 }
 
-void UHEVLibIO::SetConfigBool( const FString SectionName, const FString VariableName, const bool BoolValue, 
-									  const EHEVINIFilesList INIFile, const int32 ProfileIndex ) {
+void UHEVLibIO::SetConfigBool( const FString SectionName, const FString VariableName, const bool BoolValue, const EHEVINIFilesList INIFile ) {
 	if ( !GConfig ) return;
 	switch ( INIFile ) {
 		case EHEVINIFilesList::eGGameIni:
@@ -506,15 +518,14 @@ void UHEVLibIO::SetConfigBool( const FString SectionName, const FString Variable
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
 		case EHEVINIFilesList::ePlayerSettingsConfig:
-			GConfig->SetBool( *SectionName, *VariableName, BoolValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
-			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
+			GConfig->SetBool( *SectionName, *VariableName, BoolValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
+			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
 			break;
 	}
 
 }
 
-void UHEVLibIO::SetConfigByte( const FString SectionName, const FString VariableName, const uint8 ByteValue,
-										 const EHEVINIFilesList INIFile, const int32 ProfileIndex ) {
+void UHEVLibIO::SetConfigByte( const FString SectionName, const FString VariableName, const uint8 ByteValue, const EHEVINIFilesList INIFile ) {
 	if ( !GConfig ) return;
 
 	// PR SetByte
@@ -539,14 +550,13 @@ void UHEVLibIO::SetConfigByte( const FString SectionName, const FString Variable
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
 		case EHEVINIFilesList::ePlayerSettingsConfig:
-			GConfig->SetInt( *SectionName, *VariableName, ByteValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
-			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
+			GConfig->SetInt( *SectionName, *VariableName, ByteValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
+			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
 			break;
 	}
 }
 
-void UHEVLibIO::SetConfigInteger( const FString SectionName, const FString VariableName, const int32 IntValue, 
-									 const EHEVINIFilesList INIFile, const int32 ProfileIndex ) {
+void UHEVLibIO::SetConfigInteger( const FString SectionName, const FString VariableName, const int32 IntValue, const EHEVINIFilesList INIFile ) {
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
@@ -570,14 +580,13 @@ void UHEVLibIO::SetConfigInteger( const FString SectionName, const FString Varia
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
 		case EHEVINIFilesList::ePlayerSettingsConfig:
-			GConfig->SetInt( *SectionName, *VariableName, IntValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
-			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
+			GConfig->SetInt( *SectionName, *VariableName, IntValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
+			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
 			break;
 	}
 }
 
-void UHEVLibIO::SetConfigFloat( const FString SectionName, const FString VariableName, const float FloatValue, 
-									   const EHEVINIFilesList INIFile, const int32 ProfileIndex ) {
+void UHEVLibIO::SetConfigFloat( const FString SectionName, const FString VariableName, const float FloatValue, const EHEVINIFilesList INIFile ) {
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
@@ -601,14 +610,13 @@ void UHEVLibIO::SetConfigFloat( const FString SectionName, const FString Variabl
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
 		case EHEVINIFilesList::ePlayerSettingsConfig:
-			GConfig->SetFloat( *SectionName, *VariableName, FloatValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
-			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
+			GConfig->SetFloat( *SectionName, *VariableName, FloatValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
+			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
 			break;
 	}
 }
 
-void UHEVLibIO::SetConfigVector2D( const FString SectionName, const FString VariableName, const FVector2D Vec2Value,
-										  const EHEVINIFilesList INIFile, const int32 ProfileIndex ) {
+void UHEVLibIO::SetConfigVector2D( const FString SectionName, const FString VariableName, const FVector2D Vec2Value, const EHEVINIFilesList INIFile ) {
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
@@ -632,14 +640,13 @@ void UHEVLibIO::SetConfigVector2D( const FString SectionName, const FString Vari
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
 		case EHEVINIFilesList::ePlayerSettingsConfig:
-			GConfig->SetVector2D( *SectionName, *VariableName, Vec2Value, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
-			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
+			GConfig->SetVector2D( *SectionName, *VariableName, Vec2Value, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
+			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
 			break;
 	}
 }
 
-void UHEVLibIO::SetConfigVector( const FString SectionName, const FString VariableName, const FVector VecValue, 
-										const EHEVINIFilesList INIFile, const int32 ProfileIndex ) {
+void UHEVLibIO::SetConfigVector( const FString SectionName, const FString VariableName, const FVector VecValue, const EHEVINIFilesList INIFile ) {
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
@@ -663,14 +670,13 @@ void UHEVLibIO::SetConfigVector( const FString SectionName, const FString Variab
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
 		case EHEVINIFilesList::ePlayerSettingsConfig:
-			GConfig->SetVector( *SectionName, *VariableName, VecValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
-			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
+			GConfig->SetVector( *SectionName, *VariableName, VecValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
+			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
 			break;
 	}
 }
 
-void UHEVLibIO::SetConfigVector4( const FString SectionName, const FString VariableName, const FVector4& Vec4Value,
-										const EHEVINIFilesList INIFile, const int32 ProfileIndex ) {
+void UHEVLibIO::SetConfigVector4( const FString SectionName, const FString VariableName, const FVector4& Vec4Value, const EHEVINIFilesList INIFile ) {
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
@@ -694,14 +700,13 @@ void UHEVLibIO::SetConfigVector4( const FString SectionName, const FString Varia
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
 		case EHEVINIFilesList::ePlayerSettingsConfig:
-			GConfig->SetVector4( *SectionName, *VariableName, Vec4Value, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
-			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
+			GConfig->SetVector4( *SectionName, *VariableName, Vec4Value, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
+			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
 			break;
 	}
 }
 
-void UHEVLibIO::SetConfigRotator( const FString SectionName, const FString VariableName, const FRotator RotValue, 
-										 const EHEVINIFilesList INIFile, const int32 ProfileIndex ) {
+void UHEVLibIO::SetConfigRotator( const FString SectionName, const FString VariableName, const FRotator RotValue, const EHEVINIFilesList INIFile ) {
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
@@ -725,14 +730,13 @@ void UHEVLibIO::SetConfigRotator( const FString SectionName, const FString Varia
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
 		case EHEVINIFilesList::ePlayerSettingsConfig:
-			GConfig->SetRotator( *SectionName, *VariableName, RotValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
-			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
+			GConfig->SetRotator( *SectionName, *VariableName, RotValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
+			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
 			break;
 	}
 }
 
-void UHEVLibIO::SetConfigColor( const FString SectionName, const FString VariableName, const FLinearColor ColorValue, 
-									   const EHEVINIFilesList INIFile, const int32 ProfileIndex ) {
+void UHEVLibIO::SetConfigColor( const FString SectionName, const FString VariableName, const FLinearColor ColorValue, const EHEVINIFilesList INIFile ) {
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
@@ -756,14 +760,13 @@ void UHEVLibIO::SetConfigColor( const FString SectionName, const FString Variabl
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
 		case EHEVINIFilesList::ePlayerSettingsConfig:
-			GConfig->SetColor( *SectionName, *VariableName, ColorValue.ToFColor( true ), FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
-			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
+			GConfig->SetColor( *SectionName, *VariableName, ColorValue.ToFColor( true ), FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
+			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
 			break;
 	}
 }
 
-void UHEVLibIO::SetConfigString( const FString SectionName, const FString VariableName, const FString StrValue, 
-										const EHEVINIFilesList INIFile, const int32 ProfileIndex ) {
+void UHEVLibIO::SetConfigString( const FString SectionName, const FString VariableName, const FString StrValue, const EHEVINIFilesList INIFile ) {
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
@@ -787,14 +790,13 @@ void UHEVLibIO::SetConfigString( const FString SectionName, const FString Variab
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
 		case EHEVINIFilesList::ePlayerSettingsConfig:
-			GConfig->SetString( *SectionName, *VariableName, *StrValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
-			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
+			GConfig->SetString( *SectionName, *VariableName, *StrValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
+			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
 			break;
 	}
 }
 
-void UHEVLibIO::SetConfigText( const FString SectionName, const FString VariableName, const FText TextValue,
-										const EHEVINIFilesList INIFile, const int32 ProfileIndex ) {
+void UHEVLibIO::SetConfigText( const FString SectionName, const FString VariableName, const FText TextValue, const EHEVINIFilesList INIFile ) {
 	if ( !GConfig ) return;
 
 	switch ( INIFile ) {
@@ -818,8 +820,8 @@ void UHEVLibIO::SetConfigText( const FString SectionName, const FString Variable
 			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + TEXT( "GameSettings.cfg" ) ) );
 			break;
 		case EHEVINIFilesList::ePlayerSettingsConfig:
-			GConfig->SetText( *SectionName, *VariableName, TextValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
-			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings" + FString::FromInt( ProfileIndex ) + ".cfg" ) ) );
+			GConfig->SetText( *SectionName, *VariableName, TextValue, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
+			GConfig->Flush( false, FString( FPaths::GeneratedConfigDir() + FString( "PlayerSettings.cfg" ) ) );
 			break;
 	}
 }

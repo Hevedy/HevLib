@@ -117,50 +117,50 @@ public:
 
 	/** Returns the list of files by extension on the given folder */
 	UFUNCTION( BlueprintPure, Category = "HevLib|IO" )
-		static TArray<FString> GetFilesByExtension( const FString _Extension, const EHEVFilesDirList _Directory, const int32 _ProfileIndex, bool &_ReadError );
+		static TArray<FString> GetFilesByExtension( const FString _Extension, const EHEVFilesDirList _Directory, const FString _SubDirectory, const bool _Recursive, bool &_Empty );
 
 	/** Set the value of the selected bool from the selected ini config file */
 	UFUNCTION( BlueprintCallable, Category = "HevLib|IO" )
-		static void SetConfigBool( const FString SectionName, const FString VariableName, const bool BoolValue, const EHEVINIFilesList INIFile, const int32 ProfileIndex );
+		static void SetConfigBool( const FString SectionName, const FString VariableName, const bool BoolValue, const EHEVINIFilesList INIFile );
 
 	/** Set the value of the selected uint8 from the selected ini config file */
 	UFUNCTION( BlueprintCallable, Category = "HevLib|IO" )
-		static void SetConfigByte( const FString SectionName, const FString VariableName, const uint8 ByteValue, const EHEVINIFilesList INIFile, const int32 ProfileIndex );
+		static void SetConfigByte( const FString SectionName, const FString VariableName, const uint8 ByteValue, const EHEVINIFilesList INIFile );
 
 	/** Set the value of the selected int32 from the selected ini config file */
 	UFUNCTION( BlueprintCallable, Category = "HevLib|IO" )
-		static void SetConfigInteger( const FString SectionName, const FString VariableName, const int32 IntValue, const EHEVINIFilesList INIFile, const int32 ProfileIndex );
+		static void SetConfigInteger( const FString SectionName, const FString VariableName, const int32 IntValue, const EHEVINIFilesList INIFile );
 
 	/** Set the value of the selected float from the selected ini config file */
 	UFUNCTION( BlueprintCallable, Category = "HevLib|IO" )
-		static void SetConfigFloat( const FString SectionName, const FString VariableName, const float FloatValue, const EHEVINIFilesList INIFile, const int32 ProfileIndex );
+		static void SetConfigFloat( const FString SectionName, const FString VariableName, const float FloatValue, const EHEVINIFilesList INIFile );
 
 	/** Set the value of the selected FVector2D from the selected ini config file */
 	UFUNCTION( BlueprintCallable, Category = "HevLib|IO" )
-		static void SetConfigVector2D( const FString SectionName, const FString VariableName, const FVector2D Vec2Value, const EHEVINIFilesList INIFile, const int32 ProfileIndex );
+		static void SetConfigVector2D( const FString SectionName, const FString VariableName, const FVector2D Vec2Value, const EHEVINIFilesList INIFile );
 
 	/** Set the value of the selected FVector from the selected ini config file */
 	UFUNCTION( BlueprintCallable, Category = "HevLib|IO" )
-		static void SetConfigVector( const FString SectionName, const FString VariableName, const FVector VecValue, const EHEVINIFilesList INIFile, const int32 ProfileIndex );
+		static void SetConfigVector( const FString SectionName, const FString VariableName, const FVector VecValue, const EHEVINIFilesList INIFile );
 
 	/** Set the value of the selected FVector from the selected ini config file */
 	UFUNCTION( BlueprintCallable, Category = "HevLib|IO" )
-		static void SetConfigVector4( const FString SectionName, const FString VariableName, const FVector4 &Vec4Value, const EHEVINIFilesList INIFile, const int32 ProfileIndex );
+		static void SetConfigVector4( const FString SectionName, const FString VariableName, const FVector4 &Vec4Value, const EHEVINIFilesList INIFile );
 
 	/** Set the value of the selected FRotator from the selected ini config file */
 	UFUNCTION( BlueprintCallable, Category = "HevLib|IO" )
-		static void SetConfigRotator( const FString SectionName, const FString VariableName, const FRotator RotValue, const EHEVINIFilesList INIFile, const int32 ProfileIndex );
+		static void SetConfigRotator( const FString SectionName, const FString VariableName, const FRotator RotValue, const EHEVINIFilesList INIFile );
 
 	/** Set the value of the selected FLinearColor from the selected ini config file */
 	UFUNCTION( BlueprintCallable, Category = "HevLib|IO" )
-		static void SetConfigColor( const FString SectionName, const FString VariableName, const FLinearColor ColorValue, const EHEVINIFilesList INIFile, const int32 ProfileIndex );
+		static void SetConfigColor( const FString SectionName, const FString VariableName, const FLinearColor ColorValue, const EHEVINIFilesList INIFile );
 
 	/** Set the value of the selected FString from the selected ini config file */
 	UFUNCTION( BlueprintCallable, Category = "HevLib|IO" )
-		static void SetConfigString( const FString SectionName, const FString VariableName, const FString StrValue, const EHEVINIFilesList INIFile, const int32 ProfileIndex );
+		static void SetConfigString( const FString SectionName, const FString VariableName, const FString StrValue, const EHEVINIFilesList INIFile );
 
 	/** Set the value of the selected FText from the selected ini config file */
 	UFUNCTION( BlueprintCallable, Category = "HevLib|IO" )
-		static void SetConfigText( const FString SectionName, const FString VariableName, const FText TextValue, const EHEVINIFilesList INIFile, const int32 ProfileIndex );
+		static void SetConfigText( const FString SectionName, const FString VariableName, const FText TextValue, const EHEVINIFilesList INIFile );
 
 };
