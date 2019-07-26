@@ -1,1 +1,2 @@
-robocopy HEVLibCPP\ UnrealEngine\Plugins\HEVLib\ /e /copyall
+xcopy /s/e HEVLibCPP UnrealEngine\Plugins\HEVLib\Source
+pause
