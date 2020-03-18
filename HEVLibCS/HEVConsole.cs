@@ -4,7 +4,7 @@ This code is part of the HevLib source code content in
 HevLib by Hevedy <https://github.com/Hevedy/HevLib>
 Mozilla Public License Version 2.0 (MPL-2.0)
 
-Copyright (c) 2018-2019 Hevedy <https://github.com/Hevedy>
+Copyright (c) 2018-2020 Hevedy <https://github.com/Hevedy>
 
 This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
