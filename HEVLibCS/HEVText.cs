@@ -58,6 +58,17 @@ namespace HEVLib {
 			return true;
 		}
 
+		public static bool Contains( string _String, params string[] _StringList ) {
+			foreach ( string str in _StringList ) {
+				if ( !IsNullOrInvalid( str ) ) {
+					if ( str == _String ) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
 		public static bool TryParse( string _String, out bool _Result ) {
 			if ( !Validate( _String ) ) { _Result = false; return false; }
 			string str = _String.ToLower();

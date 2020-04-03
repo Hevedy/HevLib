@@ -7,11 +7,11 @@ namespace HEVLib {
 		public static readonly string CUSTOM_NAMESPACE = ""; //EDIT THIS
 
 		public static readonly string Name = "HevLib";
-		public static readonly string Author = "Hevedy";
+		public static readonly string Author = @"David ""Hevedy"" Palacios";
 		public static readonly int VersionMajor = 0;
-		public static readonly int VersionMinor = 4;
-		public static readonly int VersionPatch = 6;
+		public static readonly int VersionMinor = 5;
+		public static readonly int VersionPatch = 2;
 		public static readonly string Version = VersionMajor + "." + VersionMinor + "." + VersionPatch;
-		public static readonly string Info = Name + " by " + Author + ". - Version: " + Version;
+		public static readonly string Info = Name + " by " + Author + " - Version: " + Version;
 	}
 }

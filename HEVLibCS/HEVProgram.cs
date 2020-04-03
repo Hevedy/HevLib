@@ -27,6 +27,7 @@ HEVProgram.cs
 */
 
 using System;
+using System.Security;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading;
@@ -106,10 +107,12 @@ namespace HEVLib {
 	}
 
 	class HEVProgramInstance : IDisposable {
+#if MUTEX_ENABLED
 		public bool hasHandle = false;
 		Mutex mutex;
-
+#endif
 		private void InitMutex( string _CustomID ) {
+#if MUTEX_ENABLED
 			//( (GuidAttribute)Assembly.GetExecutingAssembly().GetCustomAttributes( typeof( GuidAttribute ), false ).GetValue( 0 ) ).Value;
 			string appGuid = HEVIO.AssemblyGuidCurrent();
 			string mutexId = string.Format( "Global\\{{{0}}}", appGuid );
@@ -123,9 +126,11 @@ namespace HEVLib {
 			var securitySettings = new MutexSecurity();
 			securitySettings.AddAccessRule( allowEveryoneRule );
 			mutex.SetAccessControl( securitySettings );
+#endif
 		}
 
 		public HEVProgramInstance( int _TimeOut, string _CustomID = "" ) {
+#if MUTEX_ENABLED
 			InitMutex( _CustomID );
 			try {
 				if ( _TimeOut < 0 ) {
@@ -141,14 +146,17 @@ namespace HEVLib {
 			} catch ( AbandonedMutexException ) {
 				hasHandle = true;
 			}
+#endif
 		}
 
 		public void Dispose() {
+#if MUTEX_ENABLED
 			if ( mutex != null ) {
 				if ( hasHandle )
 					mutex.ReleaseMutex();
 				mutex.Close();
 			}
+#endif
 		}
 	}
 }

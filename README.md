@@ -2,7 +2,7 @@
 [Hevedy Library][ProjectURL] for C# (Net Core &amp; Net Framework &amp; Unity 2019) and C++ for Unreal Engine 4
 
 Author: Hevedy<br/>
-Version: 0.4.6<br/>
+Version: 0.5.2<br/>
 
 <br/><br/>
 

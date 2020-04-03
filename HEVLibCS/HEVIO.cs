@@ -50,11 +50,30 @@ namespace HEVLib {
 			if ( !System.IO.File.Exists( _URL ) ) {
 				EPrintType val;
 				if ( _Critical ) { val = EPrintType.eError; } else { val = EPrintType.eWarning; }
-				HEVConsole.Print( "FileValidate() Missing file: " + _URL, val );
+				HEVConsole.Print( "FileValidate() Missing file: " + _URL, val, true );
 				return false;
 			} else {
 				return true;
 			}
+		}
+
+		// Returns true if its a file
+		public static bool FileOrDirectory( string _URL ) {
+
+			if ( System.IO.Directory.Exists( _URL ) ) {
+				return false;
+			} else {
+				if ( System.IO.File.Exists( _URL ) ) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+
+		public static bool FileExtensionIsValid( string _URL, params string[] _StringList ) {
+			string ext = Path.GetExtension( _URL );
+			return HEVText.Contains( ext, _StringList );
 		}
 
 		public static bool FileIsExecutable( string _URL ) {
@@ -81,6 +100,25 @@ namespace HEVLib {
 			string ext = Path.GetExtension( _URL );
 			if ( ext == ".zip" || ext == ".rar" || ext == ".7zip" || ext == ".tar.gz" || ext == ".tar" || ext == ".gz" || 
 				ext == ".bz2" || ext == ".wim" || ext == ".xz" || ext == ".iso" || ext == ".gzip" || ext == ".bzip2" ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		public static bool FileIsText( string _URL ) {
+			string ext = Path.GetExtension( _URL );
+			if ( ext == ".txt" || ext == ".log" || ext == ".cfg" || ext == ".conf" || ext == ".rm" || ext == ".readme" ||
+				ext == ".htm" || ext == ".html" || ext == ".css" || ext == ".php" || ext == ".js" || ext == ".json" || ext == ".ini" ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		public static bool FileIsAudio( string _URL ) {
+			string ext = Path.GetExtension( _URL );
+			if ( ext == ".ogg" || ext == ".flac" || ext == ".mp3" || ext == ".wav" ) {
 				return true;
 			} else {
 				return false;
@@ -196,7 +234,7 @@ namespace HEVLib {
 			bool file = true;
 			if ( !FileValidate( _URL, false ) ) {
 				HEVConsole.Print( "FileTextWriteStringArray() Missing file. Creating new one at " + 
-					_URL, EPrintType.eWarning );
+					_URL, EPrintType.eWarning, true );
 				file = false;
 			}
 			bool status = false;
@@ -424,13 +462,14 @@ namespace HEVLib {
 		}
 
 		// Returns false if need to save the file
-		public static bool DataINIReadWrite( this IniData _Data, string _Section, string _Key, ref bool _Value ) {
+		// Bool
+		public static bool DataINIReadWrite( this IniData _Data, string _Section, string _Key, ref bool _Value, bool _Write = true ) {
 			IniData data = _Data;
 			bool status = false;
 			bool value = _Value;
 			bool dataValue = _Value;
 			if ( !HEVText.TryParse( data[_Section][_Key], out dataValue ) ) {
-				data[_Section][_Key] = value.ToString();
+				if ( _Write ) { data[_Section][_Key] = value.ToString(); }
 				status = false;
 			} else {
 				value = dataValue;
@@ -441,7 +480,8 @@ namespace HEVLib {
 			return status;
 		}
 
-		public static bool DataINIReadWrite( this IniData _Data, string _Section, string _Key, ref int _Value, bool _Clamp = false, int _Min = 0, int _Max = 9999 ) {
+		// Integer
+		public static bool DataINIReadWrite( this IniData _Data, string _Section, string _Key, ref int _Value, bool _Write = true, bool _Clamp = false, int _Min = 0, int _Max = 9999 ) {
 			IniData data = _Data;
 			bool status = false;
 			int value = _Value;
@@ -450,7 +490,7 @@ namespace HEVLib {
 				if ( _Clamp ) {
 					value = HEVMath.Clamp( value, _Min, _Max );
 				}
-				data[_Section][_Key] = value.ToString();
+				if ( _Write ) { data[_Section][_Key] = value.ToString(); }
 				status = false;
 			} else {
 				if ( HEVMath.Validate( _Min, _Max, value ) ) {
@@ -469,7 +509,8 @@ namespace HEVLib {
 			return status;
 		}
 
-		public static bool DataINIReadWrite( this IniData _Data, string _Section, string _Key, ref string _Value ) {
+		// String
+		public static bool DataINIReadWrite( this IniData _Data, string _Section, string _Key, ref string _Value, bool _Write = true ) {
 			IniData data = _Data;
 			bool status = false;
 			string value = _Value;
@@ -478,7 +519,7 @@ namespace HEVLib {
 				if ( value == "" && dataValue == "" ) {
 					status = true;
 				} else {
-					data[_Section][_Key] = value;
+					if ( _Write ) { data[_Section][_Key] = value; }
 					status = false;
 				}
 			} else {
@@ -490,7 +531,8 @@ namespace HEVLib {
 			return status;
 		}
 
-		public static bool DataINIReadWrite( this IniData _Data, string _Section, string _Key, ref List<string> _Value, string _Separator = "," ) {
+		// String array
+		public static bool DataINIReadWrite( this IniData _Data, string _Section, string _Key, ref List<string> _Value, bool _Write = true, string _Separator = "," ) {
 			IniData data = _Data;
 			bool status = false;
 			string value = HEVText.ToString( _Value, _Separator );
@@ -499,7 +541,7 @@ namespace HEVLib {
 				if ( value == "" && dataValue == "" ) {
 					status = true;
 				} else {
-					data[_Section][_Key] = value;
+					if ( _Write ) { data[_Section][_Key] = value; }
 					status = false;
 				}
 			} else {
