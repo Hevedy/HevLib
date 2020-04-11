@@ -72,6 +72,11 @@ namespace HEVLib {
 		}
 
 		public static bool FileExtensionIsValid( string _URL, params string[] _StringList ) {
+			if( _StringList.Length == 1 ) {
+				if ( _StringList[0] == "." || _StringList[0] == "*.*" ) {
+					return true;
+				}
+			}
 			string ext = Path.GetExtension( _URL );
 			return HEVText.Contains( ext, _StringList );
 		}
