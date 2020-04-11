@@ -231,7 +231,7 @@ namespace HEVLib {
 
 		public static bool FileTextWriteString( string _URL, string _Text, bool _Replace = true ) {
 			string[] fileLines = HEVText.ToStringArray(_Text, "\n"); //\r\n Count as double
-			return FileTextWriteStringArray( _URL, fileLines, _Replace );
+			return FileTextWriteStringArray( _URL, fileLines, _Replace, 0 );
 		}  
 
 		public static bool FileTextWriteStringArray( string _URL, string[] _Text, bool _Replace = true, 
